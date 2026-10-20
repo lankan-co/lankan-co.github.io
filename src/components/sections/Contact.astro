@@ -1,8 +1,11 @@
 ---
-/** Final CTA + contact form (React island, hydrates when visible). */
-import ContactForm from '@/components/islands/ContactForm';
+/** Final CTA + contact form (embedded Formasty form; submissions land in the Formasty dashboard). */
 import Magnetic from '@/components/islands/Magnetic';
-import { site, services } from '@/data/site';
+import { site } from '@/data/site';
+
+const formEmbed = new URL(site.formUrl);
+formEmbed.searchParams.set('embed', '1');
+formEmbed.searchParams.set('embedAutoResize', '0');
 
 const callHref = `mailto:${site.email}?subject=${encodeURIComponent('Discovery call')}&body=${encodeURIComponent(
   'Hi Lankan team,\n\nI’d love to book a free 30-minute discovery call. A few times that suit me:\n\n- \n- \n\nThanks!',
@@ -37,7 +40,23 @@ const callHref = `mailto:${site.email}?subject=${encodeURIComponent('Discovery c
     </div>
 
     <div class="lg:col-span-6 lg:col-start-7" data-reveal>
-      <ContactForm client:visible endpoint={site.formEndpoint} email={site.email} services={services.map((s) => s.title)} />
+      <div class="card overflow-hidden p-0">
+        <iframe
+          src={formEmbed.href}
+          title="Contact Lankan Brands & Co. — project enquiry form"
+          class="block h-[760px] w-full border-0 bg-ink"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+      <p class="mt-4 text-sm text-neutral-400">
+        Form not loading?{' '}
+        <a href={site.formUrl} target="_blank" rel="noopener noreferrer" class="link-draw text-paper">
+          Open it in a new tab<span class="sr-only"> (opens in a new tab)</span>
+        </a>{' '}
+        or email{' '}
+        <a href={`mailto:${site.email}`} class="link-draw text-paper">{site.email}</a>.
+      </p>
     </div>
   </div>
 </section>

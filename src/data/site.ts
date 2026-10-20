@@ -16,7 +16,8 @@ export const site = {
   description:
     'Lankan Brands & Co. is a boutique branding and digital marketing studio for small businesses and founders who want authentic, stylish growth — not corporate noise.',
   email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'hello@lankanbrands.com',
-  formEndpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || '',
+  // Published Formasty contact form (embedded in the Contact section).
+  formUrl: import.meta.env.PUBLIC_FORM_URL || 'https://app.formasty.com/f/pub_1bb48a41046d46948047311b88ede291',
   // Profile URLs. Links with an empty href are not shown; the footer's
   // "Follow" column disappears entirely while all are empty.
   social: [
