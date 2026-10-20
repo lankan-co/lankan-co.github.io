@@ -20,7 +20,7 @@ export default defineConfig({
   base,
   output: 'static',
   trailingSlash: 'always',
-  integrations: [react(), sitemap()],
+  integrations: [react(), sitemap({ filter: (page) => !page.endsWith('/thanks/') })],
   build: {
     // Inline CSS to remove the render-blocking stylesheet request (better FCP/LCP).
     inlineStylesheets: 'always',

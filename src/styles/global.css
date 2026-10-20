@@ -190,6 +190,37 @@ html.lenis body {
     border: 1px solid var(--color-line);
     border-radius: 1.25rem;
   }
+
+
+  /* Form fields */
+  .field {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.18);
+    padding: 0.9rem 0;
+    color: var(--color-paper);
+    font-size: 1.05rem;
+    transition: border-color 0.3s;
+    border-radius: 0;
+  }
+  .field::placeholder {
+    color: #737373;
+  }
+  .field:hover {
+    border-color: rgb(255 255 255 / 0.35);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-paper);
+  }
+  .field:focus-visible {
+    outline: none;
+    box-shadow: 0 1px 0 0 var(--color-paper);
+  }
+  .field[aria-invalid='true'] {
+    border-color: #f87171;
+  }
 }
 
 /* ---------- Background textures (echo the vertical bands in the artwork) ---------- */

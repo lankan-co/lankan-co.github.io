@@ -47,7 +47,7 @@ jobs:
           SITE_URL: ${{ steps.pages.outputs.origin }}
           BASE_PATH: ${{ steps.pages.outputs.base_path || '/' }}
           # Optional — set these under Settings → Secrets and variables → Actions → Variables
-          PUBLIC_FORM_URL: ${{ vars.PUBLIC_FORM_URL }}
+          PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
           PUBLIC_CONTACT_EMAIL: ${{ vars.PUBLIC_CONTACT_EMAIL }}
 
       - name: Upload artifact
