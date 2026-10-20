@@ -2,6 +2,8 @@
 /**
  * Cokan Brands & Co. — single-page site.
  * Sections are self-contained components; copy lives in src/data/site.ts.
+ * Work and Testimonials are hidden until real case studies and quotes are added
+ * to site.ts — re-import them below <Process /> to bring them back.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CursorGlow from '@/components/islands/CursorGlow';
@@ -10,8 +12,6 @@ import Hero from '@/components/sections/Hero.astro';
 import Philosophy from '@/components/sections/Philosophy.astro';
 import Services from '@/components/sections/Services.astro';
 import Process from '@/components/sections/Process.astro';
-import Work from '@/components/sections/Work.astro';
-import Testimonials from '@/components/sections/Testimonials.astro';
 import Contact from '@/components/sections/Contact.astro';
 import Footer from '@/components/sections/Footer.astro';
 ---
@@ -24,8 +24,6 @@ import Footer from '@/components/sections/Footer.astro';
     <Philosophy />
     <Services />
     <Process />
-    <Work />
-    <Testimonials />
     <Contact />
   </main>
   <Footer />

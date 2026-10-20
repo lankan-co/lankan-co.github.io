@@ -95,9 +95,9 @@ Tokens live in `src/styles/global.css` under `@theme` and are available as Tailw
 
 ## ✦ Editing content
 
-Everything you'll want to change is in **`src/data/site.ts`** — tagline, services, process steps, values, case studies, testimonials, email and social links.
+Everything you'll want to change is in **`src/data/site.ts`** — tagline, services, process steps, values, case studies, testimonials, email and social links. Social links with an empty `href` are hidden.
 
-> ⚠️ **Case studies and testimonials are placeholders.** Replace them with real clients before launch. Drop real photos into `src/assets/work/` (JPG/PNG at ~1600px wide) and point each case study's `image` at the new file — Astro generates AVIF/WebP and responsive sizes automatically.
+> ⚠️ **Case studies and testimonials are placeholders, so their sections are currently hidden.** Replace them with real clients in `site.ts`, then re-add `<Work />` and `<Testimonials />` (and the `Work` nav link) in `src/pages/index.astro`. Drop real photos into `src/assets/work/` (JPG/PNG at ~1600px wide) and point each case study's `image` at the new file — Astro generates AVIF/WebP and responsive sizes automatically.
 
 ## ✦ Contact form
 
