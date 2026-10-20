@@ -1,0 +1,61 @@
+---
+/** Footer — logo, minimal links, socials, copyright. */
+import Logo from '@/components/ui/Logo.astro';
+import { nav, site } from '@/data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line pt-20 pb-10">
+  <div class="container-site">
+    <div class="grid gap-14 md:grid-cols-12">
+      <div class="md:col-span-4">
+        <Logo variant="full" class="h-12 w-auto md:h-14" />
+        <p class="mt-6 max-w-xs text-muted">{site.tagline}.</p>
+      </div>
+
+      <nav aria-label="Footer" class="md:col-span-2 md:col-start-6">
+        <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Studio</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            nav.map((n) => (
+              <li>
+                <a href={n.href} class="link-draw">
+                  {n.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="md:col-span-2">
+        <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Follow</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            site.social.map((s) => (
+              <li>
+                <a href={s.href} class="link-draw inline-flex items-center gap-1.5" rel="noopener noreferrer" target="_blank">
+                  {s.label}
+                  <span aria-hidden="true" class="text-xs text-muted">↗</span>
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Say hello</h2>
+        <a href={`mailto:${site.email}`} class="link-draw mt-5 inline-block">{site.email}</a>
+      </div>
+    </div>
+
+    <div class="mt-20 flex flex-col gap-4 border-t border-line pt-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.name} All rights reserved.</p>
+      <p class="font-bold text-paper">{site.secondary}</p>
+      <a href="#top" class="link-draw self-start sm:self-auto">Back to top ↑</a>
+    </div>
+  </div>
+</footer>

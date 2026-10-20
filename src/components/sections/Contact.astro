@@ -1,0 +1,43 @@
+---
+/** Final CTA + contact form (React island, hydrates when visible). */
+import ContactForm from '@/components/islands/ContactForm';
+import Magnetic from '@/components/islands/Magnetic';
+import { site, services } from '@/data/site';
+
+const callHref = `mailto:${site.email}?subject=${encodeURIComponent('Discovery call')}&body=${encodeURIComponent(
+  'Hi Cokan team,\n\nI’d love to book a free 30-minute discovery call. A few times that suit me:\n\n- \n- \n\nThanks!',
+)}`;
+---
+
+<section id="contact" aria-labelledby="contact-title" class="bg-grain relative isolate overflow-hidden border-t border-line py-28 md:py-40">
+  <div aria-hidden="true" class="bg-bands absolute inset-0 -z-10 opacity-60"></div>
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-b from-ink via-ink/40 to-ink"></div>
+
+  <div class="container-site grid gap-16 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-5">
+      <p class="eyebrow" data-reveal>06 — Start a project</p>
+      <h2
+        id="contact-title"
+        class="mt-8 text-[clamp(2.5rem,5.6vw,5rem)] leading-[1] font-semibold tracking-[-0.045em]"
+        data-reveal
+      >
+        Let’s build something that’s unmistakably yours.
+      </h2>
+      <p class="mt-8 max-w-md text-lg leading-relaxed text-muted" data-reveal>
+        Tell us where you are and where you want to go. We’ll come back within one working day with honest thoughts
+        — even if we’re not the right fit.
+      </p>
+      <div class="mt-10" data-reveal>
+        <Magnetic client:idle>
+          <a href={callHref} class="btn btn-ghost">
+            Book a free discovery call <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+        </Magnetic>
+      </div>
+    </div>
+
+    <div class="lg:col-span-6 lg:col-start-7" data-reveal>
+      <ContactForm client:visible endpoint={site.formEndpoint} email={site.email} services={services.map((s) => s.title)} />
+    </div>
+  </div>
+</section>

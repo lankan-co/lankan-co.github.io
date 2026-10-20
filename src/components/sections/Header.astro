@@ -1,0 +1,84 @@
+---
+/**
+ * Fixed header — transparent over the hero, gains a blurred backdrop
+ * and hairline once scrolled (see src/scripts/header.ts).
+ */
+import Logo from '@/components/ui/Logo.astro';
+import { nav } from '@/data/site';
+---
+
+<header
+  data-header
+  class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 border-b border-transparent data-[scrolled]:border-line data-[scrolled]:bg-ink/70 data-[scrolled]:backdrop-blur-xl"
+>
+  <div class="container-site flex h-16 items-center justify-between md:h-20">
+    <a href="#top" class="relative z-[60] -m-2 rounded p-2" aria-label="Cokan Brands & Co. — back to top">
+      <Logo variant="full" class="h-7 w-auto md:h-8" />
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <ul class="flex items-center gap-8 text-sm text-muted">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                data-nav-link
+                class="link-draw transition-colors hover:text-paper aria-[current]:text-paper"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="#contact" class="btn btn-primary hidden min-h-10 px-5 text-sm sm:inline-flex">
+        Start a project
+      </a>
+      <button
+        type="button"
+        data-menu-toggle
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Open menu"
+        class="group relative z-[60] grid h-11 w-11 place-items-center rounded-full border border-white/15 md:hidden"
+      >
+        <span class="sr-only">Menu</span>
+        <span
+          aria-hidden="true"
+          class="absolute h-px w-5 -translate-y-1 bg-paper transition-transform duration-500 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"
+        ></span>
+        <span
+          aria-hidden="true"
+          class="absolute h-px w-5 translate-y-1 bg-paper transition-transform duration-500 group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"
+        ></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu: full-screen, large type -->
+<div
+  id="mobile-menu"
+  inert
+  class="bg-bands pointer-events-none fixed inset-0 z-40 flex flex-col bg-ink opacity-0 transition-opacity duration-500 data-[open]:pointer-events-auto data-[open]:opacity-100 md:hidden"
+>
+  <nav aria-label="Mobile" class="container-site flex flex-1 flex-col justify-center">
+    <ul class="space-y-2">
+      {
+        nav.map((item, i) => (
+          <li>
+            <a href={item.href} class="flex items-baseline gap-4 py-2 text-4xl font-semibold tracking-tight">
+              <span class="text-xs font-normal tracking-widest text-muted">0{i + 1}</span>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a href="#contact" class="btn btn-primary mt-12 self-start">Start a project <span aria-hidden="true">→</span></a>
+  </nav>
+</div>
