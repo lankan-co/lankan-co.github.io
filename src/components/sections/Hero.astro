@@ -1,0 +1,115 @@
+---
+/**
+ * Hero — full viewport. Vertical bands + grain echo the supplied artwork.
+ * The logo animates in (React island); the headline rises line by line
+ * with pure CSS so the LCP text is never blocked on JavaScript.
+ */
+import HeroLogo from '@/components/islands/HeroLogo';
+import Magnetic from '@/components/islands/Magnetic';
+import { site } from '@/data/site';
+
+// Headline split into words for a staggered rise that still wraps naturally.
+const words = 'For small businesses building something of their own.'.split(' ');
+---
+
+<section id="top" aria-labelledby="hero-title" class="bg-grain relative isolate flex min-h-[100svh] flex-col overflow-hidden">
+  <!-- Background: the artwork's vertical bands, softly parallaxed by the scroll script -->
+  <div aria-hidden="true" data-parallax="1.2" class="bg-bands absolute inset-0 -z-10 opacity-90"></div>
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-b from-transparent to-ink"
+  ></div>
+
+  <div class="container-site flex flex-1 flex-col justify-center pt-28 pb-12 md:pt-28">
+    <div class="w-[min(78vw,24rem)] md:w-[22rem] xl:w-[26rem]">
+      <HeroLogo client:load className="h-auto w-full" />
+    </div>
+
+    <h1
+      id="hero-title"
+      class="mt-10 max-w-[13ch] text-[clamp(2.75rem,6.6vw,6.5rem)] leading-[0.98] font-semibold tracking-[-0.045em] md:mt-12 lg:max-w-[16ch]"
+    >
+      {
+        words.map((word, i) => (
+          <>
+            <span class="hero-word inline-block overflow-hidden pb-[0.1em] align-top">
+              <span class="inline-block" style={`--d:${(0.12 + i * 0.045).toFixed(3)}s`}>
+                {word}
+              </span>
+            </span>{' '}
+          </>
+        ))
+      }
+    </h1>
+
+    <div class="hero-fade mt-10 grid gap-10 md:mt-12 md:grid-cols-12 md:items-end" style="--d:.55s">
+      <p class="max-w-md text-lg leading-relaxed text-muted md:col-span-5 md:text-xl">
+        A boutique branding and digital marketing studio for founders who’d rather be
+        <span class="text-paper">known</span> than loud.
+      </p>
+      <div class="flex flex-wrap items-center gap-3 md:col-span-6 md:col-start-7 md:justify-end">
+        <Magnetic client:idle>
+          <a href="#contact" class="btn btn-primary">
+            Start a project <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+        </Magnetic>
+        <a href="#work" class="btn btn-ghost">See our work</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom rail -->
+  <div class="hero-fade container-site flex items-center justify-between pb-8 text-sm" style="--d:.8s">
+    <p class="font-bold tracking-tight">{site.secondary}</p>
+    <a href="#philosophy" class="group flex items-center gap-3 text-muted transition-colors hover:text-paper">
+      <span class="hidden sm:inline">Scroll</span>
+      <span class="relative h-10 w-px overflow-hidden bg-white/15" aria-hidden="true">
+        <span class="scroll-cue absolute inset-x-0 top-0 h-1/2 bg-paper"></span>
+      </span>
+      <span class="sr-only">to our philosophy</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Line-by-line rise. Transform-only start keeps the text paintable for LCP. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-word > span {
+      animation: rise 1.1s var(--ease-out-expo) both;
+      animation-delay: var(--d);
+    }
+    .hero-fade {
+      animation: fade 1.2s var(--ease-out-expo) both;
+      animation-delay: var(--d);
+    }
+    .scroll-cue {
+      animation: cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+  }
+  @keyframes rise {
+    from {
+      transform: translateY(105%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes cue {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(200%);
+    }
+  }
+</style>

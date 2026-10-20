@@ -1,0 +1,63 @@
+---
+/**
+ * Selected work — staggered two-column grid.
+ * Images go through Astro <Picture> → AVIF + WebP, responsive srcset, lazy.
+ * PLACEHOLDER projects: replace in src/data/site.ts.
+ */
+import { Picture } from 'astro:assets';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { work } from '@/data/site';
+---
+
+<section id="work" aria-labelledby="work-title" class="relative border-t border-line py-28 md:py-40">
+  <div class="container-site">
+    <SectionHeading
+      id="work-title"
+      index="04"
+      label="Selected work"
+      title="Small businesses. Real results."
+      lede="A few of the founders we’ve helped build something of their own — and what changed once they did."
+    />
+
+    <div class="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:mt-24">
+      {
+        work.map((c, i) => (
+          <article class:list={['group', i % 2 === 1 && 'md:mt-32']} data-reveal>
+            <div class="relative overflow-hidden rounded-2xl border border-line bg-card">
+              <Picture
+                src={c.image}
+                alt={c.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                widths={[480, 800, 1200]}
+                sizes="(min-width: 768px) 45vw, 100vw"
+                class="aspect-[4/3] h-auto w-full object-cover transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+                loading="lazy"
+                decoding="async"
+              />
+              {/* sheen + metric pill on hover */}
+              <div
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-60 transition-opacity duration-700 group-hover:opacity-100"
+              />
+              <div class="absolute bottom-5 left-5 flex items-baseline gap-2 rounded-full border border-white/15 bg-black/60 px-4 py-2 backdrop-blur-md transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:-translate-y-1">
+                <span class="text-lg font-semibold tracking-tight">{c.metric}</span>
+                <span class="text-xs text-neutral-300">{c.metricLabel}</span>
+              </div>
+            </div>
+            <div class="mt-6 flex items-start justify-between gap-6">
+              <div>
+                <p class="text-sm text-muted">
+                  {c.client} · {c.sector}
+                </p>
+                <h3 class="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">{c.title}</h3>
+              </div>
+              <span class="mt-1 font-mono text-xs tracking-widest text-muted">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <p class="mt-3 max-w-lg leading-relaxed text-muted">{c.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,110 @@
+---
+/**
+ * Base document: SEO, Open Graph / Twitter cards, structured data,
+ * favicons, global styles and the site-wide progressive-enhancement scripts.
+ */
+import '@/styles/global.css';
+import { site } from '@/data/site';
+// Preload the primary (Latin) font file to avoid a late font swap.
+import dmSansLatin from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Keep utility pages (e.g. 404) out of search results. */
+  noindex?: boolean;
+}
+
+const { title = `${site.name} — ${site.tagline}`, description = site.description, noindex = false } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(`${base}og-image.png`, Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  slogan: site.tagline,
+  description: site.description,
+  url: canonical.href,
+  logo: new URL(`${base}brand/cokan-logo.png`, Astro.site).href,
+  image: ogImage.href,
+  email: site.email,
+  areaServed: 'Worldwide',
+  knowsAbout: ['Branding', 'Digital marketing', 'Social media', 'SEO', 'Paid advertising', 'Creative direction'],
+};
+---
+
+<!doctype html>
+<html lang="en" class="bg-ink">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preload" href={dmSansLatin} as="font" type="font/woff2" crossorigin />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Cokan Brands & Co. logo with the tagline: For small businesses building something of their own" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!--
+      Mark JS as available so [data-reveal] elements can be pre-hidden.
+      Safety net: if the reveal script hasn't run in 2.5s, show everything.
+    -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!window.__cokanReveal) document.documentElement.classList.remove('js');
+      }, 2500);
+    </script>
+  </head>
+  <body class="font-sans text-paper antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-paper focus:px-5 focus:py-3 focus:text-ink"
+    >
+      Skip to content
+    </a>
+    <slot />
+
+    <script>
+      import { initReveal, initScrollEffects } from '@/scripts/reveal';
+      import { initSmoothScroll } from '@/scripts/smooth-scroll';
+      import { initHeader } from '@/scripts/header';
+
+      (window as unknown as { __cokanReveal: boolean }).__cokanReveal = true;
+      initHeader();
+      initReveal();
+      initScrollEffects();
+      initSmoothScroll();
+    </script>
+  </body>
+</html>

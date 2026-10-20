@@ -1,0 +1,37 @@
+---
+/**
+ * Static logo — vectors traced 1:1 from the supplied artwork.
+ *   variant="full"  → white square mark + "kan Brands &Co." wordmark
+ *   variant="mark"  → logo-only square mark
+ * The wordmark is white, so it is designed for dark backgrounds (as in the artwork).
+ */
+import logo from '@/data/logo-paths.json';
+
+interface Props {
+  variant?: 'full' | 'mark';
+  class?: string;
+  /** Pass a label when the logo is the only content of a link. Omit for decorative use. */
+  label?: string;
+}
+const { variant = 'full', class: className, label } = Astro.props;
+const vbW = variant === 'full' ? logo.viewBox.width : logo.square.width;
+const vbH = logo.viewBox.height;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${vbW} ${vbH}`}
+  class={className}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  <rect width={logo.square.width} height={logo.square.height} fill="#fff"></rect>
+  <path fill="#000" fill-rule="evenodd" d={logo.mark}></path>
+  {
+    variant === 'full' && (
+      <path fill="#fff" fill-rule="evenodd" transform={`translate(${logo.wordmarkOffsetX} 0)`} d={logo.wordmark} />
+    )
+  }
+</svg>

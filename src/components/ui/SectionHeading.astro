@@ -1,0 +1,30 @@
+---
+/**
+ * Consistent section opener: eyebrow ("02 — Services"), headline, optional lede.
+ * Layout is asymmetric on desktop — headline left, lede pushed right.
+ */
+interface Props {
+  index: string;
+  label: string;
+  title: string;
+  lede?: string;
+  id?: string;
+}
+const { index, label, title, lede, id } = Astro.props;
+---
+
+<div class="grid gap-8 md:grid-cols-12 md:items-end">
+  <div class="md:col-span-7" data-reveal>
+    <p class="eyebrow">{index} — {label}</p>
+    <h2 id={id} class="mt-6 text-4xl leading-[1.02] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-6xl">
+      {title}
+    </h2>
+  </div>
+  {
+    lede && (
+      <p class="text-lg leading-relaxed text-muted md:col-span-4 md:col-start-9" data-reveal data-reveal-delay="0.1">
+        {lede}
+      </p>
+    )
+  }
+</div>
