@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/brand/cokan-logo.png" alt="Cokan Brands & Co." width="420" />
+  <img src="public/brand/lankan-logo.png" alt="Lankan Brands & Co." width="420" />
 </p>
 
 <h3 align="center">For small businesses building something of their own</h3>
@@ -11,7 +11,7 @@
 
 ---
 
-The website for **Cokan Brands & Co.** — a boutique branding and digital marketing studio for small businesses and founders. It's a fully static, single-page site designed to be a demonstration of the craft it sells: minimal, confident, quietly animated and fast.
+The website for **Lankan Brands & Co.** — a boutique branding and digital marketing studio for small businesses and founders. It's a fully static, single-page site designed to be a demonstration of the craft it sells: minimal, confident, quietly animated and fast.
 
 | Lighthouse (local, uncompressed preview) | Performance | Accessibility | Best Practices | SEO |
 | --- | :-: | :-: | :-: | :-: |
@@ -21,7 +21,7 @@ The website for **Cokan Brands & Co.** — a boutique branding and digital marke
 ## ✦ Highlights
 
 - **The real logo, as vectors.** The supplied artwork was traced 1:1 into SVG paths (`src/data/logo-paths.json`) — crisp at any size, and animatable piece by piece.
-- **Animated brand entrance.** The white square settles, the “Co” mark unfurls from the centre of its spiral, and the wordmark slides out from behind it.
+- **Animated brand entrance.** The white square settles, the “ලං” mark (Sinhala for “Lan”) unfurls from the centre of its spiral, and the wordmark slides out from behind it.
 - **Restrained motion.** Scroll reveals (fade-up + un-blur), staggered groups, a scroll-linked process line, gentle hero parallax, hover blooms, a cursor-following glow, magnetic CTAs and Lenis smooth scrolling.
 - **Accessible by default.** Skip link, semantic landmarks, visible focus rings, keyboard-reachable hover content, accessible mobile menu, live form errors, and **every animation switches off under `prefers-reduced-motion`**.
 - **Progressive enhancement.** All content is server-rendered HTML. If JavaScript fails, nothing is hidden.
@@ -47,10 +47,10 @@ npm run preview    # serve dist/ locally
 ├── .github/workflows/deploy.yml   # GitHub Pages CI/CD
 ├── public/
 │   ├── brand/                     # Logo files to share (SVG + PNG)
-│   │   ├── cokan-logo.svg         #   full logo
-│   │   ├── cokan-logo-tagline.svg #   logo + tagline lockup
-│   │   ├── cokan-mark.svg         #   logo-only mark
-│   │   └── cokan-logo.png
+│   │   ├── lankan-logo.svg         #   full logo
+│   │   ├── lankan-logo-tagline.svg #   logo + tagline lockup
+│   │   ├── lankan-mark.svg         #   logo-only mark
+│   │   └── lankan-logo.png
 │   ├── favicon.svg · apple-touch-icon.png · icon-512.png
 │   └── og-image.png               # 1200×630 social card
 ├── scripts/brand-assets.mjs       # Regenerates everything in public/brand, icons, OG image, covers
@@ -110,7 +110,7 @@ Locally, copy `.env.example` to `.env`. On GitHub, add them under **Settings →
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `PUBLIC_CONTACT_EMAIL` | `hello@cokanbrands.com` | Email fallback, footer & discovery-call link |
+| `PUBLIC_CONTACT_EMAIL` | `hello@lankanbrands.com` | Email fallback, footer & discovery-call link |
 | `PUBLIC_FORM_ENDPOINT` | *(empty)* | Form POST URL |
 | `SITE_URL` | set by CI | Absolute origin for canonical / OG URLs |
 | `BASE_PATH` | set by CI | `/` or `/<repo-name>` |
@@ -126,15 +126,15 @@ That's it — `.github/workflows/deploy.yml` reads your Pages configuration and 
 | Repository | Live URL | `BASE_PATH` |
 | --- | --- | --- |
 | `<user>.github.io` | `https://<user>.github.io/` | `/` |
-| `cokan-brands` | `https://<user>.github.io/cokan-brands/` | `/cokan-brands` |
-| any + custom domain | `https://cokanbrands.com/` | `/` |
+| `lankan-brands` | `https://<user>.github.io/lankan-brands/` | `/lankan-brands` |
+| any + custom domain | `https://lankanbrands.com/` | `/` |
 
 **Custom domain:** add it under Settings → Pages → Custom domain (and create a `CNAME` DNS record pointing to `<user>.github.io`). The workflow picks up the new origin automatically on the next run.
 
 **Building for Pages manually:**
 
 ```bash
-SITE_URL=https://<user>.github.io BASE_PATH=/cokan-brands npm run build
+SITE_URL=https://<user>.github.io BASE_PATH=/lankan-brands npm run build
 ```
 
 ## ✦ Brand assets
@@ -149,4 +149,4 @@ SITE_URL=https://<user>.github.io BASE_PATH=/cokan-brands npm run build
 
 ---
 
-<p align="center"><sub>© Cokan Brands & Co. — Your business. Your style.</sub></p>
+<p align="center"><sub>© Lankan Brands & Co. — Your business. Your style.</sub></p>

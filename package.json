@@ -1,7 +1,7 @@
 {
-  "name": "cokan-brands-website",
+  "name": "lankan-brands-website",
   "version": "1.0.0",
-  "description": "Cokan Brands & Co. — boutique branding & digital marketing studio website (Astro 5, Tailwind 4, React + Framer Motion).",
+  "description": "Lankan Brands & Co. — boutique branding & digital marketing studio website (Astro 5, Tailwind 4, React + Framer Motion).",
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
