@@ -61,6 +61,7 @@ npm run preview    # serve dist/ locally
     │   │   ├── HeroLogo.tsx       #   animated logo entrance        client:load
     │   │   ├── Magnetic.tsx       #   magnetic CTA wrapper          client:idle
     │   │   ├── CursorGlow.tsx     #   soft pointer glow             client:idle
+    │   │   └── ContactForm.tsx    #   Web3Forms contact form        client:visible
     │   ├── sections/              # Header, Hero, Philosophy, Services, Process, Work,
     │   │                          # Testimonials, Contact, Footer (static Astro)
     │   └── ui/                    # Logo, SectionHeading
@@ -100,16 +101,20 @@ Everything you'll want to change is in **`src/data/site.ts`** — tagline, servi
 
 ## ✦ Contact form
 
-The Contact section embeds a [Formasty](https://formasty.com) form, *Lankan Brands & Co. — Contact Us*, which asks for name, email, phone, business, services, budget, timeline and project details, with reCAPTCHA spam protection. Submissions are stored in the Formasty dashboard. Edit the questions there; the site picks up changes without a rebuild.
+The Contact section's form emails every enquiry through [Web3Forms](https://web3forms.com) to the inbox linked to the access key. Change the recipient in the Web3Forms dashboard; no code change is needed.
 
-To point the site at a different form, set `PUBLIC_FORM_URL` to its public URL (`https://app.formasty.com/f/…`).
+- **Fields:** name and email (required), phone/WhatsApp, business, services, budget, timeline (optional), and project details (required, 10–3000 characters).
+- **With JavaScript:** inline validation, JSON submit, a success panel, and on failure a retry plus a pre-filled email fallback so no enquiry is lost.
+- **Without JavaScript:** it posts as a normal HTML form, and Web3Forms redirects back to `/thanks/`.
+- **Spam:** filtered by Web3Forms' `botcheck` honeypot.
+- **Email:** the subject is "New enquiry from {name} — {business}", and replies go straight to the visitor's email.
 
 Locally, copy `.env.example` to `.env`. On GitHub, add them under **Settings → Secrets and variables → Actions → Variables**.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `PUBLIC_CONTACT_EMAIL` | `hello@lankanbrands.com` | Footer, discovery-call & "form not loading" links |
-| `PUBLIC_FORM_URL` | the published Formasty form | Contact form embedded in the Contact section |
+| `PUBLIC_CONTACT_EMAIL` | `hello@lankanbrands.com` | Footer, discovery-call & email-fallback links |
+| `PUBLIC_WEB3FORMS_KEY` | the Lankan Brands & Co. key | Web3Forms access key for the contact form |
 | `SITE_URL` | set by CI | Absolute origin for canonical / OG URLs |
 | `BASE_PATH` | set by CI | `/` or `/<repo-name>` |
 

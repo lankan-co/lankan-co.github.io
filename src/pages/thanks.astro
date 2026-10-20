@@ -1,0 +1,21 @@
+---
+/** Landing page after a no-JavaScript contact form submission (Web3Forms redirects here). */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Logo from '@/components/ui/Logo.astro';
+
+const home = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<BaseLayout title="Thank you — Lankan Brands & Co." noindex>
+  <main id="main" class="bg-grain relative isolate grid min-h-[100svh] place-items-center overflow-hidden px-5">
+    <div aria-hidden="true" class="bg-bands absolute inset-0 -z-10"></div>
+    <div class="text-center">
+      <Logo variant="mark" class="mx-auto h-20 w-auto" />
+      <h1 class="mt-10 text-5xl font-semibold tracking-[-0.04em] md:text-7xl">Thank you — talk soon.</h1>
+      <p class="mx-auto mt-5 max-w-md text-lg text-muted">
+        Your message is with us. We reply to every enquiry personally, usually within one working day.
+      </p>
+      <a href={home} class="btn btn-primary mt-10">Back to home <span class="btn-arrow" aria-hidden="true">→</span></a>
+    </div>
+  </main>
+</BaseLayout>

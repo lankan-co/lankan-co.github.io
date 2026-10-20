@@ -16,8 +16,9 @@ export const site = {
   description:
     'Lankan Brands & Co. is a boutique branding and digital marketing studio for small businesses and founders who want authentic, stylish growth — not corporate noise.',
   email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'hello@lankanbrands.com',
-  // Published Formasty contact form (embedded in the Contact section).
-  formUrl: import.meta.env.PUBLIC_FORM_URL || 'https://app.formasty.com/f/pub_1bb48a41046d46948047311b88ede291',
+  // Web3Forms access key for the contact form. Public by design: it only routes
+  // mail to the inbox the key was created for.
+  web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY || '52518f06-f2e7-4455-910d-9ab7dc0e46ce',
   // Profile URLs. Links with an empty href are not shown; the footer's
   // "Follow" column disappears entirely while all are empty.
   social: [
@@ -86,6 +87,12 @@ export const services = [
     detail: 'Shoots, launches, websites and campaigns — directed so everything feels unmistakably yours.',
   },
 ] as const;
+
+/** Optional choices on the contact form. */
+export const enquiry = {
+  budgets: ['Under $500', '$500 – $1,500', '$1,500 – $5,000', '$5,000+', 'Not sure yet'],
+  timelines: ['As soon as possible', 'Within a month', 'In 1–3 months', 'Just exploring'],
+} as const;
 
 export const process = [
   {
