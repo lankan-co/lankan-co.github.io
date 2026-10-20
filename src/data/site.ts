@@ -1,6 +1,7 @@
 /**
  * All site copy lives here so it can be edited without touching layout code.
  * Case studies and testimonials are PLACEHOLDERS — replace with real clients.
+ * Their sections are not rendered until then (see src/pages/index.astro).
  */
 import type { ImageMetadata } from 'astro';
 import kiri from '@/assets/work/kiri-bakehouse.png';
@@ -9,18 +10,20 @@ import thread from '@/assets/work/ceylon-thread.png';
 import lumen from '@/assets/work/lumen-coffee.png';
 
 export const site = {
-  name: 'Cokan Brands & Co.',
+  name: 'Lankan Brands & Co.',
   tagline: 'For small businesses building something of their own',
   secondary: 'Your business. Your style.',
   description:
-    'Cokan Brands & Co. is a boutique branding and digital marketing studio for small businesses and founders who want authentic, stylish growth — not corporate noise.',
-  email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'hello@cokanbrands.com',
+    'Lankan Brands & Co. is a boutique branding and digital marketing studio for small businesses and founders who want authentic, stylish growth — not corporate noise.',
+  email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'hello@lankanbrands.com',
   formEndpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || '',
+  // Profile URLs. Links with an empty href are not shown; the footer's
+  // "Follow" column disappears entirely while all are empty.
   social: [
-    { label: 'Instagram', href: 'https://instagram.com/' },
-    { label: 'LinkedIn', href: 'https://linkedin.com/' },
-    { label: 'Facebook', href: 'https://facebook.com/' },
-    { label: 'Behance', href: 'https://behance.net/' },
+    { label: 'Instagram', href: '' },
+    { label: 'LinkedIn', href: '' },
+    { label: 'Facebook', href: '' },
+    { label: 'Behance', href: '' },
   ],
 } as const;
 
@@ -28,7 +31,6 @@ export const nav = [
   { label: 'Philosophy', href: '#philosophy' },
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
-  { label: 'Work', href: '#work' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
@@ -172,7 +174,7 @@ export const testimonials = [
   },
   {
     quote:
-      'Working with Cokan felt like having a creative co-founder. Every decision came back to what was right for our business.',
+      'Working with Lankan felt like having a creative co-founder. Every decision came back to what was right for our business.',
     name: 'Amaya S.',
     role: 'Co-founder, textile studio',
   },

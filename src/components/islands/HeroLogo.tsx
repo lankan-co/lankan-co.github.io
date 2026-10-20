@@ -3,7 +3,7 @@
  *
  * Choreography (≈1.4s):
  *   1. the white square settles in (fade + scale 0.94 → 1)
- *   2. the "Co" mark unfurls: a circular clip grows from the centre of the
+ *   2. the "ලං" mark unfurls: a circular clip grows from the centre of the
  *      spiral while the mark rotates out of a slight twist
  *   3. the wordmark slides out from behind the square
  *
@@ -29,7 +29,7 @@ export default function HeroLogo({ className = '' }: { className?: string }) {
       viewBox={`0 0 ${W} ${H}`}
       className={className}
       role="img"
-      aria-label="Cokan Brands & Co."
+      aria-label="Lankan Brands & Co."
       overflow="visible"
     >
       <defs>
