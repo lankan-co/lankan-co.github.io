@@ -5,6 +5,7 @@
  * with pure CSS so the LCP text is never blocked on JavaScript.
  */
 import HeroLogo from '@/components/islands/HeroLogo';
+import HeroBoard from '@/components/ui/HeroBoard.astro';
 import Magnetic from '@/components/islands/Magnetic';
 import { site } from '@/data/site';
 
@@ -19,6 +20,14 @@ const words = 'For small businesses building something of their own.'.split(' ')
     aria-hidden="true"
     class="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-b from-transparent to-ink"
   ></div>
+
+  <!-- Brand board (wide screens): what we make, beside what we believe -->
+  <div
+    data-parallax="-0.9"
+    class="pointer-events-none absolute top-28 right-[max(2.5rem,calc((100vw-84rem)/2+2.5rem))] hidden w-[min(24vw,23rem)] xl:block"
+  >
+    <HeroBoard />
+  </div>
 
   <div class="container-site flex flex-1 flex-col justify-center pt-28 pb-12 md:pt-28">
     <div class="w-[min(78vw,24rem)] md:w-[22rem] xl:w-[26rem]">

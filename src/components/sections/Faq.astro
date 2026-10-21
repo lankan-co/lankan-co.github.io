@@ -1,0 +1,69 @@
+---
+/**
+ * FAQ — the questions first-time visitors ask before they get in touch.
+ * Native <details>, so it works without JavaScript and with any assistive tech;
+ * browsers that support ::details-content animate the open/close.
+ * Also published as FAQPage structured data for search results.
+ */
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { faqs } from '@/data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<section id="faq" aria-labelledby="faq-title" class="relative border-t border-line py-28 md:py-40">
+  <div class="container-site grid gap-16 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-5">
+      <SectionHeading id="faq-title" index="05" label="FAQ" title="Good questions, straight answers." stacked />
+    </div>
+
+    <div class="lg:col-span-7" data-reveal-group>
+      {
+        faqs.map((f, i) => (
+          <details class="faq group border-b border-line first:border-t" name="faq" open={i === 0} data-reveal>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-lg font-medium tracking-tight transition-colors hover:text-paper md:py-7 md:text-xl [&::-webkit-details-marker]:hidden">
+              <span class="flex items-baseline gap-5">
+                <span class="font-mono text-xs tracking-widest text-muted">{String(i + 1).padStart(2, '0')}</span>
+                {f.q}
+              </span>
+              <span
+                aria-hidden="true"
+                class="relative grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/15 transition-colors duration-500 group-open:border-paper group-open:bg-paper group-open:text-ink"
+              >
+                <span class="absolute h-px w-3.5 bg-current"></span>
+                <span class="absolute h-3.5 w-px bg-current transition-transform duration-500 group-open:rotate-90"></span>
+              </span>
+            </summary>
+            <p class="max-w-[58ch] pb-7 pl-10 leading-relaxed text-muted">{f.a}</p>
+          </details>
+        ))
+      }
+      <p class="mt-10 text-muted" data-reveal>
+        Something else on your mind? <a href="#contact" class="link-draw text-paper">Ask us directly</a>.
+      </p>
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .faq::details-content {
+      block-size: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition:
+        block-size 0.6s var(--ease-out-expo),
+        opacity 0.5s var(--ease-out-expo),
+        content-visibility 0.6s allow-discrete;
+    }
+    .faq[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+</style>

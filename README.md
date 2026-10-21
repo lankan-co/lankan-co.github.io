@@ -22,7 +22,9 @@ The website for **Lankan Brands & Co.** — a boutique branding and digital mark
 
 - **The real logo, as vectors.** The supplied artwork was traced 1:1 into SVG paths (`src/data/logo-paths.json`) — crisp at any size, and animatable piece by piece.
 - **Animated brand entrance.** The white square settles, the “ලං” mark (Sinhala for “Lan”) unfurls from the centre of its spiral, and the wordmark slides out from behind it.
-- **Restrained motion.** Scroll reveals (fade-up + un-blur), staggered groups, a scroll-linked process line, gentle hero parallax, hover blooms, a cursor-following glow, magnetic CTAs and Lenis smooth scrolling.
+- **Restrained motion.** Scroll reveals (fade-up + un-blur), staggered groups, a scroll-linked process line that lights each step, gentle hero parallax, cursor-following spotlights, magnetic CTAs and Lenis smooth scrolling.
+- **Shows, not just tells.** A living brand board beside the hero headline, a services marquee, a philosophy statement that lights up word by word, and a pinned, sideways-scrolling "Your brand, everywhere" showcase of animated illustrations (a swipeable row on phones). It's all vector and CSS, so there are no stock images to license or load.
+- **First-visit friendly.** An FAQ (also published as FAQPage structured data), a page-progress line in the header, and a floating "Start a project" button on phones.
 - **Accessible by default.** Skip link, semantic landmarks, visible focus rings, keyboard-reachable hover content, accessible mobile menu, live form errors, and **every animation switches off under `prefers-reduced-motion`**.
 - **Progressive enhancement.** All content is server-rendered HTML. If JavaScript fails, nothing is hidden.
 - **SEO ready.** Meta, canonical, Open Graph + Twitter cards, JSON-LD (`ProfessionalService`), sitemap and robots.txt — all base-path aware.
@@ -62,11 +64,11 @@ npm run preview    # serve dist/ locally
     │   │   ├── Magnetic.tsx       #   magnetic CTA wrapper          client:idle
     │   │   ├── CursorGlow.tsx     #   soft pointer glow             client:idle
     │   │   └── ContactForm.tsx    #   Web3Forms contact form        client:visible
-    │   ├── sections/              # Header, Hero, Philosophy, Services, Process, Work,
-    │   │                          # Testimonials, Contact, Footer (static Astro)
-    │   └── ui/                    # Logo, SectionHeading
+    │   ├── sections/              # Header, Hero, Marquee, Philosophy, Services, Showcase,
+    │   │                          # Process, Faq, Work, Testimonials, Contact, Footer (static Astro)
+    │   └── ui/                    # Logo, SectionHeading, HeroBoard
     ├── data/
-    │   ├── site.ts                # ← ALL COPY: services, process, work, testimonials, socials
+    │   ├── site.ts                # ← ALL COPY: services, touchpoints, process, FAQ, work, testimonials, socials
     │   └── logo-paths.json        # Traced logo vectors (single source of truth)
     ├── layouts/BaseLayout.astro   # <head>, SEO, global scripts
     ├── pages/                     # index, 404, robots.txt
@@ -161,7 +163,7 @@ If the logo vectors in `src/data/logo-paths.json` ever change, update the `LOGO`
 
 - All hover-only details (service descriptions) also open on keyboard focus, and are always visible on touch screens.
 - The mobile menu closes on <kbd>Esc</kbd>, returns focus to its button and is `inert` while hidden.
-- `prefers-reduced-motion: reduce` disables reveals, parallax, the logo animation, the cursor glow, magnetic buttons and Lenis.
+- `prefers-reduced-motion: reduce` disables reveals, parallax, the logo animation, the cursor glow, magnetic buttons, Lenis, the marquee, the brand-board and illustration loops and the word-by-word scrub. The pinned showcase becomes a normal scrollable row.
 
 ---
 

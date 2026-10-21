@@ -96,7 +96,14 @@ const jsonLd = {
     <slot />
 
     <script>
-      import { initReveal, initScrollEffects } from '@/scripts/reveal';
+      import {
+        initBoard,
+        initHorizontalScroll,
+        initReveal,
+        initScrollEffects,
+        initSpotlight,
+        initWordScrub,
+      } from '@/scripts/reveal';
       import { initSmoothScroll } from '@/scripts/smooth-scroll';
       import { initHeader } from '@/scripts/header';
 
@@ -104,6 +111,10 @@ const jsonLd = {
       initHeader();
       initReveal();
       initScrollEffects();
+      initWordScrub();
+      initSpotlight();
+      initBoard();
+      initHorizontalScroll();
       initSmoothScroll();
     </script>
   </body>

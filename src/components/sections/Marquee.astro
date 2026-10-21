@@ -1,0 +1,84 @@
+---
+/**
+ * Marquee — an endless ribbon of what we do, between the hero and the story.
+ * Solid and outlined titles alternate; the brand mark punctuates them.
+ * Pauses on hover; reduced motion → a still, wrapped list.
+ */
+import logo from '@/data/logo-paths.json';
+import { services } from '@/data/site';
+
+const items = services.map((s) => s.title);
+---
+
+<section aria-label="What we do" class="marquee relative overflow-hidden border-y border-line bg-card py-7 md:py-9">
+  <!-- The mark is defined once and reused between every title -->
+  <svg width="0" height="0" class="absolute" aria-hidden="true">
+    <symbol id="marquee-mark" viewBox={`0 0 ${logo.square.width} ${logo.square.height}`}>
+      <rect width={logo.square.width} height={logo.square.height} fill="#fff" />
+      <path fill="#000" fill-rule="evenodd" d={logo.mark} />
+    </symbol>
+  </svg>
+  <!-- Two identical runs side by side; the track slides by exactly one run -->
+  <div class="marquee-track flex w-max">
+    {
+      [0, 1].map((run) => (
+        <ul class="flex shrink-0 items-center" aria-hidden={run === 1 ? 'true' : undefined}>
+          {items.map((title, i) => (
+            <li class="flex items-center">
+              <span
+                class:list={[
+                  'px-6 text-[clamp(1.75rem,4vw,3.5rem)] leading-none font-semibold tracking-[-0.04em] whitespace-nowrap md:px-10',
+                  i % 2 ? 'outline-text' : '',
+                ]}
+              >
+                {title}
+              </span>
+              <svg class="h-7 w-7 shrink-0 md:h-9 md:w-9" aria-hidden="true">
+                <use href="#marquee-mark" />
+              </svg>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+  <!-- Soft fade at both edges -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-card to-transparent md:w-40"></div>
+  <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-card to-transparent md:w-40"></div>
+</section>
+
+<style>
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(255 255 255 / 0.55);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee-track {
+      animation: marquee 42s linear infinite;
+    }
+    .marquee:hover .marquee-track {
+      animation-play-state: paused;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      width: auto;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 1rem;
+    }
+    .marquee-track > ul + ul {
+      display: none;
+    }
+    .marquee-track > ul {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 1rem;
+    }
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

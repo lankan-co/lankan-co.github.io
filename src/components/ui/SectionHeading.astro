@@ -2,6 +2,7 @@
 /**
  * Consistent section opener: eyebrow ("02 — Services"), headline, optional lede.
  * Layout is asymmetric on desktop — headline left, lede pushed right.
+ * `stacked` keeps everything in one column, for narrow side columns.
  */
 interface Props {
   index: string;
@@ -9,12 +10,13 @@ interface Props {
   title: string;
   lede?: string;
   id?: string;
+  stacked?: boolean;
 }
-const { index, label, title, lede, id } = Astro.props;
+const { index, label, title, lede, id, stacked = false } = Astro.props;
 ---
 
-<div class="grid gap-8 md:grid-cols-12 md:items-end">
-  <div class="md:col-span-7" data-reveal>
+<div class:list={['grid gap-8', !stacked && 'md:grid-cols-12 md:items-end']}>
+  <div class:list={[!stacked && 'md:col-span-7']} data-reveal>
     <p class="eyebrow">{index} — {label}</p>
     <h2 id={id} class="mt-6 text-4xl leading-[1.02] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-6xl">
       {title}
@@ -22,7 +24,7 @@ const { index, label, title, lede, id } = Astro.props;
   </div>
   {
     lede && (
-      <p class="text-lg leading-relaxed text-muted md:col-span-4 md:col-start-9" data-reveal data-reveal-delay="0.1">
+      <p class:list={['text-lg leading-relaxed text-muted', !stacked && 'md:col-span-4 md:col-start-9']} data-reveal data-reveal-delay="0.1">
         {lede}
       </p>
     )

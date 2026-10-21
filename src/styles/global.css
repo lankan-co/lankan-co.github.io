@@ -32,6 +32,8 @@
 @layer base {
   :root {
     color-scheme: dark;
+    /* lets <details> (FAQ) animate to height: auto where supported */
+    interpolate-size: allow-keywords;
   }
 
   html {
@@ -256,4 +258,18 @@ html.lenis body {
     transform: translateY(28px);
     filter: blur(8px);
   }
+}
+
+/* Horizontal rows that scroll without a visible bar (still keyboard/trackpad scrollable) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Philosophy statement: words light up as you scroll (src/scripts/reveal.ts → initWordScrub) */
+.scrub-word {
+  opacity: var(--o, 1);
+  transition: opacity 0.25s linear;
 }

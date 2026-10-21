@@ -3,13 +3,35 @@
  *  - adds a hairline + blurred backdrop once the page is scrolled
  *  - accessible mobile menu (aria-expanded, Esc to close, focus return)
  *  - highlights the nav link for the section currently in view
+ *  - fills the page-progress line and shows the mobile floating CTA
  */
 export function initHeader() {
   const header = document.querySelector<HTMLElement>('[data-header]');
   if (!header) return;
 
-  // Scrolled state
-  const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 24);
+  // Scrolled state, page progress and the floating CTA (hidden over the hero and the contact section)
+  const progress = header.querySelector<HTMLElement>('[data-page-progress]');
+  const cta = document.querySelector<HTMLElement>('[data-float-cta]');
+  const contact = document.getElementById('contact');
+  let contactVisible = false;
+  if (contact && cta) {
+    new IntersectionObserver(([e]) => {
+      contactVisible = e.isIntersecting;
+      onScroll();
+    }).observe(contact);
+  }
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.toggleAttribute('data-scrolled', y > 24);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max).toFixed(4) : 0})`;
+    if (cta) {
+      const show = y > window.innerHeight * 0.8 && !contactVisible;
+      cta.toggleAttribute('data-show', show);
+      cta.setAttribute('aria-hidden', String(!show));
+      cta.tabIndex = show ? 0 : -1;
+    }
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 

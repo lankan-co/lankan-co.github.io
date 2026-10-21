@@ -1,7 +1,8 @@
 ---
 /**
  * Fixed header — transparent over the hero, gains a blurred backdrop
- * and hairline once scrolled (see src/scripts/header.ts).
+ * and hairline once scrolled (see src/scripts/header.ts). A thin line along
+ * its bottom edge shows how far through the page you are.
  */
 import Logo from '@/components/ui/Logo.astro';
 import { nav } from '@/data/site';
@@ -11,6 +12,9 @@ import { nav } from '@/data/site';
   data-header
   class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 border-b border-transparent data-[scrolled]:border-line data-[scrolled]:bg-ink/70 data-[scrolled]:backdrop-blur-xl"
 >
+  <div aria-hidden="true" class="absolute inset-x-0 -bottom-px h-px overflow-hidden">
+    <div data-page-progress class="h-full origin-left scale-x-0 bg-gradient-to-r from-paper/60 via-paper to-accent"></div>
+  </div>
   <div class="container-site flex h-16 items-center justify-between md:h-20">
     <a href="#top" class="relative z-[60] -m-2 rounded p-2" aria-label="Lankan Brands & Co. — back to top">
       <Logo variant="full" class="h-7 w-auto md:h-8" />
@@ -82,3 +86,14 @@ import { nav } from '@/data/site';
     <a href="#contact" class="btn btn-primary mt-12 self-start">Start a project <span aria-hidden="true">→</span></a>
   </nav>
 </div>
+
+<!-- Mobile: a call to action that rides along after the hero, and steps aside at the contact form -->
+<a
+  href="#contact"
+  data-float-cta
+  tabindex="-1"
+  aria-hidden="true"
+  class="btn btn-primary fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 translate-y-[150%] opacity-0 shadow-2xl shadow-black/70 transition-[translate,opacity] duration-500 data-[show]:translate-y-0 data-[show]:opacity-100 md:hidden"
+>
+  Start a project <span aria-hidden="true">→</span>
+</a>

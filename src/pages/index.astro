@@ -3,12 +3,16 @@
  * Lankan Brands & Co. — single-page site.
  * Sections are self-contained components; copy lives in src/data/site.ts.
  * Work and Testimonials are hidden until real case studies and quotes are added
- * to site.ts — re-import them below <Process /> to bring them back.
+ * to site.ts — re-import them below <Process /> to bring them back (and
+ * renumber the section eyebrows).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CursorGlow from '@/components/islands/CursorGlow';
 import Header from '@/components/sections/Header.astro';
 import Hero from '@/components/sections/Hero.astro';
+import Marquee from '@/components/sections/Marquee.astro';
+import Showcase from '@/components/sections/Showcase.astro';
+import Faq from '@/components/sections/Faq.astro';
 import Philosophy from '@/components/sections/Philosophy.astro';
 import Services from '@/components/sections/Services.astro';
 import Process from '@/components/sections/Process.astro';
@@ -21,9 +25,12 @@ import Footer from '@/components/sections/Footer.astro';
   <Header />
   <main id="main" class="relative z-10">
     <Hero />
+    <Marquee />
     <Philosophy />
     <Services />
+    <Showcase />
     <Process />
+    <Faq />
     <Contact />
   </main>
   <Footer />

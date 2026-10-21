@@ -33,6 +33,7 @@ export const nav = [
   { label: 'Philosophy', href: '#philosophy' },
   { label: 'Services', href: '#services' },
   { label: 'Process', href: '#process' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
@@ -85,6 +86,44 @@ export const services = [
     title: 'Creative Direction',
     summary: 'One consistent voice across every touchpoint.',
     detail: 'Shoots, launches, websites and campaigns — directed so everything feels unmistakably yours.',
+  },
+] as const;
+
+/** "Your brand, everywhere" — the touchpoints we design for. `art` picks the illustration in Showcase.astro. */
+export const touchpoints = [
+  { art: 'identity', title: 'Identity', body: 'A logo with a point of view, built on a system that scales from favicon to shopfront.' },
+  { art: 'packaging', title: 'Packaging', body: 'Boxes, bags and labels that make the product the best advert you have.' },
+  { art: 'social', title: 'Social', body: 'A feed that sounds like you, with templates your team can keep using.' },
+  { art: 'web', title: 'Web', body: 'A website that loads fast, reads clearly and turns visitors into enquiries.' },
+  { art: 'storefront', title: 'Storefront', body: 'Signage and spaces that make the brand feel real the moment people walk in.' },
+  { art: 'campaigns', title: 'Campaigns', body: 'Ads and launches with small budgets, spent with intent and measured honestly.' },
+] as const;
+
+/** Frequently asked questions — answers only restate what the rest of the site promises. */
+export const faqs = [
+  {
+    q: 'We’re a very small business. Is that okay?',
+    a: 'That’s exactly who we’re for. We build brands for the bakery, the studio and the side project that became the main thing — the businesses that are truly someone’s own.',
+  },
+  {
+    q: 'Do we have to sign up for everything?',
+    a: 'No. Pick one thing, or let us take care of the lot. Every engagement is shaped around your stage, your budget and your goals.',
+  },
+  {
+    q: 'How much does it cost?',
+    a: 'It depends on what you need, so we don’t do one-size packages. Share a rough budget in the form below and we’ll suggest the plan that gets the most out of it.',
+  },
+  {
+    q: 'What does a project look like?',
+    a: 'Four stages: we listen, shape a strategy and creative direction, build in focused sprints with you in the loop, then launch, measure and refine.',
+  },
+  {
+    q: 'Who owns the work at the end?',
+    a: 'You do. You leave with the systems, guidelines and know-how to keep the brand growing long after launch.',
+  },
+  {
+    q: 'How quickly will we hear back?',
+    a: 'Within one working day, with honest thoughts — even if we’re not the right fit. Prefer to talk first? Book a free 30-minute discovery call.',
   },
 ] as const;
 

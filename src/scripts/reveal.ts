@@ -48,11 +48,16 @@ export function initScrollEffects() {
   if (reduce) return;
 
   document.querySelectorAll<HTMLElement>('[data-progress]').forEach((el) => {
+    // Steps inside light up once the line has reached them
+    const steps = Array.from(el.querySelectorAll<HTMLElement>('[data-step]'));
     el.style.setProperty('--progress', '0');
-    scroll((p: number) => el.style.setProperty('--progress', p.toFixed(4)), {
-      target: el,
-      offset: ['start 75%', 'end 60%'],
-    });
+    scroll(
+      (p: number) => {
+        el.style.setProperty('--progress', p.toFixed(4));
+        steps.forEach((s, i) => s.toggleAttribute('data-active', p >= i / Math.max(steps.length - 1, 1) - 0.02));
+      },
+      { target: el, offset: ['start 75%', 'end 60%'] },
+    );
   });
 
   document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((el) => {
@@ -61,5 +66,137 @@ export function initScrollEffects() {
       target: el.parentElement ?? el,
       offset: ['start start', 'end start'],
     });
+  });
+}
+
+/**
+ * [data-scrub]: the statement lights up word by word as it scrolls through
+ * the viewport. Words are wrapped at runtime, so the HTML stays plain text.
+ */
+export function initWordScrub() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+
+  document.querySelectorAll<HTMLElement>('[data-scrub]').forEach((el) => {
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodes: Text[] = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+    nodes.forEach((node) => {
+      const frag = document.createDocumentFragment();
+      node.data.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) return frag.append(part);
+        const span = document.createElement('span');
+        span.className = 'scrub-word';
+        span.textContent = part;
+        frag.append(span);
+      });
+      node.replaceWith(frag);
+    });
+
+    const words = Array.from(el.querySelectorAll<HTMLElement>('.scrub-word'));
+    scroll(
+      (p: number) => {
+        const lit = p * words.length;
+        words.forEach((w, i) => w.style.setProperty('--o', String(Math.min(1, Math.max(0.18, lit - i + 0.18)))));
+      },
+      { target: el, offset: ['start 85%', 'end 45%'] },
+    );
+  });
+}
+
+/** [data-spotlight]: children's --sx/--sy follow the pointer (used for the card glow). */
+export function initSpotlight() {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+  document.querySelectorAll<HTMLElement>('[data-spotlight]').forEach((list) => {
+    list.addEventListener(
+      'pointermove',
+      (e) => {
+        const card = (e.target as HTMLElement).closest<HTMLElement>('li');
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--sx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--sy', `${e.clientY - r.top}px`);
+      },
+      { passive: true },
+    );
+  });
+}
+
+/** [data-board]: the hero brand board leans toward the pointer (--mx/--my in -1…1). */
+export function initBoard() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const board = document.querySelector<HTMLElement>('[data-board]');
+  if (reduce || !board || !window.matchMedia('(pointer: fine)').matches) return;
+  let frame = 0;
+  window.addEventListener(
+    'pointermove',
+    (e) => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        board.style.setProperty('--mx', ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3));
+        board.style.setProperty('--my', ((e.clientY / window.innerHeight) * 2 - 1).toFixed(3));
+      });
+    },
+    { passive: true },
+  );
+}
+
+/**
+ * [data-hscroll]: on wide screens the stage pins and its row slides sideways
+ * while the page scrolls. Elsewhere (and with reduced motion) the row stays a
+ * native scroll-snap carousel; either way [data-hscroll-bar] shows progress.
+ */
+export function initHorizontalScroll() {
+  document.querySelectorAll<HTMLElement>('[data-hscroll]').forEach((outer) => {
+    const viewport = outer.querySelector<HTMLElement>('[data-hscroll-viewport]');
+    const track = outer.querySelector<HTMLElement>('[data-hscroll-track]');
+    const bar = outer.querySelector<HTMLElement>('[data-hscroll-bar]');
+    if (!viewport || !track) return;
+    const setBar = (p: number) => bar?.style.setProperty('--progress', Math.max(0.04, p).toFixed(4));
+
+    const wide = window.matchMedia('(min-width: 1024px)');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let distance = 0;
+    let progress = 0;
+    let stop: (() => void) | null = null;
+
+    const native = () => {
+      const max = viewport.scrollWidth - viewport.clientWidth;
+      setBar(max > 0 ? viewport.scrollLeft / max : 1);
+    };
+    viewport.addEventListener('scroll', () => !stop && native(), { passive: true });
+
+    const layout = () => {
+      stop?.();
+      stop = null;
+      outer.style.height = '';
+      track.style.transform = '';
+      viewport.style.overflowX = '';
+      if (!wide.matches || reduce.matches) return native();
+
+      viewport.style.overflowX = 'hidden';
+      viewport.scrollLeft = 0;
+      distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      outer.style.height = `calc(100svh + ${distance}px)`;
+      stop = scroll(
+        (p: number) => {
+          progress = p;
+          track.style.transform = `translate3d(${(-p * distance).toFixed(1)}px, 0, 0)`;
+          setBar(p);
+        },
+        { target: outer, offset: ['start start', 'end end'] },
+      );
+      setBar(progress);
+    };
+
+    layout();
+    let t = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(t);
+      t = window.setTimeout(layout, 150);
+    });
+    wide.addEventListener('change', layout);
+    reduce.addEventListener('change', layout);
   });
 }
