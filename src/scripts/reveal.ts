@@ -42,6 +42,7 @@ export function initReveal() {
  * Scroll-linked effects (Framer Motion scroll()):
  *  [data-progress]      sets --progress 0→1 while the element crosses the viewport
  *  [data-parallax="n"]  drifts the element by n × 100px over its scroll range
+ *  [data-drift="n"]     for mid-page elements: drifts ±n × 50px while crossing the viewport
  */
 export function initScrollEffects() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -65,6 +66,14 @@ export function initScrollEffects() {
     scroll((p: number) => (el.style.transform = `translate3d(0, ${(p * amount).toFixed(1)}px, 0)`), {
       target: el.parentElement ?? el,
       offset: ['start start', 'end start'],
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>('[data-drift]').forEach((el) => {
+    const amount = Number(el.dataset.drift || 0.3) * 100;
+    scroll((p: number) => (el.style.transform = `translate3d(0, ${((p - 0.5) * amount).toFixed(1)}px, 0)`), {
+      target: el.parentElement ?? el,
+      offset: ['start end', 'end start'],
     });
   });
 }
@@ -198,5 +207,54 @@ export function initHorizontalScroll() {
     });
     wide.addEventListener('change', layout);
     reduce.addEventListener('change', layout);
+  });
+}
+
+/**
+ * [data-film]: the film frame opens to full bleed as it scrolls in (--open 0→1),
+ * and its video downloads/plays only while on screen. Reduced motion or Data
+ * Saver keep the poster frame; the toggle lets anyone pause or resume.
+ */
+export function initFilm() {
+  document.querySelectorAll<HTMLElement>('[data-film]').forEach((section) => {
+    const frame = section.querySelector<HTMLElement>('.film-frame');
+    const video = section.querySelector<HTMLVideoElement>('[data-film-video]');
+    const toggle = section.querySelector<HTMLButtonElement>('[data-film-toggle]');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+
+    if (frame && !reduce) {
+      frame.style.setProperty('--open', '0');
+      scroll((p: number) => frame.style.setProperty('--open', p.toFixed(4)), {
+        target: section,
+        offset: ['start end', 'start 25%'],
+      });
+    }
+
+    if (!video || reduce || saveData) return;
+    let visible = false;
+    let userPaused = false;
+    const sync = () => {
+      if (visible && !userPaused) video.play().catch(() => {});
+      else video.pause();
+      if (!toggle) return;
+      toggle.querySelector<HTMLElement>('[data-film-icon="pause"]')!.hidden = userPaused;
+      toggle.querySelector<HTMLElement>('[data-film-icon="play"]')!.hidden = !userPaused;
+      toggle.querySelector<HTMLElement>('[data-film-label]')!.textContent = userPaused ? 'Play film' : 'Pause film';
+    };
+    if (toggle) {
+      toggle.hidden = false;
+      toggle.addEventListener('click', () => {
+        userPaused = !userPaused;
+        sync();
+      });
+    }
+    new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0.2 },
+    ).observe(video);
   });
 }

@@ -23,7 +23,8 @@ The website for **Lankan Brands & Co.** — a boutique branding and digital mark
 - **The real logo, as vectors.** The supplied artwork was traced 1:1 into SVG paths (`src/data/logo-paths.json`) — crisp at any size, and animatable piece by piece.
 - **Animated brand entrance.** The white square settles, the “ලං” mark (Sinhala for “Lan”) unfurls from the centre of its spiral, and the wordmark slides out from behind it.
 - **Restrained motion.** Scroll reveals (fade-up + un-blur), staggered groups, a scroll-linked process line that lights each step, gentle hero parallax, cursor-following spotlights, magnetic CTAs and Lenis smooth scrolling.
-- **Shows, not just tells.** A living brand board beside the hero headline, a services marquee, a philosophy statement that lights up word by word, and a pinned, sideways-scrolling "Your brand, everywhere" showcase of animated illustrations (a swipeable row on phones). It's all vector and CSS, so there are no stock images to license or load.
+- **Shows, not just tells.** A living brand board beside the hero headline, a services marquee, a philosophy statement that lights up word by word, and a pinned, sideways-scrolling "Your brand, everywhere" showcase of animated illustrations (a swipeable row on phones).
+- **Real makers, on film.** A "who we build for" photo mosaic (black and white, blooming into colour on hover) and a full-bleed black-and-white film of hands at work that opens up as you scroll. Photos and footage are from Pexels (free licence, credits in `src/assets/makers/CREDITS.md`). The film only downloads and plays while on screen, has a pause button, and stays on its poster with reduced motion or Data Saver.
 - **First-visit friendly.** An FAQ (also published as FAQPage structured data), a page-progress line in the header, and a floating "Start a project" button on phones.
 - **Accessible by default.** Skip link, semantic landmarks, visible focus rings, keyboard-reachable hover content, accessible mobile menu, live form errors, and **every animation switches off under `prefers-reduced-motion`**.
 - **Progressive enhancement.** All content is server-rendered HTML. If JavaScript fails, nothing is hidden.
@@ -54,19 +55,21 @@ npm run preview    # serve dist/ locally
 │   │   ├── lankan-mark.svg         #   logo-only mark
 │   │   └── lankan-logo.png
 │   ├── favicon.svg · apple-touch-icon.png · icon-512.png
+│   ├── media/                     # makers.webm / makers.mp4 film + poster
 │   └── og-image.png               # 1200×630 social card
 ├── scripts/brand-assets.mjs       # Regenerates everything in public/brand, icons, OG image, covers
 └── src/
     ├── assets/work/               # Case-study images (→ AVIF/WebP at build)
+    ├── assets/makers/             # "Who we build for" photos (→ AVIF/WebP) + CREDITS.md
     ├── components/
     │   ├── islands/               # React + Framer Motion (hydrated only where needed)
     │   │   ├── HeroLogo.tsx       #   animated logo entrance        client:load
     │   │   ├── Magnetic.tsx       #   magnetic CTA wrapper          client:idle
     │   │   ├── CursorGlow.tsx     #   soft pointer glow             client:idle
     │   │   └── ContactForm.tsx    #   Web3Forms contact form        client:visible
-    │   ├── sections/              # Header, Hero, Marquee, Philosophy, Services, Showcase,
+    │   ├── sections/              # Header, Hero, Marquee, Philosophy, Services, Showcase, Film,
     │   │                          # Process, Faq, Work, Testimonials, Contact, Footer (static Astro)
-    │   └── ui/                    # Logo, SectionHeading, HeroBoard
+    │   └── ui/                    # Logo, SectionHeading, HeroBoard, Makers
     ├── data/
     │   ├── site.ts                # ← ALL COPY: services, touchpoints, process, FAQ, work, testimonials, socials
     │   └── logo-paths.json        # Traced logo vectors (single source of truth)
