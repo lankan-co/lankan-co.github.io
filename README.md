@@ -140,6 +140,19 @@ That's it — `.github/workflows/deploy.yml` reads your Pages configuration and 
 SITE_URL=https://<user>.github.io BASE_PATH=/lankan-brands npm run build
 ```
 
+## ✦ Invoice Studio
+
+An internal invoicing tool ships with the site at **`/invoice/`** (for example `https://lankan-co.github.io/invoice/`). It is a single self-contained file, `public/invoice/index.html`, that Astro copies to the build as is.
+
+- **Documents:** invoices, quotations and receipts with line items, discounts, tax, part payments, a QR code, amount in words and signatures. Downloads as A4 PDFs (long documents split across pages), and also prints and shares to WhatsApp or email.
+- **Tracking:** an overview of billed, collected, outstanding and overdue amounts, plus saved clients and a price list of the studio's services.
+- **On brand:** the traced logo vectors are built in, so they always appear in PDFs. The default **Studio** template uses the black header with the artwork's vertical bands and the original white lockup. Light templates use a reversed (ink) lockup. Type is DM Sans with the site's monochrome palette, and there are light and dark themes.
+- **Defaults:** amounts in Sri Lankan rupees (Rs.), numbering `LB-INV-2026-0001` / `LB-QUO-…` / `LB-RCT-…`, and studio payment terms. Everything is editable under **Settings**.
+- **Data:** everything is stored in the browser (`localStorage`) only. Use **Settings → Export backup** regularly, and import it to move to another device.
+- **Private:** `noindex`, left out of the sitemap, and disallowed in `robots.txt`.
+
+If the logo vectors in `src/data/logo-paths.json` ever change, update the `LOGO` constant near the top of the invoice script too.
+
 ## ✦ Brand assets
 
 `npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image and the placeholder case-study covers from `src/data/logo-paths.json`. Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.

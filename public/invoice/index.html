@@ -1,0 +1,2300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Invoice Studio · Lankan Brands &amp; Co.</title>
+<meta name="description" content="Create, track and share invoices, quotations and receipts for Lankan Brands & Co.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Lankan Invoices">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.13"></script>
+<style type="text/tailwindcss">
+  @custom-variant dark (&:where(.dark, .dark *));
+  /* Lankan Brands & Co. palette: monochrome, with one soft electric-blue accent used sparingly.
+     "brand" flips between ink and paper so primary actions stay high-contrast in both themes. */
+  @theme {
+    --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --color-ink: #0A0A0A;
+    --color-brand: var(--brand);
+    --color-brand-600: var(--brand-600);
+    --color-brand-50: var(--brand-50);
+    --color-on-brand: var(--on-brand);
+    --color-accent: #60A5FA;
+    --color-lagoon: #2563EB;
+    --color-amber: #B45309;
+    --color-paper: #F5F5F5;
+    --color-line: #E5E5E5;
+    --color-card: #0A0A0A;
+    --color-card-2: #111111;
+    --color-edge: #1F1F1F;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @layer components {
+    .field { @apply block w-full min-w-0 min-h-11 rounded-xl border border-line bg-white px-3 py-2.5 text-base lg:min-h-10 lg:text-[15px] text-ink placeholder:text-neutral-400 outline-none transition focus:border-ink focus:ring-4 focus:ring-accent/25 dark:border-edge dark:bg-card-2 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-neutral-400; }
+    .lbl { @apply mb-1.5 block text-[13px] font-semibold text-neutral-600 dark:text-neutral-400; }
+    .btn, .btn-primary, .btn-ghost, .btn-line, .btn-danger { @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap sm:min-h-10 transition duration-300 ease-out-expo select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:pointer-events-none; }
+    .btn-primary { @apply bg-brand text-on-brand hover:bg-brand-600 active:scale-[.98]; }
+    .btn-ghost { @apply text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-white/10; }
+    .btn-line { @apply border border-line bg-white text-ink hover:border-neutral-400 dark:border-edge dark:bg-card dark:text-neutral-100 dark:hover:border-neutral-600; }
+    .btn-danger { @apply text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40; }
+    .icon-btn { @apply inline-flex h-10 w-10 shrink-0 items-center sm:h-9 sm:w-9 justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-ink focus-visible:outline-2 focus-visible:outline-accent dark:text-neutral-400 dark:hover:bg-white/10 dark:hover:text-white; }
+    .panel { @apply rounded-2xl border border-line bg-white dark:border-edge dark:bg-card; }
+    .sec-title { @apply text-base font-bold tracking-tight text-ink dark:text-white; }
+    .eyebrow { @apply inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400; }
+    .eyebrow::before { content: ''; width: 1.75rem; height: 1px; background: currentColor; opacity: .6; }
+    .chip { @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold; }
+    .seg { @apply flex rounded-full bg-neutral-100 p-1 dark:bg-card-2; }
+    .seg button { @apply min-h-9 flex-1 rounded-full px-3 py-2 text-sm whitespace-nowrap sm:py-1.5 font-semibold text-neutral-600 transition dark:text-neutral-400; }
+    .fchip { @apply inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border border-line bg-white px-4 text-sm font-semibold text-neutral-600 transition dark:border-edge dark:bg-card dark:text-neutral-300; }
+    .fchip[aria-pressed="true"] { @apply border-ink bg-ink text-white dark:border-white dark:bg-white dark:text-ink; }
+    .seg button[aria-pressed="true"] { @apply bg-white text-ink shadow-sm dark:bg-white dark:text-ink; }
+  }
+</style>
+<style>
+  :root { color-scheme: light; --brand: #0A0A0A; --brand-600: #262626; --brand-50: #F0F0F0; --on-brand: #FFFFFF; }
+  html.dark { color-scheme: dark; --brand: #FFFFFF; --brand-600: #E5E5E5; --brand-50: rgba(255,255,255,.08); --on-brand: #000000; }
+  ::selection { background: #0A0A0A; color: #fff; }
+  html.dark ::selection { background: #fff; color: #000; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+  button, a, label, select, input, textarea { touch-action: manipulation; }
+  .grid > * { min-width: 0; }
+  input[type=date]::-webkit-date-and-time-value { text-align: left; }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .sheet-pad { padding-bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+  #edBar { bottom: calc(64px + env(safe-area-inset-bottom)); }
+  @media (min-width: 1024px) { #edBar { bottom: auto; } }
+  #previewStage { cursor: zoom-in; }
+  @media (min-width: 1024px) { #previewStage { cursor: default; } }
+  .num { font-variant-numeric: tabular-nums; }
+  [hidden] { display: none !important; }
+  .view { animation: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  input[type=number]::-webkit-inner-spin-button { opacity: .4; }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+  /* Toasts and modals */
+  #toasts > div { animation: toastIn .22s ease-out; }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .modal-backdrop { background: rgba(0, 0, 0, .5); backdrop-filter: blur(3px); }
+  .modal-card { animation: modalIn .18s ease-out; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: none; } }
+
+  /* Preview stage */
+  #previewStage { position: relative; overflow: hidden; }
+  #previewPaper { position: absolute; top: 0; left: 0; transform-origin: top left; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 16px 40px -16px rgba(0,0,0,.35); }
+
+  /* ================= Invoice document ================= */
+  .inv { --accent: #0A0A0A; --ink: #0A0A0A; --muted: #6B6B6B; --rule: #E8E8E8; --soft: #F5F5F5;
+    width: 794px; min-height: 1122px; background: #fff; color: var(--ink); font-family: "DM Sans", Arial, sans-serif;
+    font-size: 12.5px; line-height: 1.5; position: relative; display: flex; flex-direction: column; box-sizing: border-box; overflow: hidden; }
+  .inv *, .inv *::before, .inv *::after { box-sizing: border-box; }
+  .inv .pad { padding: 0 56px; }
+  .inv .num { font-variant-numeric: tabular-nums; }
+  .inv .muted { color: var(--muted); }
+  .inv .rail { height: 8px; background: var(--accent); }
+  .inv .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; padding-top: 34px; padding-bottom: 22px; }
+  .inv .brand img { max-height: var(--logo-h, 52px); max-width: 230px; object-fit: contain; display: block; }
+  .inv .wordmark { font-size: 24px; font-weight: 800; letter-spacing: -.03em; color: var(--ink); }
+  .inv .brand .lg-paper { display: none; }
+  .inv .bands { display: none; }
+  .inv .brand .tag { margin-top: 8px; color: var(--muted); font-size: 11.5px; max-width: 320px; }
+  .inv .title { text-align: right; }
+  .inv .title h1 { margin: 0; font-size: 42px; line-height: 1; font-weight: 700; letter-spacing: -.045em; color: var(--accent); }
+  .inv .title .no { margin-top: 10px; font-size: 14px; font-weight: 700; }
+  .inv .status { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; background: var(--soft); color: var(--muted); }
+  .inv .status.paid { background: #E3F5EE; color: #0B6B4B; }
+  .inv .status.overdue { background: #FDEBDD; color: #9A3D07; }
+  .inv .status.partial { background: #E0F2F7; color: #0E5E75; }
+  .inv .meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 28px; padding-top: 18px; padding-bottom: 20px; border-top: 1px solid var(--rule); }
+  .inv .meta h4, .inv .box h4, .inv .paylist h4 { margin: 0 0 7px; font-size: 9.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .inv .meta .strong { font-weight: 700; font-size: 13.5px; }
+  .inv .meta p { margin: 0; white-space: pre-line; }
+  .inv .kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; }
+  .inv .kv dt { color: var(--muted); }
+  .inv .kv dd { margin: 0; text-align: right; font-weight: 600; }
+  .inv .project { margin-bottom: 14px; font-size: 13px; }
+  .inv .project b { font-weight: 700; }
+  .inv table.items { width: 100%; border-collapse: collapse; }
+  .inv table.items thead th { background: var(--accent); color: #fff; font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-align: left; padding: 10px 10px; }
+  .inv table.items thead th:first-child { border-radius: 6px 0 0 6px; }
+  .inv table.items thead th:last-child { border-radius: 0 6px 6px 0; }
+  .inv table.items th.r, .inv table.items td.r { text-align: right; }
+  .inv table.items td { padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .inv table.items tr { page-break-inside: avoid; break-inside: avoid; }
+  .inv table.items .iname { font-weight: 700; }
+  .inv table.items .idesc { color: var(--muted); white-space: pre-line; margin-top: 2px; font-size: 11.5px; }
+  .inv table.items .idx { color: var(--muted); width: 28px; }
+  .inv table.items td.r, .inv table.items th.r { white-space: nowrap; }
+  .inv table.items td:nth-child(2) { word-break: break-word; }
+  .inv .empty-items { padding: 28px 10px; text-align: center; color: var(--muted); border-bottom: 1px solid var(--rule); }
+  .inv .sum { display: grid; grid-template-columns: 1fr 300px; gap: 32px; padding-top: 16px; }
+  .inv .totals { width: 100%; border-collapse: collapse; }
+  .inv .totals td { padding: 5px 0; }
+  .inv .totals td.r { text-align: right; font-weight: 600; }
+  .inv .totals tr.grand td { padding-top: 10px; border-top: 1px solid var(--rule); font-size: 14px; font-weight: 800; }
+  .inv .balance { margin-top: 12px; background: var(--accent); color: #fff; border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: baseline; }
+  .inv .balance span:first-child { font-weight: 600; font-size: 12px; opacity: .9; }
+  .inv .balance span:last-child { font-weight: 800; font-size: 19px; letter-spacing: -.01em; }
+  .inv .words { background: var(--soft); border-radius: 10px; padding: 12px 14px; font-size: 12px; }
+  .inv .words b { display: block; font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+  .inv .paylist { margin-top: 14px; font-size: 11.5px; }
+  .inv .paylist div { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px dashed var(--rule); }
+  .inv .lower { display: grid; grid-template-columns: 1fr auto; gap: 28px; padding-top: 20px; align-items: start; }
+  .inv .box p { margin: 0; white-space: pre-line; }
+  .inv .bank { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; }
+  .inv .bank dt { color: var(--muted); }
+  .inv .bank dd { margin: 0; font-weight: 600; }
+  .inv .qr { text-align: center; }
+  .inv .qr img { width: 86px; height: 86px; display: block; margin: 0 auto; }
+  .inv .qr small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+  .inv .notes { padding-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .inv .sign { padding-top: 16px; display: flex; justify-content: flex-end; }
+  .inv .sign > div { width: 220px; text-align: center; }
+  .inv .sign img { max-height: 50px; max-width: 200px; display: block; margin: 0 auto 4px; }
+  .inv .sign .line { border-top: 1px solid var(--ink); padding-top: 6px; font-weight: 700; }
+  .inv .sign small { color: var(--muted); }
+  .inv .grow { flex: 1; min-height: 14px; }
+  .inv .foot { padding-top: 13px; padding-bottom: 20px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 16px; font-size: 11px; color: var(--muted); }
+  .inv .foot b { color: var(--ink); }
+  .inv .foot .motto { font-weight: 700; color: var(--ink); }
+  .inv .stamp { position: absolute; top: 300px; right: 70px; transform: rotate(-14deg); border: 4px solid currentColor; border-radius: 10px; padding: 6px 18px; font-size: 34px; font-weight: 800; letter-spacing: .06em; opacity: .16; pointer-events: none; }
+  .inv .stamp.paid { color: #0B6B4B; } .inv .stamp.overdue { color: #B45309; } .inv .stamp.draft { color: #6B6B6B; } .inv .stamp.cancelled { color: #B91C1C; } .inv .stamp.accepted { color: #0B6B4B; }
+
+  /* Template: classic */
+  .inv.tpl-classic .rail { display: none; }
+  .inv.tpl-classic .head { flex-direction: column; align-items: center; text-align: center; padding-top: 36px; gap: 12px; }
+  .inv.tpl-classic .brand img { margin: 0 auto; }
+  .inv.tpl-classic .brand .tag { margin-left: auto; margin-right: auto; }
+  .inv.tpl-classic .title { text-align: center; }
+  .inv.tpl-classic .title h1 { color: var(--ink); font-size: 30px; letter-spacing: .02em; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 8px 28px; display: inline-block; }
+  .inv.tpl-classic table.items thead th { background: transparent; color: var(--ink); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); border-radius: 0 !important; }
+  .inv.tpl-classic table.items td { border-bottom: 1px solid var(--rule); }
+  .inv.tpl-classic .balance { background: transparent; color: var(--ink); border: 2px solid var(--ink); border-radius: 0; }
+  .inv.tpl-classic .words { background: transparent; border: 1px solid var(--rule); border-radius: 0; }
+
+  /* Template: minimal */
+  .inv.tpl-minimal .rail { display: none; }
+  .inv.tpl-minimal .head { padding-top: 44px; }
+  .inv.tpl-minimal .title h1 { color: var(--ink); font-weight: 700; font-size: 34px; }
+  .inv.tpl-minimal .title .no { color: var(--accent); }
+  .inv.tpl-minimal .meta { border-top: 0; }
+  .inv.tpl-minimal table.items thead th { background: transparent; color: var(--muted); border-bottom: 1px solid var(--ink); border-radius: 0 !important; padding-left: 0; }
+  .inv.tpl-minimal table.items td { padding-left: 0; }
+  .inv.tpl-minimal .balance { background: var(--soft); color: var(--ink); }
+  .inv.tpl-minimal .balance span:last-child { color: var(--accent); }
+
+  /* Template: bold — accent side panel header */
+  .inv.tpl-bold .rail { display: none; }
+  .inv.tpl-bold .head { background: var(--accent); color: #fff; margin: 0; padding: 34px 56px 26px; }
+  .inv.tpl-bold .title h1 { color: #fff; }
+  .inv.tpl-bold .brand .tag { color: rgba(255,255,255,.8); }
+  .inv.tpl-bold .wordmark { color: #fff; }
+  .inv.tpl-bold .status { background: rgba(255,255,255,.18); color: #fff; }
+  .inv.tpl-bold .brand img:not(.lg) { background: #fff; padding: 8px 10px; border-radius: 10px; }
+  .inv.tpl-bold .title .no { color: #fff; }
+
+  /* Template: studio — the Lankan signature: black header with the artwork's vertical bands, original white lockup */
+  .inv.tpl-studio .rail { display: none; }
+  .inv.tpl-studio .head { position: relative; overflow: hidden; background: #000; color: #fff; margin: 0; padding: 40px 56px 34px; align-items: flex-end; }
+  .inv.tpl-studio .head > :not(.bands) { position: relative; }
+  .inv.tpl-studio .bands { display: block; position: absolute; inset: 0; }
+  .inv.tpl-studio .bands span { position: absolute; top: 0; bottom: 0; width: 23%; background: #0E0E0E; }
+  .inv.tpl-studio .bands span:nth-child(1) { left: 7.5%; } .inv.tpl-studio .bands span:nth-child(2) { left: 38.5%; } .inv.tpl-studio .bands span:nth-child(3) { left: 69.5%; }
+  .inv.tpl-studio .brand .tag { color: #A3A3A3; margin-top: 12px; }
+  .inv.tpl-studio .wordmark { color: #fff; }
+  .inv.tpl-studio .brand img:not(.lg) { background: #fff; padding: 8px 10px; border-radius: 10px; }
+  .inv.tpl-studio .title h1 { color: #fff; font-size: 46px; }
+  .inv.tpl-studio .title .no { color: #fff; }
+  .inv.tpl-studio .status { background: rgba(255,255,255,.12); color: #fff; }
+  .inv.tpl-studio .meta { border-top: 0; padding-top: 26px; }
+  .inv.tpl-studio table.items thead th { background: transparent; color: var(--ink); border-bottom: 1.5px solid var(--ink); border-radius: 0 !important; }
+  .inv.tpl-studio .balance { border-radius: 999px; padding: 12px 20px; }
+  .inv.tpl-studio .words { border-radius: 14px; }
+  .inv.tpl-studio .foot { background: #000; color: #A3A3A3; border-top: 0; padding: 14px 56px 16px; }
+  .inv.tpl-studio .foot b, .inv.tpl-studio .foot .motto { color: #fff; }
+  .inv.tpl-studio .cont { background: #000; color: #A3A3A3; border-bottom: 0; margin-bottom: 18px; padding-top: 18px; padding-bottom: 14px; }
+  .inv.tpl-studio .cont b { color: #fff; }
+
+  /* The brand lockup: reversed (ink) on light headers, the original white square on dark ones */
+  .inv.tpl-bold .brand .lg-ink, .inv.tpl-studio .brand .lg-ink { display: none; }
+  .inv.tpl-bold .brand .lg-paper, .inv.tpl-studio .brand .lg-paper { display: block; }
+  .inv.tpl-bold .meta { border-top: 0; padding-top: 22px; }
+
+  .inv.export { min-height: 1120px; }
+  .inv.paged { height: 1120px; min-height: 0; }
+  .inv.measure { height: auto !important; min-height: 0 !important; }
+  .inv .cont { display: flex; justify-content: space-between; gap: 16px; padding-top: 22px; padding-bottom: 16px; margin-bottom: 14px; border-bottom: 1px solid var(--rule); font-size: 12px; color: var(--muted); }
+  .inv .cont b { color: var(--ink); }
+  .inv .more { padding-top: 10px; text-align: right; font-size: 11px; }
+
+  /* Print */
+  #printArea { display: none; }
+  @page { size: A4; margin: 0; }
+  @media print {
+    html, body { background: #fff !important; }
+    body.printing-doc > *:not(#printArea) { display: none !important; }
+    body.printing-doc #printArea { display: block !important; }
+    #printArea .inv { width: 210mm; min-height: 296mm; box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body class="min-h-screen bg-paper text-ink antialiased dark:bg-black dark:text-neutral-100">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-brand">Skip to content</a>
+
+<!-- ============ Header ============ -->
+<header class="safe-top sticky top-0 z-40 border-b border-line/80 bg-white/90 backdrop-blur dark:border-edge dark:bg-black/80">
+  <div class="mx-auto flex h-16 max-w-[1500px] items-center gap-3 px-4 sm:px-6">
+    <button class="flex min-w-0 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent" data-nav="dashboard" aria-label="Go to overview">
+      <span id="hdrLogoWrap" class="flex h-9 items-center"></span>
+      <span class="hidden min-w-0 border-l border-line pl-3 text-left sm:block dark:border-neutral-800">
+        <span class="block text-sm font-extrabold leading-tight tracking-tight">Invoice Studio</span>
+        <span class="block truncate text-xs text-neutral-500 dark:text-neutral-400" id="hdrCompany">Lankan Brands &amp; Co.</span>
+      </span>
+    </button>
+    <nav class="ml-6 hidden items-center gap-1 lg:flex" aria-label="Main">
+      <button class="btn-ghost nav-link" data-nav="dashboard">Overview</button>
+      <button class="btn-ghost nav-link" data-nav="documents">Documents</button>
+      <button class="btn-ghost nav-link" data-nav="editor">Editor</button>
+      <button class="btn-ghost nav-link" data-nav="clients">Clients</button>
+      <button class="btn-ghost nav-link" data-nav="services">Services</button>
+      <button class="btn-ghost nav-link" data-nav="settings">Settings</button>
+    </nav>
+    <div class="ml-auto flex items-center gap-1">
+      <button class="icon-btn" id="themeBtn" aria-label="Change theme" title="Theme"></button>
+      <button class="icon-btn lg:hidden" data-nav="settings" aria-label="Settings" title="Settings" data-icon="settings"></button>
+      <button class="btn-primary ml-1 hidden sm:inline-flex" data-action="new-menu"><span data-icon="plus"></span>New</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="mx-auto max-w-[1500px] px-4 pb-28 pt-5 sm:px-6 lg:pb-12">
+
+  <!-- ============ Dashboard ============ -->
+  <section id="view-dashboard" class="view" hidden>
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Invoice Studio</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-[-0.035em] sm:text-4xl" id="greeting">Good day</h1>
+        <p class="mt-1 text-neutral-500 dark:text-neutral-400" id="dashSub">Here is where your billing stands.</p>
+      </div>
+      <div class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto">
+        <button class="btn-line" data-action="new" data-type="quotation"><span data-icon="file"></span>New quotation</button>
+        <button class="btn-primary" data-action="new" data-type="invoice"><span data-icon="plus"></span>New invoice</button>
+      </div>
+    </div>
+
+    <div id="dashEmpty" class="panel mt-6 p-8 text-center" hidden>
+      <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-brand" data-icon="receipt" data-size="28"></div>
+      <h2 class="mt-4 text-lg font-bold">Create your first invoice</h2>
+      <p class="mx-auto mt-1 max-w-md text-neutral-500 dark:text-neutral-400">The studio details, brand logo and service rates are already filled in. Start a document, or load a few sample records to look around first.</p>
+      <div class="mt-5 flex flex-wrap justify-center gap-2">
+        <button class="btn-primary" data-action="new" data-type="invoice">Create invoice</button>
+        <button class="btn-line" data-action="load-sample">Load sample data</button>
+      </div>
+    </div>
+
+    <div id="dashBody">
+      <div class="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4" id="statCards"></div>
+      <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div class="panel p-4 sm:p-5 lg:col-span-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="sec-title">Billed and collected</h2>
+            <div class="flex items-center gap-4 text-xs text-neutral-500 dark:text-neutral-400">
+              <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-ink dark:bg-white"></span>Billed</span>
+              <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-accent"></span>Collected</span>
+            </div>
+          </div>
+          <p class="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400" id="chartNote">Last 6 months</p>
+          <div id="chart" class="mt-4"></div>
+        </div>
+        <div class="panel p-5">
+          <h2 class="sec-title">Needs attention</h2>
+          <div id="attention" class="mt-3 space-y-2"></div>
+        </div>
+      </div>
+      <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div class="panel p-5 lg:col-span-2">
+          <div class="flex items-center justify-between">
+            <h2 class="sec-title">Recent documents</h2>
+            <button class="btn-ghost -mr-2 text-brand" data-nav="documents">View all</button>
+          </div>
+          <div id="recentDocs" class="mt-2"></div>
+        </div>
+        <div class="panel p-5">
+          <h2 class="sec-title">Top clients</h2>
+          <div id="topClients" class="mt-3 space-y-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Editor ============ -->
+  <section id="view-editor" class="view pb-24 lg:pb-0" hidden>
+    <div class="mb-4 flex flex-wrap items-center gap-3">
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+          <button class="-my-2 py-2 hover:text-brand" data-nav="documents">Documents</button><span>/</span><span id="edCrumb">New</span>
+          <span id="dirtyDot" class="chip bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300" hidden>Unsaved</span>
+        </div>
+        <h1 class="truncate text-xl font-extrabold tracking-tight sm:text-2xl" id="edTitle">New invoice</h1>
+      </div>
+    </div>
+    <div class="sticky top-16 z-20 -mx-4 mb-4 border-b border-line/70 bg-paper/95 px-4 py-2 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden dark:border-edge dark:bg-black/90" style="top: calc(4rem + env(safe-area-inset-top))">
+      <div class="seg w-full" role="group" aria-label="Editor or preview">
+        <button aria-pressed="true" data-pane="form">Edit</button>
+        <button aria-pressed="false" data-pane="preview">Preview</button>
+      </div>
+    </div>
+
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      <!-- Form column -->
+      <div id="paneForm" class="space-y-4">
+
+        <div class="panel p-4 sm:p-5">
+          <div class="seg" role="group" aria-label="Document type" id="typeSeg">
+            <button data-settype="invoice" aria-pressed="true">Invoice</button>
+            <button data-settype="quotation" aria-pressed="false">Quotation</button>
+            <button data-settype="receipt" aria-pressed="false">Receipt</button>
+          </div>
+          <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div class="col-span-2">
+              <label class="lbl" for="f-number">Number</label>
+              <div class="relative">
+                <input id="f-number" class="field pr-10 font-semibold" data-f="number" autocomplete="off">
+                <button class="icon-btn absolute right-0.5 top-1/2 -translate-y-1/2" data-action="regen-number" title="Use next number" aria-label="Use next number" data-icon="refresh" data-size="16"></button>
+              </div>
+            </div>
+            <div>
+              <label class="lbl" for="f-status">Status</label>
+              <select id="f-status" class="field" data-f="status"></select>
+            </div>
+            <div>
+              <label class="lbl" for="f-currency">Currency</label>
+              <select id="f-currency" class="field" data-f="currency"></select>
+            </div>
+            <div>
+              <label class="lbl" for="f-issue" id="lbl-issue">Issue date</label>
+              <input id="f-issue" type="date" class="field" data-f="issueDate">
+            </div>
+            <div id="wrap-terms">
+              <label class="lbl" for="f-terms">Payment terms</label>
+              <select id="f-terms" class="field" data-f="terms"></select>
+            </div>
+            <div id="wrap-due">
+              <label class="lbl" for="f-due" id="lbl-due">Due date</label>
+              <input id="f-due" type="date" class="field" data-f="dueDate">
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <label class="lbl" for="f-ref">PO / reference</label>
+              <input id="f-ref" class="field" data-f="reference" placeholder="Optional">
+            </div>
+            <div class="col-span-2 sm:col-span-3">
+              <label class="lbl" for="f-project">Project</label>
+              <input id="f-project" class="field" data-f="project" placeholder="e.g. Brand identity and launch, phase 1">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-4 sm:p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="sec-title">Bill to</h2>
+            <div class="flex gap-1">
+              <button class="btn-ghost px-2.5 py-1.5 text-[13px]" data-action="pick-client"><span data-icon="users" data-size="16"></span>Choose client</button>
+              <button class="btn-ghost px-2.5 py-1.5 text-[13px]" data-action="save-client"><span data-icon="save" data-size="16"></span>Save client</button>
+            </div>
+          </div>
+          <div class="mt-3 grid gap-3 sm:grid-cols-2">
+            <div><label class="lbl" for="c-name">Contact name</label><input id="c-name" class="field" data-f="client.name" autocomplete="off"></div>
+            <div><label class="lbl" for="c-company">Company</label><input id="c-company" class="field" data-f="client.company" autocomplete="off"></div>
+            <div><label class="lbl" for="c-email">Email</label><input id="c-email" type="email" class="field" data-f="client.email" autocomplete="off" inputmode="email"></div>
+            <div><label class="lbl" for="c-phone">Phone</label><input id="c-phone" type="tel" class="field" data-f="client.phone" autocomplete="off" inputmode="tel"></div>
+            <div class="sm:col-span-2"><label class="lbl" for="c-address">Address</label><textarea id="c-address" rows="2" class="field" data-f="client.address"></textarea></div>
+            <div><label class="lbl" for="c-tax">Client VAT / TIN</label><input id="c-tax" class="field" data-f="client.taxId" placeholder="Optional"></div>
+          </div>
+        </div>
+
+        <div class="panel p-4 sm:p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="sec-title">Line items <span class="ml-1 text-sm font-semibold text-neutral-400" id="itemCount"></span></h2>
+            <button class="btn-ghost px-2.5 py-1.5 text-[13px]" data-action="open-catalog"><span data-icon="box" data-size="16"></span>Add from services</button>
+          </div>
+          <div id="itemsList" class="mt-3 space-y-3"></div>
+          <button class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-line py-3 text-sm font-semibold text-neutral-500 transition hover:border-brand hover:text-brand dark:border-neutral-800 dark:text-neutral-400" data-action="add-item"><span data-icon="plus" data-size="16"></span>Add line item</button>
+          <datalist id="serviceNames"></datalist>
+        </div>
+
+        <div class="panel p-4 sm:p-5">
+          <h2 class="sec-title">Discount, tax and charges</h2>
+          <div class="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div>
+              <label class="lbl" for="f-dtype">Discount type</label>
+              <select id="f-dtype" class="field" data-f="discountType"><option value="percent">Percent (%)</option><option value="fixed">Fixed amount</option></select>
+            </div>
+            <div>
+              <label class="lbl" for="f-dval">Discount</label>
+              <input id="f-dval" type="number" min="0" step="any" class="field num" data-f="discountValue" inputmode="decimal">
+            </div>
+            <div>
+              <label class="lbl" for="f-oth-l">Other charge</label>
+              <input id="f-oth-l" class="field" data-f="otherLabel" placeholder="e.g. Printing">
+            </div>
+            <div>
+              <label class="lbl" for="f-oth">Amount</label>
+              <input id="f-oth" type="number" step="any" class="field num" data-f="otherAmount" inputmode="decimal">
+            </div>
+          </div>
+          <div class="mt-4 rounded-xl bg-neutral-50 p-3 dark:bg-white/5">
+            <label class="flex items-center gap-3 text-sm font-semibold">
+              <input type="checkbox" class="h-4 w-4 accent-brand" data-f="taxEnabled"> Apply tax to taxable items
+            </label>
+            <div class="mt-3 grid grid-cols-2 gap-3" id="taxFields">
+              <div><label class="lbl" for="f-taxn">Tax name</label><input id="f-taxn" class="field" data-f="taxName"></div>
+              <div><label class="lbl" for="f-taxr">Rate (%)</label><input id="f-taxr" type="number" min="0" step="any" class="field num" data-f="taxRate" inputmode="decimal"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel p-4 sm:p-5" id="paymentsPanel">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="sec-title" id="payTitle">Payments received</h2>
+            <button class="btn-ghost px-2.5 py-1.5 text-[13px]" data-action="add-payment"><span data-icon="wallet" data-size="16"></span>Record payment</button>
+          </div>
+          <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400" id="payHint">Advances and part payments reduce the balance due.</p>
+          <div id="paymentsList" class="mt-3 space-y-2"></div>
+        </div>
+
+        <details class="panel group p-4 sm:p-5" open>
+          <summary class="flex items-center justify-between"><h2 class="sec-title">Notes and terms</h2><span class="chev text-neutral-400" data-icon="down"></span></summary>
+          <div class="mt-3 space-y-3">
+            <div><label class="lbl" for="f-notes">Note to client</label><textarea id="f-notes" rows="2" class="field" data-f="notes"></textarea></div>
+            <div><label class="lbl" for="f-tt">Terms and conditions</label><textarea id="f-tt" rows="4" class="field" data-f="termsText"></textarea></div>
+          </div>
+        </details>
+
+        <details class="panel p-4 sm:p-5">
+          <summary class="flex items-center justify-between"><h2 class="sec-title">Layout and display</h2><span class="chev text-neutral-400" data-icon="down"></span></summary>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <div>
+              <label class="lbl" for="f-tpl">Template</label>
+              <select id="f-tpl" class="field" data-f="template">
+                <option value="studio">Studio (signature)</option><option value="modern">Modern</option><option value="bold">Bold header</option><option value="classic">Classic</option><option value="minimal">Minimal</option>
+              </select>
+            </div>
+            <div>
+              <label class="lbl" for="f-accent">Accent colour</label>
+              <div class="flex gap-2">
+                <input id="f-accent" type="color" class="h-[42px] w-12 shrink-0 cursor-pointer rounded-lg border border-line bg-white p-1 dark:border-neutral-800 dark:bg-card" data-f="accent">
+                <div class="flex flex-wrap items-center gap-1.5" id="swatches"></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 grid gap-2 sm:grid-cols-2" id="optToggles"></div>
+        </details>
+      </div>
+
+      <!-- Preview column -->
+      <div id="panePreview" class="hidden lg:block">
+        <div class="lg:sticky lg:top-20">
+          <div class="panel mb-3 p-3 sm:p-4">
+            <div class="grid grid-cols-2 gap-2 text-center sm:grid-cols-5" id="liveTotals"></div>
+          </div>
+          <div class="relative rounded-2xl bg-neutral-200/70 p-3 sm:p-5 dark:bg-card-2">
+            <div id="previewStage" data-action="zoom-preview" role="button" tabindex="0" aria-label="Open full-size preview"><div id="previewPaper"></div></div>
+          </div>
+          <div class="mt-2 flex items-center justify-between gap-3 px-1">
+            <p class="text-xs text-neutral-500 dark:text-neutral-400"><span class="lg:hidden">Tap the page to zoom. </span>Preview updates as you type. The PDF is A4.</p>
+            <button class="btn-ghost shrink-0 px-3 py-1.5" data-action="zoom-preview"><span data-icon="eye" data-size="16"></span>Full size</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor action bar -->
+    <div id="edBar" class="fixed inset-x-0 z-30 border-t border-line bg-white/95 shadow-[0_-8px_24px_-16px_rgba(15,27,61,.35)] backdrop-blur lg:static lg:mt-5 lg:rounded-2xl lg:border lg:shadow-none dark:border-edge dark:bg-card/95">
+      <div class="mx-auto flex max-w-[1500px] items-center gap-1.5 px-3 py-2 sm:gap-2 sm:px-4 sm:py-2.5">
+        <div class="mr-auto min-w-0 pr-1">
+          <div class="truncate text-[11px] font-semibold text-neutral-500 sm:text-xs dark:text-neutral-400" id="barLabel">Balance due</div>
+          <div class="num truncate text-[15px] font-extrabold sm:text-lg" id="barTotal">0.00</div>
+        </div>
+        <button class="btn-primary shrink-0 px-3 sm:px-3.5" data-action="save" aria-label="Save"><span data-icon="save" data-size="18"></span><span class="hidden min-[360px]:inline">Save</span></button>
+        <button class="btn-line shrink-0 px-2.5 sm:px-3.5" data-action="pdf" aria-label="Download PDF" title="Download PDF"><span data-icon="download" data-size="18"></span><span class="hidden sm:inline">PDF</span></button>
+        <button class="btn-line hidden shrink-0 md:inline-flex" data-action="print" title="Print"><span data-icon="printer" data-size="16"></span>Print</button>
+        <button class="btn-line hidden shrink-0 px-2.5 min-[400px]:inline-flex sm:px-3.5" data-action="share" aria-label="Share" title="Share"><span data-icon="share" data-size="18"></span><span class="hidden sm:inline">Share</span></button>
+        <button class="btn-line shrink-0 px-2.5 sm:px-3.5" data-action="more-doc" aria-label="More actions" title="More actions"><span data-icon="more" data-size="18"></span><span class="hidden xl:inline">More</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Documents ============ -->
+  <section id="view-documents" class="view" hidden>
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Documents</h1>
+        <p class="mt-1 text-neutral-500 dark:text-neutral-400" id="docsSub"></p>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn-line" data-action="export-csv"><span data-icon="download" data-size="16"></span>CSV</button>
+        <button class="btn-primary hidden sm:inline-flex" data-action="new-menu"><span data-icon="plus" data-size="16"></span>New</button>
+      </div>
+    </div>
+    <div class="mt-4 space-y-3">
+      <div class="flex flex-col gap-2 md:flex-row">
+        <div class="relative flex-1">
+          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" data-icon="search" data-size="18"></span>
+          <input id="docSearch" class="field pl-10" placeholder="Search number, client, project" type="search" aria-label="Search documents" enterkeyhint="search">
+        </div>
+        <div class="grid grid-cols-2 gap-2 md:flex">
+          <select id="docStatus" class="field md:w-40" aria-label="Status"><option value="">Any status</option></select>
+          <select id="docSort" class="field md:w-44" aria-label="Sort"><option value="date-desc">Newest first</option><option value="date-asc">Oldest first</option><option value="amt-desc">Highest amount</option><option value="due-asc">Due soonest</option><option value="num-desc">Number</option></select>
+        </div>
+      </div>
+      <div class="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="group" aria-label="Document type" id="docTypeChips">
+        <button class="fchip" data-doctype="" aria-pressed="true">All</button>
+        <button class="fchip" data-doctype="invoice" aria-pressed="false">Invoices</button>
+        <button class="fchip" data-doctype="quotation" aria-pressed="false">Quotations</button>
+        <button class="fchip" data-doctype="receipt" aria-pressed="false">Receipts</button>
+      </div>
+    </div>
+    <div id="docList" class="mt-3 space-y-2"></div>
+  </section>
+
+  <!-- ============ Clients ============ -->
+  <section id="view-clients" class="view" hidden>
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Clients</h1>
+        <p class="mt-1 text-neutral-500 dark:text-neutral-400">Saved clients fill the Bill to section in one tap.</p>
+      </div>
+      <button class="btn-primary w-full sm:w-auto" data-action="client-form"><span data-icon="plus" data-size="16"></span>Add client</button>
+    </div>
+    <div class="relative mt-4">
+      <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" data-icon="search" data-size="18"></span>
+      <input id="clientSearch" class="field pl-10" placeholder="Search clients" type="search" aria-label="Search clients">
+    </div>
+    <div id="clientList" class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+  </section>
+
+  <!-- ============ Services ============ -->
+  <section id="view-services" class="view" hidden>
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight">Services and rates</h1>
+        <p class="mt-1 text-neutral-500 dark:text-neutral-400">Your price list. Add any of these to a document with its rate and description.</p>
+      </div>
+      <button class="btn-primary w-full sm:w-auto" data-action="service-form"><span data-icon="plus" data-size="16"></span>Add service</button>
+    </div>
+    <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+      <div class="relative flex-1">
+        <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" data-icon="search" data-size="18"></span>
+        <input id="serviceSearch" class="field pl-10" placeholder="Search services" type="search" aria-label="Search services">
+      </div>
+      <select id="serviceCat" class="field sm:w-56" aria-label="Category"></select>
+    </div>
+    <div id="serviceList" class="mt-3 space-y-5"></div>
+  </section>
+
+  <!-- ============ Settings ============ -->
+  <section id="view-settings" class="view" hidden>
+    <h1 class="text-2xl font-extrabold tracking-tight">Settings</h1>
+    <p class="mt-1 text-neutral-500 dark:text-neutral-400">These details appear on every new document. Changes save automatically.</p>
+    <div class="mt-5 grid gap-4 xl:grid-cols-2">
+      <div class="panel p-4 sm:p-5">
+        <h2 class="sec-title">Company</h2>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          <div><label class="lbl" for="s-name">Company name</label><input id="s-name" class="field" data-s="company.name"></div>
+          <div><label class="lbl" for="s-web">Website</label><input id="s-web" class="field" data-s="company.website"></div>
+          <div class="sm:col-span-2"><label class="lbl" for="s-tag">Tagline</label><input id="s-tag" class="field" data-s="company.tagline"></div>
+          <div class="sm:col-span-2"><label class="lbl" for="s-motto">Sign-off line (document footer)</label><input id="s-motto" class="field" data-s="company.motto" placeholder="Optional"></div>
+          <div class="sm:col-span-2"><label class="lbl" for="s-addr">Address</label><textarea id="s-addr" rows="2" class="field" data-s="company.address"></textarea></div>
+          <div><label class="lbl" for="s-phone">Phone</label><input id="s-phone" class="field" data-s="company.phone" type="tel"></div>
+          <div><label class="lbl" for="s-email">Email</label><input id="s-email" class="field" data-s="company.email" type="email" placeholder="hello@lankanbrands.com"></div>
+          <div><label class="lbl" for="s-reg">Business reg. no.</label><input id="s-reg" class="field" data-s="company.regNo" placeholder="Optional"></div>
+          <div><label class="lbl" for="s-tin">VAT / TIN</label><input id="s-tin" class="field" data-s="company.taxId" placeholder="Optional"></div>
+        </div>
+      </div>
+
+      <div class="panel p-4 sm:p-5">
+        <h2 class="sec-title">Logo and signature</h2>
+        <div class="mt-3 flex flex-wrap items-center gap-4">
+          <div class="flex h-20 w-full items-center justify-center rounded-xl border border-line bg-white p-2 sm:w-48 dark:border-neutral-800" id="logoPreview"></div>
+          <div class="flex flex-wrap gap-2">
+            <label class="btn-line cursor-pointer"><span data-icon="upload" data-size="16"></span>Upload logo<input type="file" accept="image/*" class="sr-only" id="logoFile"></label>
+            <button class="btn-ghost" data-action="logo-default">Use brand logo</button>
+          </div>
+        </div>
+        <p class="mt-2 text-xs text-neutral-500 dark:text-neutral-400">The brand logo is built in, so it always appears in PDFs. It switches to the original white lockup on the Studio and Bold headers. An uploaded logo works best as a PNG or SVG with a transparent background.</p>
+        <div class="mt-3 max-w-xs"><label class="lbl" for="s-logoh">Logo height on documents (px)</label><input id="s-logoh" type="range" min="28" max="90" class="w-full accent-brand" data-s="logoHeight"></div>
+        <hr class="my-4 border-line dark:border-edge">
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div><label class="lbl" for="s-sname">Signatory name</label><input id="s-sname" class="field" data-s="signatory.name"></div>
+          <div><label class="lbl" for="s-stitle">Signatory title</label><input id="s-stitle" class="field" data-s="signatory.title"></div>
+        </div>
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          <div class="flex h-16 w-full items-center justify-center rounded-xl border border-dashed border-line bg-white p-2 sm:w-48 dark:border-neutral-800" id="sigPreview"></div>
+          <button class="btn-line" data-action="draw-signature"><span data-icon="pen" data-size="16"></span>Draw signature</button>
+          <label class="btn-ghost cursor-pointer">Upload<input type="file" accept="image/*" class="sr-only" id="sigFile"></label>
+          <button class="btn-danger" data-action="clear-signature">Remove</button>
+        </div>
+      </div>
+
+      <div class="panel p-4 sm:p-5">
+        <h2 class="sec-title">Bank details for payment</h2>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          <div><label class="lbl" for="b-acn">Account name</label><input id="b-acn" class="field" data-s="bank.accountName"></div>
+          <div><label class="lbl" for="b-acc">Account number</label><input id="b-acc" class="field num" data-s="bank.accountNo" inputmode="numeric"></div>
+          <div><label class="lbl" for="b-bank">Bank</label><input id="b-bank" class="field" data-s="bank.bankName" placeholder="e.g. Commercial Bank"></div>
+          <div><label class="lbl" for="b-br">Branch</label><input id="b-br" class="field" data-s="bank.branch"></div>
+          <div><label class="lbl" for="b-sw">SWIFT / BIC</label><input id="b-sw" class="field" data-s="bank.swift" placeholder="For overseas clients"></div>
+          <div><label class="lbl" for="b-oth">Other payment info</label><input id="b-oth" class="field" data-s="bank.other" placeholder="e.g. PayPal, Payoneer"></div>
+        </div>
+        <hr class="my-4 border-line dark:border-edge">
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label class="lbl" for="q-mode">QR code on documents</label>
+            <select id="q-mode" class="field" data-s="qr.mode"><option value="summary">Document summary</option><option value="url">Payment or website link</option></select>
+          </div>
+          <div><label class="lbl" for="q-url">Link for QR</label><input id="q-url" class="field" data-s="qr.url" type="url" placeholder="https://"></div>
+        </div>
+      </div>
+
+      <div class="panel p-4 sm:p-5">
+        <h2 class="sec-title">Defaults for new documents</h2>
+        <div class="mt-3 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
+          <div><label class="lbl" for="d-cur">Currency</label><select id="d-cur" class="field" data-s="currency"></select></div>
+          <div><label class="lbl" for="d-terms">Payment terms</label><select id="d-terms" class="field" data-s="terms"></select></div>
+          <div><label class="lbl" for="d-taxn">Tax name</label><input id="d-taxn" class="field" data-s="taxName"></div>
+          <div><label class="lbl" for="d-taxr">Tax rate (%)</label><input id="d-taxr" type="number" step="any" class="field num" data-s="taxRate"></div>
+          <div class="min-[400px]:col-span-2"><label class="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" class="h-4 w-4 accent-brand" data-s="taxEnabled">Apply tax by default</label></div>
+          <div><label class="lbl" for="d-valid">Quotation valid for (days)</label><input id="d-valid" type="number" min="1" class="field num" data-s="quoteValidity"></div>
+          <div><label class="lbl" for="d-tpl">Template</label><select id="d-tpl" class="field" data-s="template"><option value="studio">Studio (signature)</option><option value="modern">Modern</option><option value="bold">Bold header</option><option value="classic">Classic</option><option value="minimal">Minimal</option></select></div>
+          <div class="min-[400px]:col-span-2"><label class="lbl" for="d-notes">Note to client</label><textarea id="d-notes" rows="2" class="field" data-s="defaultNotes"></textarea></div>
+          <div class="min-[400px]:col-span-2"><label class="lbl" for="d-terms-i">Invoice terms</label><textarea id="d-terms-i" rows="4" class="field" data-s="invoiceTerms"></textarea></div>
+          <div class="min-[400px]:col-span-2"><label class="lbl" for="d-terms-q">Quotation terms</label><textarea id="d-terms-q" rows="4" class="field" data-s="quoteTerms"></textarea></div>
+        </div>
+      </div>
+
+      <div class="panel p-4 sm:p-5">
+        <h2 class="sec-title">Numbering</h2>
+        <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Numbers follow PREFIX-YEAR-0001 and restart each year.</p>
+        <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div><label class="lbl" for="n-inv">Invoice prefix</label><input id="n-inv" class="field" data-s="prefixes.invoice"></div>
+          <div><label class="lbl" for="n-quo">Quotation prefix</label><input id="n-quo" class="field" data-s="prefixes.quotation"></div>
+          <div><label class="lbl" for="n-rct">Receipt prefix</label><input id="n-rct" class="field" data-s="prefixes.receipt"></div>
+        </div>
+        <p class="mt-3 text-sm" id="nextNumbers"></p>
+      </div>
+
+      <div class="panel p-4 sm:p-5">
+        <h2 class="sec-title">Your data</h2>
+        <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Everything is stored in this browser only. Export a backup regularly, and import it to move to another device.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button class="btn-line" data-action="export-json"><span data-icon="download" data-size="16"></span>Export backup</button>
+          <label class="btn-line cursor-pointer"><span data-icon="upload" data-size="16"></span>Import backup<input type="file" accept="application/json,.json" class="sr-only" id="importFile"></label>
+          <button class="btn-line" data-action="export-csv">Export documents CSV</button>
+          <button class="btn-danger" data-action="reset-all"><span data-icon="trash" data-size="16"></span>Erase all data</button>
+        </div>
+        <p class="mt-3 text-xs text-neutral-500 dark:text-neutral-400" id="storageInfo"></p>
+        <div class="hidden lg:block">
+        <hr class="my-4 border-line dark:border-edge">
+        <h3 class="text-sm font-bold">Keyboard shortcuts</h3>
+        <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm text-neutral-600 dark:text-neutral-300">
+          <dt><kbd class="rounded border border-line px-1.5 text-xs dark:border-neutral-800">Ctrl S</kbd></dt><dd>Save document</dd>
+          <dt><kbd class="rounded border border-line px-1.5 text-xs dark:border-neutral-800">Ctrl P</kbd></dt><dd>Print document</dd>
+          <dt><kbd class="rounded border border-line px-1.5 text-xs dark:border-neutral-800">Alt N</kbd></dt><dd>New invoice</dd>
+          <dt><kbd class="rounded border border-line px-1.5 text-xs dark:border-neutral-800">Alt I</kbd></dt><dd>Add line item</dd>
+        </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ Mobile bottom nav ============ -->
+<nav class="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 backdrop-blur lg:hidden dark:border-edge dark:bg-black/90" aria-label="Main">
+  <div class="mx-auto grid h-16 max-w-lg grid-cols-5 px-1">
+    <button class="mnav flex flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-neutral-500" data-nav="dashboard"><span data-icon="home" data-size="22"></span>Overview</button>
+    <button class="mnav flex flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-neutral-500" data-nav="documents"><span data-icon="file" data-size="22"></span>Documents</button>
+    <button class="flex items-center justify-center" data-action="new-menu" aria-label="New document"><span class="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-on-brand shadow-lg shadow-black/25" data-icon="plus" data-size="24"></span></button>
+    <button class="mnav flex flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-neutral-500" data-nav="services"><span data-icon="box" data-size="22"></span>Services</button>
+    <button class="mnav flex flex-col items-center justify-center gap-0.5 text-[11px] font-semibold text-neutral-500" data-nav="clients"><span data-icon="users" data-size="22"></span>Clients</button>
+  </div>
+</nav>
+
+<!-- Modal root & toasts -->
+<div id="modalRoot"></div>
+<div id="toasts" class="pointer-events-none fixed inset-x-0 z-[90] flex flex-col items-center gap-2 px-4 top-[calc(4.5rem+env(safe-area-inset-top))] lg:top-auto lg:bottom-6" aria-live="polite"></div>
+<div id="printArea"></div>
+
+<script>
+'use strict';
+/* =========================================================
+   Lankan Brands & Co. — Invoice Studio (single-file app)
+   ========================================================= */
+const LS_KEY = 'lankan-invoice-studio-v1';
+const BRAND_LOGO = 'brand'; // settings.logo value for the built-in lockup
+
+/* ---------- Brand logo ----------
+   Vectors traced 1:1 from the artwork (copied from src/data/logo-paths.json, which is the source of truth).
+   paper: the original white square + white wordmark, for dark backgrounds.
+   ink:   the reversed lockup (black square, white mark, black wordmark), for white paper. */
+const LOGO = { w: 1285, h: 544, sq: 548, sqH: 544, dx: 549,
+  mark: 'M 177.7 184.1 C 172.9 184.5, 163.3 186, 156.4 187.5 C 88.1 201.8, 43.7 246.5, 31.9 313 C 28.9 329.8, 28.2 358.4, 30.4 376 C 39.6 448.7, 80.6 490.9, 153.5 502.7 C 170.9 505.5, 211.7 505.2, 226.5 502.2 C 285 490.5, 322.1 458.9, 333.8 411 C 337.9 394.6, 339 360.6, 335.6 359.4 C 335 359.2, 328.6 359.4, 321.5 359.8 L 308.5 360.5 308.8 370.5 C 310.8 427.6, 280.3 463.4, 220.5 474.1 C 206.5 476.6, 177.1 477.1, 163.1 475.1 C 116.3 468.3, 83.1 444.5, 68 406.8 C 61.1 389.4, 59.6 379.4, 59.6 350.5 C 59.5 327.3, 59.8 323.4, 61.8 314.4 C 77.5 242.7, 128.5 207.7, 213.5 210.3 C 258.1 211.7, 284.8 222.3, 296.1 243.2 C 302.3 254.8, 303.3 259, 303.4 274.5 C 303.5 288.2, 303.4 288.7, 300.4 295 C 291.9 313, 275.2 320.7, 246.7 319.8 C 226.4 319.1, 219.1 315.9, 213.4 304.7 C 211.2 300.6, 210.4 288.4, 212 283.6 L 213.2 280 242.1 280 L 271 280 271 266.5 L 271 253 197.5 253 L 124 253 124 266.5 L 124 280 153.4 280 L 182.8 280 182.3 290.3 C 180.6 324.9, 200.2 344.2, 240.5 347.5 C 249.7 348.2, 266.8 346.9, 278.5 344.5 C 303.8 339.4, 325.2 319.6, 331.6 295.5 C 333.8 286.9, 334.5 270.9, 333 260.9 C 326.5 216, 291.1 189.3, 231.5 184.1 C 218 182.9, 191 182.9, 177.7 184.1 M 419.3 243.5 C 383.8 252.7, 362 281.8, 362 320 C 362.1 359, 385 388.7, 421.2 396.6 C 430.8 398.7, 451.1 398.7, 460.7 396.6 C 500.3 388, 523.5 354.2, 519.9 310.5 C 517.6 283, 500.4 258, 476.3 247.4 C 460.8 240.5, 437 238.9, 419.3 243.5 M 425 269.8 C 403.8 275.3, 391 293.8, 391 318.7 C 391 345.3, 403.6 364.1, 425.1 369.4 C 438.2 372.6, 456 371.1, 467 365.7 C 495.3 351.9, 500.6 301.7, 476 279.6 C 464.6 269.3, 442.9 265.1, 425 269.8',
+  word: 'M 29 299 L 29 386 48.5 386 L 68 386 68 354.8 C 68 328.5, 68.2 323.8, 69.4 325 C 70.5 326.3, 81.2 344.2, 99.5 375.7 L 105.5 386 127.7 386 L 150 386 143.6 376.3 C 140.2 370.9, 132.5 359.1, 126.5 350 C 105.3 317.6, 103 314, 103 313.1 C 103 312.6, 113.7 299.6, 126.9 284.3 C 140 269, 150.6 256.2, 150.3 255.8 C 150.1 255.3, 139.9 255, 127.6 255 L 105.3 255 86.9 279.2 L 68.5 303.4 68.2 257.7 L 68 212 48.5 212 L 29 212 29 299 M 210.1 252.1 C 191.6 255.4, 174.2 268.5, 165 286.2 C 147.8 319.1, 158.3 363.4, 187.4 380.9 C 212.5 395.9, 246.3 393.2, 258.6 375.1 L 261 371.5 261 378.8 L 261 386 280.5 386 L 300 386 300 320.5 L 300 255 280.5 255 L 261 255 261 262.1 L 261 269.1 256.2 264.2 C 250.9 258.8, 247.7 256.8, 239.1 253.8 C 232.5 251.5, 218 250.6, 210.1 252.1 M 385.5 252 C 376 254.1, 368.8 258.5, 363.9 265.3 C 361.2 269, 361 269.1, 360.9 266.9 C 360.7 263.1, 360.3 257.6, 360.2 256.2 C 360 255.2, 356 255, 342.3 255.2 L 324.5 255.5 324.2 320.8 L 324 386 343.4 386 L 362.9 386 363.2 344.8 C 363.5 303.5, 363.5 303.5, 365.9 298.7 C 369.4 291.5, 374.2 288.8, 383.8 288.3 C 394.1 287.7, 399.3 290.2, 403 297.5 L 405.5 302.5 405.8 344.3 L 406.1 386 425.6 386 L 445.1 386 444.8 337.3 C 444.5 289.8, 444.4 288.3, 442.2 281.8 C 437.9 268.9, 427.6 258.5, 414.6 254 C 408 251.6, 392 250.5, 385.5 252 M 214.5 290.9 C 194.1 300.5, 189.4 328.1, 205.3 344.4 C 224.2 363.7, 257.5 352, 260.6 324.9 C 263.5 299.5, 237.2 280.1, 214.5 290.9 M 472.9 407.4 C 460.2 411.9, 454.9 426.2, 461.8 437.1 C 463.4 439.5, 465.4 442.1, 466.3 442.9 C 468.7 444.8, 468.4 445.7, 464.8 447.6 C 445.6 457.3, 441.9 479.8, 457.3 493.5 C 471.5 506.4, 493.3 501.8, 502.5 484 C 504.5 480.2, 503.7 479.8, 517 492.7 L 525.6 501 528.8 497.7 L 532.1 494.3 520.5 483.3 L 508.8 472.3 517.3 456.1 L 525.8 440 520.5 440 L 515.3 440 509 452.3 C 505.5 459, 502.5 464.7, 502.3 464.9 C 502.1 465.2, 498.1 461.6, 493.5 457 L 485 448.5 489.3 446.3 C 498 441.9, 504.1 432, 502.6 424.7 C 499.8 410.9, 485.9 402.7, 472.9 407.4 M 573 407.8 C 556.9 412, 543.7 424.9, 539.5 440.4 C 536.8 450.3, 537.8 464.4, 541.7 473 C 546.2 482.9, 554.4 491.1, 564.8 496.3 L 573.3 500.5 585.4 500.5 C 596.9 500.5, 597.8 500.3, 604 497.4 C 612.7 493.2, 618.1 489.1, 623 482.9 C 628.2 476.3, 628.2 475.2, 622.6 475.3 C 618.8 475.5, 617.5 476.2, 611.7 481.7 C 595.5 496.8, 574.5 496.5, 558.7 480.8 C 550.1 472.3, 547.5 466.1, 547.5 453.5 C 547.5 441.4, 550.3 434.7, 558.5 426.4 C 567.3 417.6, 572.5 415.5, 585.5 415.5 C 595.7 415.5, 596.9 415.7, 602.4 418.5 C 605.7 420.1, 610.5 423.6, 613.1 426.3 C 617.4 430.5, 618.4 431, 622.5 431 C 627.8 431, 627.9 430.6, 624.1 425.3 C 613 410, 592.1 402.8, 573 407.8 M 30 453.9 L 30 500 44.8 500 C 67.8 500, 75.5 497.9, 82.4 489.9 C 91.7 479, 89.4 461.2, 77.8 453.4 L 73.1 450.2 76 447.6 C 85.1 439.6, 85.4 425.2, 76.7 416.2 C 70.1 409.3, 67.5 408.5, 47.8 408.2 L 30 407.8 30 453.9 M 348 425.5 L 348 443.1 344.9 439.6 C 335.3 428.5, 314.7 427, 300.9 436.2 C 277.8 451.7, 280.6 485.7, 306 497.9 C 310.8 500.2, 312.8 500.5, 321.5 500.5 C 332.7 500.5, 336.6 499.1, 344 492.4 L 347.9 488.9 348.2 494.2 L 348.5 499.5 352.8 499.8 L 357 500.1 357 454.1 L 357 408 352.5 408 L 348 408 348 425.5 M 473.3 416.9 C 465.5 421.7, 466.1 429.9, 474.7 438.3 L 478.6 442 483.9 439.4 C 497.9 432.4, 495.4 415, 480.3 415 C 478.2 415, 475.1 415.9, 473.3 416.9 M 39 431.4 L 39 447 49.8 447 C 61.8 447, 67 445.3, 70.8 440.5 C 75.9 434, 74 424, 66.7 419.2 C 63 416.7, 61.7 416.5, 50.8 416.1 L 39 415.8 39 431.4 M 117.1 431.3 C 115.2 431.9, 111.9 434.2, 109.8 436.3 L 106 440.2 106 436.1 L 106 432 101.5 432 L 97 432 97.2 465.8 L 97.5 499.5 101.8 499.8 L 106 500.1 106 479 C 106 466.3, 106.5 456.1, 107.2 453.3 C 108.8 446.9, 114.2 441.6, 120.9 440 L 126 438.8 126 434.4 C 126 430.2, 125.8 430, 123.3 430.1 C 121.7 430.2, 118.9 430.7, 117.1 431.3 M 155.3 431.4 C 139.7 436.5, 131 447.8, 130.2 464 C 129.5 478.8, 136.2 490.5, 149.4 497.3 C 155 500.2, 156.3 500.4, 165.5 500.5 C 177.1 500.5, 182.5 498.5, 189.2 491.8 L 193 488 193 494.1 L 193 500.1 197.3 499.8 L 201.5 499.5 201.8 465.8 L 202 432 197.5 432 L 193 432 193 437.6 L 193 443.2 189.2 439.3 C 183.3 433.3, 177.1 430.7, 167.5 430.3 C 162.6 430.1, 157.9 430.6, 155.3 431.4 M 236.9 430.9 C 233 432.1, 229.8 434, 226.8 436.8 L 224 439.4 224 435.7 L 224 432 219.5 432 L 215 432 215 466.1 L 215 500.1 219.3 499.8 L 223.5 499.5 224 476 C 224.5 450.9, 225.2 447.8, 230.7 442.8 C 237.8 436.3, 251.6 436.6, 258.8 443.3 C 265 449, 265.5 451.5, 265.8 476.8 L 266.1 500.1 270.3 499.8 L 274.5 499.5 274.5 476 C 274.5 452.7, 274.5 452.4, 271.9 446.9 C 268.4 439.5, 263.4 434.7, 256.5 432.1 C 250.8 430, 241.9 429.4, 236.9 430.9 M 379 431.6 C 368.8 436, 364.5 449.4, 370.5 458.2 C 372.9 461.7, 381.9 466.9, 388.5 468.6 C 390 469, 393 470.9, 395.1 473 C 398.4 476.1, 399 477.3, 399 480.9 C 399 489.1, 395 493, 386.5 493 C 380.6 493, 376 489.1, 375.1 483.4 C 374.5 479.6, 374.3 479.5, 370.2 479.2 C 366 478.9, 366 478.9, 366 482.2 C 366.1 489.7, 372.1 497.5, 379.6 500 C 385.8 502.1, 395.5 500.8, 399.8 497.3 C 405.7 492.5, 407.2 489.8, 407.7 482.8 C 408.7 470.5, 403.4 463.9, 388.4 459 C 380.3 456.3, 377 453, 377 447.8 C 377 436.8, 392.6 434.2, 396 444.6 C 397.1 447.8, 397.4 448, 401.6 448 C 406.4 448, 406.5 447.8, 404.8 442.9 C 401.2 432.1, 389.6 427, 379 431.6 M 661.1 431.4 C 635.9 439.6, 627.9 472, 646.6 490.6 C 654.1 498.2, 659.9 500.5, 671.5 500.5 C 683.2 500.5, 688.9 498.2, 696.5 490.5 C 704.1 483, 706.5 477.1, 706.5 466 C 706.5 454.5, 703.9 447.8, 696.5 440.5 C 687.6 431.6, 672.5 427.7, 661.1 431.4 M 154.5 440.3 C 144.4 445.1, 138.9 454, 138.8 465.5 C 138.6 481.4, 148.6 491.9, 164.6 492.8 C 193.2 494.4, 204.2 455.9, 179.3 441.3 C 172.6 437.4, 161.5 436.9, 154.5 440.3 M 311.6 439.5 C 301.9 442.9, 295 452.1, 294.3 462.7 C 293.4 474.8, 297.7 483.4, 307.5 489.5 C 312 492.3, 313.1 492.5, 321.5 492.5 C 330.3 492.5, 330.9 492.4, 335.7 489.1 C 351.6 478.3, 353.1 457.4, 339 444.7 C 331.7 438.2, 321 436.1, 311.6 439.5 M 659.9 440.8 C 635.2 453.7, 643.5 492.9, 670.9 493 C 686.7 493, 698 481.6, 698 465.5 C 697.9 444.9, 677.5 431.6, 659.9 440.8 M 467 456.8 C 454.3 465.7, 453.7 481.4, 465.8 489.1 C 476.3 495.8, 488.2 491.1, 495.6 477.5 L 497.5 474 487 463.5 C 480.4 456.8, 475.8 453, 474.4 453 C 473.3 453, 469.9 454.7, 467 456.8 M 39 473.5 L 39 491 50.8 491 C 59 491, 64.1 490.5, 67.3 489.4 C 82.1 484.4, 83 465, 68.7 458.1 C 65 456.3, 62.5 456, 51.7 456 L 39 456 39 473.5 M 722.9 485.5 C 722.8 486.3, 722.8 487.7, 722.8 488.5 C 722.8 489.3, 722.8 492.3, 722.9 495.1 L 723 500.1 727.3 499.8 L 731.5 499.5 731.8 491.8 L 732.1 484 727.5 484 C 724.2 484, 723 484.4, 722.9 485.5' };
+function logoSvg(tone, markOnly = false) {
+  const [square, glyph, word] = tone === 'ink' ? ['#0A0A0A', '#fff', '#0A0A0A'] : ['#fff', '#000', '#fff'];
+  const w = markOnly ? LOGO.sq : LOGO.w;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${LOGO.h}" viewBox="0 0 ${w} ${LOGO.h}"><rect width="${LOGO.sq}" height="${LOGO.sqH}" fill="${square}"/><path fill="${glyph}" fill-rule="evenodd" d="${LOGO.mark}"/>${markOnly ? '' : `<path fill="${word}" fill-rule="evenodd" transform="translate(${LOGO.dx} 0)" d="${LOGO.word}"/>`}</svg>`;
+}
+const svgUri = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+const BRAND_URI = { ink: svgUri(logoSvg('ink')), paper: svgUri(logoSvg('paper')), mark: svgUri(logoSvg('ink', true)), markPaper: svgUri(logoSvg('paper', true)) };
+const LIB = {
+  pdf: 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js',
+  qr: 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
+};
+
+/* ---------- Icons ---------- */
+const ICONS = {
+  home: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  box: '<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+  printer: '<path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/>',
+  share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
+  copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  trash: '<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>',
+  edit: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  up: '<path d="m18 15-6-6-6 6"/>',
+  down: '<path d="m6 9 6 6 6-6"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  x: '<path d="M18 6 6 18M6 6l12 12"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/>',
+  chat: '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z"/>',
+  wallet: '<path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>',
+  alert: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+  receipt: '<path d="M4 2v20l3-2 3 2 2-2 2 2 3-2 3 2V2l-3 2-3-2-2 2-2-2-3 2z"/><path d="M8 9h8M8 13h6"/>',
+  refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"/><path d="M21 3v5h-5"/>',
+  pen: '<path d="M12 19l7-7 3 3-7 7zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18zM2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/>',
+  more: '<circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/>',
+  eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>',
+  arrowRight: '<path d="M5 12h14M13 5l7 7-7 7"/>',
+  swap: '<path d="M16 3l4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'
+};
+const icon = (n, s = 18) => `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
+function hydrateIcons(root = document) {
+  root.querySelectorAll('[data-icon]').forEach(el => {
+    if (el.dataset.iconDone === el.dataset.icon) return;
+    el.insertAdjacentHTML('afterbegin', icon(el.dataset.icon, +el.dataset.size || 18));
+    el.dataset.iconDone = el.dataset.icon;
+  });
+}
+
+/* ---------- Utilities ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = v => { const n = parseFloat(v); return Number.isFinite(n) ? n : 0; };
+const r2 = n => Math.round((n + Number.EPSILON) * 100) / 100;
+const pad = (n, l = 2) => String(n).padStart(l, '0');
+const isoOf = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayISO = () => isoOf(new Date());
+const parseISO = s => { const [y, m, d] = String(s || '').split('-').map(Number); return y ? new Date(y, m - 1, d) : null; };
+const addDays = (iso, n) => { const d = parseISO(iso) || new Date(); d.setDate(d.getDate() + n); return isoOf(d); };
+const daysBetween = (a, b) => Math.round((parseISO(b) - parseISO(a)) / 864e5);
+const fmtDate = iso => { const d = parseISO(iso); return d ? d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'; };
+const getPath = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
+const setPath = (o, p, v) => { const ks = p.split('.'); const last = ks.pop(); const t = ks.reduce((a, k) => (a[k] ??= {}), o); t[last] = v; };
+const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+const loadedScripts = {};
+function loadScript(src) {
+  if (loadedScripts[src]) return loadedScripts[src];
+  return (loadedScripts[src] = new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = src; s.async = true;
+    s.onload = res; s.onerror = () => { delete loadedScripts[src]; rej(new Error('Could not load ' + src)); };
+    document.head.appendChild(s);
+  }));
+}
+
+/* ---------- Money ---------- */
+const CURRENCIES = {
+  LKR: { symbol: 'Rs.', major: 'Rupees', minor: 'Cents', label: 'LKR — Sri Lankan rupee' },
+  USD: { symbol: '$', major: 'US Dollars', minor: 'Cents', label: 'USD — US dollar' },
+  EUR: { symbol: '€', major: 'Euros', minor: 'Cents', label: 'EUR — Euro' },
+  GBP: { symbol: '£', major: 'Pounds', minor: 'Pence', label: 'GBP — British pound' },
+  AUD: { symbol: 'A$', major: 'Australian Dollars', minor: 'Cents', label: 'AUD — Australian dollar' },
+  CAD: { symbol: 'C$', major: 'Canadian Dollars', minor: 'Cents', label: 'CAD — Canadian dollar' },
+  SGD: { symbol: 'S$', major: 'Singapore Dollars', minor: 'Cents', label: 'SGD — Singapore dollar' },
+  AED: { symbol: 'AED', major: 'Dirhams', minor: 'Fils', label: 'AED — UAE dirham' },
+  INR: { symbol: '₹', major: 'Indian Rupees', minor: 'Paise', label: 'INR — Indian rupee' },
+  JPY: { symbol: '¥', major: 'Yen', minor: 'Sen', label: 'JPY — Japanese yen' }
+};
+function money(n, cur = 'LKR') {
+  const c = CURRENCIES[cur] || { symbol: cur };
+  const neg = n < 0; const v = Math.abs(r2(n)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const sym = c.symbol; const sep = /[A-Za-z.]$/.test(sym) ? ' ' : '';
+  return (neg ? '-' : '') + sym + sep + v;
+}
+function moneyShort(n, cur = 'LKR') {
+  const c = CURRENCIES[cur] || { symbol: cur }; const a = Math.abs(n);
+  const s = a >= 1e6 ? (a / 1e6).toFixed(a >= 1e7 ? 1 : 2).replace(/\.?0+$/, '') + 'M' : a >= 1e3 ? (a / 1e3).toFixed(a >= 1e5 ? 0 : 1).replace(/\.0$/, '') + 'K' : a.toFixed(0);
+  return (n < 0 ? '-' : '') + c.symbol + (/[A-Za-z.]$/.test(c.symbol) ? ' ' : '') + s;
+}
+const ONES = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+const TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+function words999(n) {
+  let out = [];
+  if (n >= 100) { out.push(ONES[Math.floor(n / 100)] + ' Hundred'); n %= 100; if (n) out.push('and'); }
+  if (n >= 20) { out.push(TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '')); }
+  else if (n > 0) out.push(ONES[n]);
+  return out.join(' ');
+}
+function intWords(n) {
+  if (n === 0) return 'Zero';
+  const scales = ['', 'Thousand', 'Million', 'Billion', 'Trillion']; const parts = []; let i = 0;
+  while (n > 0 && i < scales.length) { const c = n % 1000; if (c) parts.unshift(words999(c) + (scales[i] ? ' ' + scales[i] : '')); n = Math.floor(n / 1000); i++; }
+  return parts.join(' ');
+}
+function amountInWords(amount, cur) {
+  const c = CURRENCIES[cur] || { major: cur, minor: 'Cents' };
+  const cents = Math.round(Math.abs(amount) * 100); const major = Math.floor(cents / 100); const minor = cents % 100;
+  let s = `${c.major} ${intWords(major)}`;
+  if (minor && cur !== 'JPY') s += ` and ${c.minor} ${intWords(minor)}`;
+  return s + ' Only';
+}
+
+/* ---------- Constants ---------- */
+const TERMS = [
+  { v: 'receipt', l: 'Due on receipt', d: 0 }, { v: 'net7', l: 'Net 7 days', d: 7 }, { v: 'net14', l: 'Net 14 days', d: 14 },
+  { v: 'net15', l: 'Net 15 days', d: 15 }, { v: 'net30', l: 'Net 30 days', d: 30 }, { v: 'net45', l: 'Net 45 days', d: 45 },
+  { v: 'net60', l: 'Net 60 days', d: 60 }, { v: 'custom', l: 'Custom date', d: null }
+];
+const UNITS = ['item', 'hour', 'day', 'week', 'month', 'year', 'project', 'milestone', 'session', 'page', 'post', 'design', 'round'];
+const METHODS = ['Bank transfer', 'Cash', 'Card', 'Cheque', 'Online gateway', 'PayPal', 'Payoneer', 'Wise', 'Other'];
+const STATUSES = {
+  invoice: [['draft', 'Draft'], ['sent', 'Sent'], ['cancelled', 'Cancelled']],
+  quotation: [['draft', 'Draft'], ['sent', 'Sent'], ['accepted', 'Accepted'], ['declined', 'Declined']],
+  receipt: [['issued', 'Issued']]
+};
+const STATUS_LABEL = { draft: 'Draft', sent: 'Sent', paid: 'Paid', partial: 'Part paid', overdue: 'Overdue', cancelled: 'Cancelled', accepted: 'Accepted', declined: 'Declined', expired: 'Expired', issued: 'Issued' };
+const STATUS_CHIP = {
+  draft: 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
+  sent: 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300',
+  paid: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
+  issued: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
+  accepted: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300',
+  partial: 'bg-cyan-50 text-cyan-800 dark:bg-cyan-950/60 dark:text-cyan-300',
+  overdue: 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
+  expired: 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
+  cancelled: 'bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-300',
+  declined: 'bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-300'
+};
+const TYPE_LABEL = { invoice: 'Invoice', quotation: 'Quotation', receipt: 'Receipt' };
+const TEMPLATES = ['studio', 'modern', 'bold', 'classic', 'minimal'];
+const SWATCHES = ['#0A0A0A', '#404040', '#2563EB', '#0E7490', '#0F766E', '#9F1239', '#B45309'];
+
+// Rates in Sri Lankan rupees (LKR)
+const DEFAULT_SERVICES = [
+  ['Branding & Identity', 'Brand strategy workshop', 'Half-day discovery workshop on your story, customers and positioning, with a written summary.', 'session', 100000],
+  ['Branding & Identity', 'Naming', 'Name exploration, a shortlist with rationale and basic availability checks.', 'project', 120000],
+  ['Branding & Identity', 'Logo suite', 'Primary logo, secondary marks and favicon, delivered in every format you need.', 'project', 225000],
+  ['Branding & Identity', 'Visual identity system', 'Colour, typography, graphic elements and core templates built around the logo.', 'project', 360000],
+  ['Branding & Identity', 'Packaging design', 'Packaging or label design for one product, print-ready.', 'design', 135000],
+  ['Branding & Identity', 'Brand guidelines', 'A practical brand guide so anyone can use the brand correctly.', 'project', 100000],
+  ['Digital Marketing Strategy', 'Audience and positioning research', 'Customer, competitor and market research distilled into a clear position.', 'project', 120000],
+  ['Digital Marketing Strategy', '90-day marketing roadmap', 'Channel mix, priorities, budget split and the metrics that matter.', 'project', 180000],
+  ['Social Media & Content', 'Content pillars and strategy', 'Content pillars, tone of voice and a posting rhythm that fits the business.', 'project', 100000],
+  ['Social Media & Content', 'Monthly content calendar', 'Planned posts with captions and hashtags for one month.', 'month', 90000],
+  ['Social Media & Content', 'Social media management', 'Posting, community replies and a monthly report for up to two platforms.', 'month', 135000],
+  ['Social Media & Content', 'Photo and reel direction', 'Shot lists, art direction and on-set direction for a shoot day.', 'day', 85000],
+  ['Social Media & Content', 'Social templates', 'Editable post, story and highlight templates in Canva or Figma.', 'project', 75000],
+  ['SEO & Visibility', 'SEO audit', 'Technical, on-page and local audit with a prioritised fix list.', 'project', 90000],
+  ['SEO & Visibility', 'Local SEO and Google Business Profile', 'Profile set-up or clean-up, categories, photos and a review plan.', 'project', 65000],
+  ['SEO & Visibility', 'Search-led content', 'One page or article, researched, written and optimised.', 'page', 35000],
+  ['Paid Advertising', 'Ad campaign set-up', 'Meta or Google campaign structure, audiences, tracking and launch.', 'project', 100000],
+  ['Paid Advertising', 'Ad management', 'Creative testing, optimisation and honest monthly reporting. Ad spend is billed separately.', 'month', 90000],
+  ['Paid Advertising', 'Ad creative', 'Static or motion ad creative, sized for each placement.', 'design', 18000],
+  ['Creative Direction', 'Creative direction', 'Direction for shoots, launches and campaigns so every touchpoint feels like you.', 'day', 90000],
+  ['Creative Direction', 'Website design', 'A brand-led website design of up to six pages.', 'project', 450000],
+  ['Creative Direction', 'Launch campaign', 'Launch plan, assets and coordination across channels.', 'project', 270000],
+  ['Support', 'Brand retainer', 'Ongoing design and marketing support, up to 15 hours a month.', 'month', 225000],
+  ['Support', 'Design hours', 'Additional design work or change requests.', 'hour', 10000],
+  ['Support', 'Strategy session', 'One-to-one brand or marketing consultation.', 'hour', 15000]
+];
+
+function defaultSettings() {
+  return {
+    company: { name: 'Lankan Brands & Co.', tagline: 'For small businesses building something of their own', motto: 'Your business. Your style.', address: 'Sri Lanka', phone: '', email: 'hello@lankanbrands.com', website: 'lankan-co.github.io', regNo: '', taxId: '' },
+    logo: BRAND_LOGO, logoHeight: 52,
+    signatory: { name: '', title: 'Authorised signatory', image: '' },
+    bank: { accountName: 'Lankan Brands & Co.', accountNo: '', bankName: '', branch: '', swift: '', other: '' },
+    qr: { mode: 'summary', url: 'https://lankan-co.github.io/' },
+    currency: 'LKR', terms: 'net14', taxName: 'VAT', taxRate: 18, taxEnabled: false, quoteValidity: 30,
+    template: 'studio', accent: '#0A0A0A',
+    prefixes: { invoice: 'LB-INV', quotation: 'LB-QUO', receipt: 'LB-RCT' },
+    counters: {},
+    defaultNotes: 'Thank you for building something of your own with Lankan Brands & Co. Please quote the document number with your payment.',
+    invoiceTerms: '1. Payment is due by the date shown above.\n2. Work on the next phase begins once the agreed deposit is received.\n3. Final artwork files and usage rights transfer to the client on full payment.\n4. Ad spend paid to platforms (Meta, Google) is billed at cost unless listed above.\n5. Bank charges for overseas transfers are borne by the client.',
+    quoteTerms: '1. This quotation is valid until the date shown above.\n2. A 50% deposit confirms the booking; the balance is due on delivery.\n3. Each design deliverable includes two rounds of revisions; further rounds are billed at the hourly rate.\n4. Third-party costs (printing, stock photography, font licences, ad spend) are billed at cost unless listed.\n5. Final files and usage rights transfer on full payment.',
+    theme: 'system'
+  };
+}
+function defaultState() {
+  return {
+    v: 1, settings: defaultSettings(),
+    services: DEFAULT_SERVICES.map(([category, name, desc, unit, rate]) => ({ id: uid(), category, name, desc, unit, rate })),
+    clients: [], docs: [], current: null, lastView: 'dashboard'
+  };
+}
+
+/* ---------- State & persistence ---------- */
+let S = loadState();
+const UI = { view: 'dashboard', dirty: false, pane: 'form', logoData: null, docType: '', chart: null };
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY); if (!raw) return defaultState();
+    const d = JSON.parse(raw); const base = defaultState();
+    const s = Object.assign(base, d);
+    s.settings = deepMerge(defaultSettings(), d.settings || {});
+    const st = s.settings;
+    if (!CURRENCIES[st.currency]) st.currency = 'LKR';
+    if (!TEMPLATES.includes(st.template)) st.template = 'studio';
+    if (!/^#[0-9a-f]{3,8}$/i.test(st.accent)) st.accent = '#0A0A0A';
+    if (!['system', 'light', 'dark'].includes(st.theme)) st.theme = 'system';
+    s.services = Array.isArray(d.services) ? d.services.map(cleanService) : base.services;
+    s.clients = Array.isArray(d.clients) ? d.clients.map(cleanClient) : [];
+    s.docs = Array.isArray(d.docs) ? d.docs.map(normalizeDoc) : [];
+    s.current = d.current ? normalizeDoc(d.current) : null;
+    return s;
+  } catch (e) { console.warn('State load failed', e); return defaultState(); }
+}
+function deepMerge(a, b) {
+  for (const k in b) { if (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object') deepMerge(a[k], b[k]); else if (b[k] !== undefined) a[k] = b[k]; }
+  return a;
+}
+let saveTimer;
+function persist(now = false) {
+  clearTimeout(saveTimer);
+  const go = () => {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(S)); updateStorageInfo(); }
+    catch (e) { toast('Browser storage is full. Export a backup and remove large logo or signature images.', 'error'); }
+  };
+  now ? go() : (saveTimer = setTimeout(go, 250));
+}
+function updateStorageInfo() {
+  const el = $('#storageInfo'); if (!el) return;
+  try { const kb = (localStorage.getItem(LS_KEY) || '').length / 1024; el.textContent = `Using ${kb < 1024 ? kb.toFixed(0) + ' KB' : (kb / 1024).toFixed(2) + ' MB'} of browser storage. ${S.docs.length} documents, ${S.clients.length} clients, ${S.services.length} services.`; } catch { }
+}
+
+/* ---------- Documents ---------- */
+function normalizeDoc(d) {
+  const x = Object.assign({
+    id: uid(), type: 'invoice', number: '', status: 'draft', issueDate: todayISO(), dueDate: todayISO(), terms: 'net14', currency: 'LKR',
+    project: '', reference: '', client: {}, items: [], discountType: 'percent', discountValue: 0, taxEnabled: false, taxName: 'VAT', taxRate: 18,
+    otherLabel: '', otherAmount: 0, payments: [], notes: '', termsText: '', template: 'studio', accent: '#0A0A0A',
+    opts: {}, saved: false, createdAt: Date.now(), updatedAt: Date.now()
+  }, d);
+  x.id = safeId(x.id);
+  if (!TYPE_LABEL[x.type]) x.type = 'invoice';
+  if (!STATUS_LABEL[x.status]) x.status = x.type === 'receipt' ? 'issued' : 'draft';
+  if (!CURRENCIES[x.currency]) x.currency = 'LKR';
+  if (!TERMS.some(t => t.v === x.terms)) x.terms = 'custom';
+  if (!TEMPLATES.includes(x.template)) x.template = 'studio';
+  if (!/^#[0-9a-f]{3,8}$/i.test(x.accent)) x.accent = '#0A0A0A';
+  ['number', 'issueDate', 'dueDate', 'project', 'reference', 'notes', 'termsText', 'otherLabel', 'taxName'].forEach(k => { x[k] = x[k] == null ? '' : String(x[k]); });
+  x.client = Object.assign({ name: '', company: '', email: '', phone: '', address: '', taxId: '' }, x.client || {});
+  x.opts = Object.assign({ showBank: true, showSignature: true, showQR: true, showWords: true, showStamp: true, showNumbers: true, showDisc: 'auto' }, x.opts || {});
+  Object.keys(x.client).forEach(k => { x.client[k] = x.client[k] == null ? '' : String(x.client[k]); });
+  x.items = (Array.isArray(x.items) ? x.items : []).map(i => { const it = Object.assign({ id: uid(), name: '', desc: '', qty: 1, unit: 'item', rate: 0, disc: 0, taxable: true }, i); it.id = safeId(it.id); it.name = String(it.name ?? ''); it.desc = String(it.desc ?? ''); if (!UNITS.includes(it.unit)) it.unit = 'item'; return it; });
+  x.payments = (Array.isArray(x.payments) ? x.payments : []).map(p => { const y = Object.assign({ id: uid(), date: todayISO(), method: 'Bank transfer', ref: '', amount: 0 }, p); y.id = safeId(y.id); if (!METHODS.includes(y.method)) y.method = 'Other'; return y; });
+  return x;
+}
+function safeId(id) { return /^[\w-]{1,40}$/.test(String(id ?? '')) ? String(id) : uid(); }
+function cleanRecord(r, defaults) { const x = Object.assign({}, defaults, r && typeof r === 'object' ? r : {}); Object.keys(defaults).forEach(k => { if (typeof defaults[k] === 'string') x[k] = x[k] == null ? '' : String(x[k]); }); x.id = safeId(x.id); return x; }
+function cleanClient(c) { return cleanRecord(c, { id: '', name: '', company: '', email: '', phone: '', address: '', taxId: '' }); }
+function cleanService(s) { const x = cleanRecord(s, { id: '', category: 'Other', name: '', desc: '', unit: 'project' }); x.rate = num(x.rate); if (!UNITS.includes(x.unit)) x.unit = 'item'; return x; }
+function counterKey(type, year) { return `${type}-${year}`; }
+function peekNumber(type, iso) {
+  const st = S.settings; const year = (iso || todayISO()).slice(0, 4);
+  const used = S.docs.filter(d => d.type === type && d.number.startsWith(`${st.prefixes[type]}-${year}-`)).map(d => parseInt(d.number.split('-').pop(), 10) || 0);
+  const n = Math.max(st.counters[counterKey(type, year)] || 0, ...used, 0) + 1;
+  return `${st.prefixes[type]}-${year}-${pad(n, 4)}`;
+}
+function commitNumber(doc) {
+  const m = doc.number.match(/-(\d{4})-(\d+)$/); if (!m) return;
+  const k = counterKey(doc.type, m[1]); S.settings.counters[k] = Math.max(S.settings.counters[k] || 0, parseInt(m[2], 10));
+}
+function newDoc(type = 'invoice', patch = {}) {
+  const st = S.settings; const issue = todayISO();
+  const d = normalizeDoc({
+    type, status: type === 'receipt' ? 'issued' : 'draft', issueDate: issue, currency: st.currency, terms: type === 'invoice' ? st.terms : (type === 'quotation' ? 'custom' : 'receipt'),
+    taxEnabled: st.taxEnabled, taxName: st.taxName, taxRate: st.taxRate, notes: st.defaultNotes,
+    termsText: type === 'quotation' ? st.quoteTerms : (type === 'invoice' ? st.invoiceTerms : ''), template: st.template, accent: st.accent,
+    items: [{ name: '', desc: '', qty: 1, unit: 'item', rate: 0 }]
+  });
+  d.dueDate = type === 'quotation' ? addDays(issue, st.quoteValidity || 30) : addDays(issue, termDays(d.terms) ?? 0);
+  if (type === 'receipt') d.opts.showSignature = true;
+  Object.assign(d, patch);
+  d.number = peekNumber(type, d.issueDate);
+  return d;
+}
+const termDays = v => (TERMS.find(t => t.v === v) || {}).d;
+
+function calc(doc) {
+  let sub = 0, taxableSub = 0, lineDisc = 0;
+  const lines = doc.items.map(i => {
+    const gross = num(i.qty) * num(i.rate); const dAmt = gross * Math.min(100, Math.max(0, num(i.disc))) / 100; const amt = r2(gross - dAmt);
+    sub += amt; lineDisc += dAmt; if (i.taxable !== false) taxableSub += amt; return amt;
+  });
+  sub = r2(sub);
+  let discount = doc.discountType === 'fixed' ? num(doc.discountValue) : sub * Math.min(100, Math.max(0, num(doc.discountValue))) / 100;
+  discount = r2(Math.min(Math.max(discount, 0), sub));
+  const ratio = sub > 0 ? (sub - discount) / sub : 0;
+  const taxBase = r2(taxableSub * ratio);
+  const tax = doc.taxEnabled ? r2(taxBase * num(doc.taxRate) / 100) : 0;
+  const other = r2(num(doc.otherAmount));
+  const total = r2(sub - discount + tax + other);
+  const paid = doc.type === 'receipt' && !doc.payments.length ? total : r2(doc.payments.reduce((a, p) => a + num(p.amount), 0));
+  const balance = r2(total - paid);
+  return { lines, sub, lineDisc: r2(lineDisc), discount, taxBase, tax, other, total, paid, balance };
+}
+function effStatus(doc, t = calc(doc)) {
+  const today = todayISO();
+  if (doc.type === 'receipt') return 'paid';
+  if (doc.type === 'quotation') {
+    if (doc.status === 'sent' && doc.dueDate && doc.dueDate < today) return 'expired';
+    return doc.status;
+  }
+  if (doc.status === 'cancelled' || doc.status === 'draft') return doc.status;
+  if (t.total > 0 && t.balance <= 0.004) return 'paid';
+  if (doc.dueDate && doc.dueDate < today) return 'overdue';
+  if (t.paid > 0) return 'partial';
+  return 'sent';
+}
+const docTitle = d => TYPE_LABEL[d.type] + (d.number ? ' ' + d.number : '');
+const clientLabel = c => c.company || c.name || 'No client';
+
+/* ---------- Invoice renderer ---------- */
+const qrCache = {};
+function qrData(text) {
+  if (!text) return '';
+  if (qrCache[text]) return qrCache[text];
+  if (!window.QRCode) { loadScript(LIB.qr).then(() => schedulePreview()).catch(() => { }); return ''; }
+  try {
+    const tmp = document.createElement('div');
+    new QRCode(tmp, { text, width: 240, height: 240, colorDark: '#0A0A0A', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    const c = tmp.querySelector('canvas'); const url = c ? c.toDataURL('image/png') : (tmp.querySelector('img') || {}).src || '';
+    return (qrCache[text] = url);
+  } catch { return ''; }
+}
+function qrTextFor(doc, t) {
+  const st = S.settings;
+  if (st.qr.mode === 'url' && st.qr.url) return st.qr.url;
+  return `${st.company.name}\n${TYPE_LABEL[doc.type]} ${doc.number}\n${doc.type === 'receipt' ? 'Received' : 'Amount due'}: ${money(doc.type === 'receipt' ? t.paid : t.balance, doc.currency)}${doc.type !== 'receipt' ? '\nDue: ' + fmtDate(doc.dueDate) : ''}${st.company.website ? '\n' + st.company.website : ''}`;
+}
+const invoiceRows = doc => doc.items.filter(i => i.name || i.desc || num(i.rate));
+// Logo sources for a document: { ink, paper } for the brand lockup, { custom } for an uploaded logo, {} for none
+function docLogos() {
+  const l = S.settings.logo;
+  return l === BRAND_LOGO ? BRAND_URI : l ? { custom: l } : {};
+}
+function renderInvoice(doc, { exporting = false, logos, page } = {}) {
+  const st = S.settings; const co = st.company; const c = doc.client; const t = calc(doc); const status = effStatus(doc, t); const cur = doc.currency;
+  const showDisc = doc.items.some(i => num(i.disc) > 0);
+  const hasTax = doc.taxEnabled && t.tax > 0; const typeName = TYPE_LABEL[doc.type];
+  const L = logos || docLogos();
+  const brand = L.ink
+    ? `<img class="lg lg-ink" src="${esc(L.ink)}" alt="${esc(co.name)}"><img class="lg lg-paper" src="${esc(L.paper)}" alt="${esc(co.name)}">`
+    : L.custom
+      ? `<img src="${esc(L.custom)}" alt="${esc(co.name)}" onerror="this.style.display='none';var n=this.nextElementSibling;if(n)n.style.display='block'"><div class="wordmark" style="display:none">${esc(co.name)}</div>`
+      : `<div class="wordmark">${esc(co.name)}</div>`;
+  const dueLabel = doc.type === 'quotation' ? 'Valid until' : 'Due date';
+  const termL = (TERMS.find(x => x.v === doc.terms) || {}).l;
+  const kv = [
+    [doc.type === 'receipt' ? 'Payment date' : 'Issue date', fmtDate(doc.issueDate)],
+    doc.type !== 'receipt' ? [dueLabel, fmtDate(doc.dueDate)] : null,
+    doc.type === 'invoice' && doc.terms !== 'custom' ? ['Terms', termL] : null,
+    doc.reference ? ['Reference', esc(doc.reference)] : null,
+    ['Currency', cur]
+  ].filter(Boolean);
+  const coLines = [co.address, co.phone, co.email, co.website].filter(Boolean).map(esc).join('\n');
+  const coIds = [co.regNo ? 'Reg. No: ' + esc(co.regNo) : '', co.taxId ? 'VAT/TIN: ' + esc(co.taxId) : ''].filter(Boolean).join('\n');
+  const clLines = [c.company && c.name ? c.name : '', c.address, c.phone, c.email, c.taxId ? 'VAT/TIN: ' + c.taxId : ''].filter(Boolean).map(esc).join('\n');
+  // page: { from, to, first, last, no, count } renders one A4 page of a multi-page export
+  const pg = page || { from: 0, to: Infinity, first: true, last: true, no: 1, count: 1 };
+  const rows = invoiceRows(doc).slice(pg.from, pg.to).map((i, k) => `
+    <tr>
+      ${doc.opts.showNumbers ? `<td class="idx num">${pg.from + k + 1}</td>` : ''}
+      <td><div class="iname">${esc(i.name) || '&nbsp;'}</div>${i.desc ? `<div class="idesc">${esc(i.desc)}</div>` : ''}</td>
+      <td class="r num">${esc(+num(i.qty).toFixed(2))} <span class="muted">${esc(i.unit && i.unit !== 'item' ? i.unit + (num(i.qty) === 1 ? '' : 's') : '')}</span></td>
+      <td class="r num">${money(num(i.rate), cur)}</td>
+      ${showDisc ? `<td class="r num">${num(i.disc) ? num(i.disc) + '%' : '—'}</td>` : ''}
+      <td class="r num" style="font-weight:700">${money(t.lines[doc.items.indexOf(i)], cur)}</td>
+    </tr>`).join('');
+  const cols = (doc.opts.showNumbers ? 1 : 0) + 4 + (showDisc ? 1 : 0);
+  const discLabel = doc.discountType === 'percent' && num(doc.discountValue) ? `Discount (${num(doc.discountValue)}%)` : 'Discount';
+  const totals = [
+    ['Subtotal', money(t.sub, cur)],
+    t.discount ? [discLabel, '-' + money(t.discount, cur)] : null,
+    hasTax ? [`${esc(doc.taxName || 'Tax')} (${num(doc.taxRate)}%)`, money(t.tax, cur)] : null,
+    t.other ? [esc(doc.otherLabel || 'Other charges'), money(t.other, cur)] : null
+  ].filter(Boolean);
+  const paidRows = doc.type !== 'quotation' && t.paid ? `<tr><td>${doc.type === 'receipt' ? 'Amount received' : 'Paid to date'}</td><td class="r num">-${money(t.paid, cur)}</td></tr>` : '';
+  const balanceLabel = doc.type === 'quotation' ? 'Quoted total' : doc.type === 'receipt' ? 'Amount received' : (status === 'paid' ? 'Paid in full' : 'Balance due');
+  const balanceVal = doc.type === 'quotation' ? t.total : doc.type === 'receipt' ? t.paid : Math.max(t.balance, 0);
+  const wordsAmt = doc.type === 'quotation' ? t.total : doc.type === 'receipt' ? t.paid : t.total;
+  const b = st.bank;
+  const bankRows = [['Account name', b.accountName], ['Account no.', b.accountNo], ['Bank', b.bankName], ['Branch', b.branch], ['SWIFT', b.swift], ['Other', b.other]].filter(r => r[1]);
+  const showBank = doc.opts.showBank && doc.type !== 'receipt' && bankRows.length > 0;
+  const qr = doc.opts.showQR ? qrData(qrTextFor(doc, t)) : '';
+  const stampMap = { paid: 'Paid', overdue: 'Overdue', draft: 'Draft', cancelled: 'Cancelled', accepted: 'Accepted' };
+  const stamp = doc.opts.showStamp && stampMap[status] ? `<div class="stamp ${status}">${stampMap[status]}</div>` : '';
+  const sig = st.signatory;
+  const showSig = doc.opts.showSignature && (sig.image || sig.name);
+  const payList = doc.type !== 'quotation' && doc.payments.length ? `<div class="paylist"><h4>Payment history</h4>${doc.payments.map(p => `<div><span>${fmtDate(p.date)} · ${esc(p.method)}${p.ref ? ' · ' + esc(p.ref) : ''}</span><span class="num">${money(num(p.amount), cur)}</span></div>`).join('')}</div>` : '';
+  const statusChip = doc.type === 'receipt' ? '' : `<div class="status ${status}">${STATUS_LABEL[status] || ''}</div>`;
+
+  const hasRows = rows || pg.first;
+  return `<div class="inv tpl-${esc(doc.template || 'studio')}${exporting ? ' export' : ''}${page ? ' paged' : ''}" style="--accent:${esc(doc.accent || '#0A0A0A')};--logo-h:${num(st.logoHeight) || 52}px${pg.fit ? `;width:${794 / pg.fit}px;height:${PAGE_H / pg.fit}px` : ''}">
+    <div class="rail"></div>
+    ${pg.first ? stamp : ''}
+    ${pg.first ? '' : `<div class="cont pad"><b>${esc(co.name)}</b><span>${typeName} <b class="num">${esc(doc.number)}</b> · continued</span></div>`}
+    ${pg.first ? `<div class="head pad">
+      <div class="bands" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="brand">${brand}${co.tagline ? `<div class="tag">${esc(co.tagline)}</div>` : ''}</div>
+      <div class="title"><h1>${typeName}</h1><div class="no num">${esc(doc.number)}</div>${statusChip}</div>
+    </div>
+    <div class="pad">
+      <div class="meta">
+        <div><h4>From</h4><p class="strong">${esc(co.name)}</p><p class="muted">${coLines}</p>${coIds ? `<p class="muted" style="margin-top:4px">${coIds}</p>` : ''}</div>
+        <div><h4>${doc.type === 'receipt' ? 'Received from' : doc.type === 'quotation' ? 'Prepared for' : 'Bill to'}</h4><p class="strong">${esc(c.company || c.name) || '<span class="muted">Client name</span>'}</p><p class="muted">${clLines}</p></div>
+        <div><h4>Details</h4><dl class="kv">${kv.map(([k, v]) => `<dt>${k}</dt><dd class="num">${v}</dd>`).join('')}</dl></div>
+      </div>
+      ${doc.project ? `<div class="project"><span class="muted">Project</span> <b>${esc(doc.project)}</b></div>` : ''}` : '<div class="pad">'}
+      ${hasRows ? `<table class="items">
+        <thead><tr>${doc.opts.showNumbers ? '<th>#</th>' : ''}<th>Description</th><th class="r">Qty</th><th class="r">Rate</th>${showDisc ? '<th class="r">Disc.</th>' : ''}<th class="r">Amount</th></tr></thead>
+        <tbody>${rows || `<tr><td colspan="${cols}" class="empty-items">Add line items to see them here.</td></tr>`}</tbody>
+      </table>` : ''}
+      ${pg.last ? '' : '<div class="more muted">Continued on the next page</div>'}
+      ${pg.last ? `<div class="sum">
+        <div>
+          ${doc.opts.showWords && wordsAmt > 0 ? `<div class="words"><b>Amount in words</b>${esc(amountInWords(wordsAmt, cur))}</div>` : ''}
+          ${payList}
+        </div>
+        <div>
+          <table class="totals num">
+            ${totals.map(([k, v]) => `<tr><td>${k}</td><td class="r">${v}</td></tr>`).join('')}
+            <tr class="grand"><td>Total</td><td class="r">${money(t.total, cur)}</td></tr>
+            ${doc.type === 'invoice' ? paidRows : ''}
+          </table>
+          <div class="balance"><span>${balanceLabel}</span><span class="num">${money(balanceVal, cur)}</span></div>
+        </div>
+      </div>
+      ${(showBank || qr) ? `<div class="lower">
+        <div class="box">${showBank ? `<h4>Payment details</h4><dl class="bank">${bankRows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` : ''}</div>
+        ${qr ? `<div class="qr"><img src="${qr}" alt="QR code"><small>${st.qr.mode === 'url' ? 'Scan to open' : 'Scan for details'}</small></div>` : ''}
+      </div>` : ''}
+      ${(doc.notes || doc.termsText) ? `<div class="notes">
+        ${doc.notes ? `<div class="box"><h4>Note</h4><p>${esc(doc.notes)}</p></div>` : '<div></div>'}
+        ${doc.termsText ? `<div class="box"><h4>Terms</h4><p class="muted" style="font-size:11px">${esc(doc.termsText)}</p></div>` : ''}
+      </div>` : ''}
+      ${showSig ? `<div class="sign"><div>${sig.image ? `<img src="${esc(sig.image)}" alt="Signature">` : '<div style="height:40px"></div>'}<div class="line">${esc(sig.name || co.name)}</div><small>${esc(sig.title || '')}</small></div></div>` : ''}` : ''}
+    </div>
+    <div class="grow"></div>
+    <div class="foot pad"><span><b>${esc(co.name)}</b>${co.motto ? ` <span class="motto">· ${esc(co.motto)}</span>` : ''}</span><span>${[co.website, co.phone, co.email].filter(Boolean).map(esc).join(' · ')}${pg.count > 1 ? ` · Page ${pg.no} of ${pg.count}` : ''}</span></div>
+  </div>`;
+}
+
+/* ---------- Views & navigation ---------- */
+function go(view) {
+  if (!$('#view-' + view)) view = 'dashboard';
+  closeViewer();
+  UI.view = view; S.lastView = view; persist();
+  $$('.view').forEach(v => v.hidden = v.id !== 'view-' + view);
+  $$('.nav-link').forEach(b => { const on = b.dataset.nav === view; b.classList.toggle('text-brand', on); b.classList.toggle('bg-brand-50', on); b.setAttribute('aria-current', on ? 'page' : 'false'); });
+  $$('.mnav').forEach(b => { const on = b.dataset.nav === view; b.classList.toggle('text-brand', on); b.classList.toggle('text-neutral-500', !on); });
+  if (view === 'dashboard') renderDashboard();
+  if (view === 'documents') renderDocs();
+  if (view === 'clients') renderClients();
+  if (view === 'services') renderServices();
+  if (view === 'settings') fillSettings();
+  if (view === 'editor') { if (!S.current) S.current = newDoc('invoice'); fillEditor(); fitPreview(); }
+  const hash = '#' + view; if (location.hash !== hash) history.replaceState(null, '', hash);
+  window.scrollTo({ top: 0 });
+}
+
+/* ---------- Dashboard ---------- */
+function renderDashboard() {
+  const h = new Date().getHours();
+  $('#greeting').textContent = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  const empty = S.docs.length === 0;
+  $('#dashEmpty').hidden = !empty; $('#dashBody').hidden = empty;
+  if (empty) { $('#dashSub').textContent = 'Nothing billed yet.'; return; }
+  const cur = S.settings.currency; const year = String(new Date().getFullYear());
+  const invs = S.docs.filter(d => d.type === 'invoice' && d.currency === cur && !['draft', 'cancelled'].includes(d.status));
+  const withT = invs.map(d => ({ d, t: calc(d), s: effStatus(d) }));
+  const yearBilled = withT.filter(x => x.d.issueDate.startsWith(year)).reduce((a, x) => a + x.t.total, 0);
+  const collectedYear = withT.reduce((a, x) => a + x.d.payments.filter(p => (p.date || '').startsWith(year)).reduce((s, p) => s + num(p.amount), 0), 0);
+  const outstanding = withT.filter(x => x.t.balance > 0).reduce((a, x) => a + x.t.balance, 0);
+  const overdue = withT.filter(x => x.s === 'overdue');
+  const overdueAmt = overdue.reduce((a, x) => a + x.t.balance, 0);
+  const quotes = S.docs.filter(d => d.type === 'quotation' && d.currency === cur);
+  const openQ = quotes.filter(q => ['sent', 'draft'].includes(effStatus(q)));
+  const decided = quotes.filter(q => ['accepted', 'declined'].includes(q.status));
+  const winRate = decided.length ? Math.round(decided.filter(q => q.status === 'accepted').length / decided.length * 100) : null;
+  $('#dashSub').textContent = `Figures in ${cur} for ${year}. Drafts and cancelled invoices are left out.`;
+  const card = (label, value, sub, tone = '') => `<div class="panel p-4"><div class="text-[13px] font-semibold text-neutral-500 dark:text-neutral-400">${label}</div><div class="num mt-1 truncate text-xl font-extrabold tracking-tight sm:text-2xl ${tone}" title="${esc(value)}">${value}</div><div class="mt-1 truncate text-xs text-neutral-500 dark:text-neutral-400">${sub}</div></div>`;
+  $('#statCards').innerHTML =
+    card('Billed this year', moneyShort(yearBilled, cur), `${withT.filter(x => x.d.issueDate.startsWith(year)).length} invoices`) +
+    card('Collected this year', moneyShort(collectedYear, cur), yearBilled ? `${Math.round(collectedYear / yearBilled * 100)}% of billed` : 'No payments yet', 'text-lagoon dark:text-accent') +
+    card('Outstanding', moneyShort(outstanding, cur), `${withT.filter(x => x.t.balance > 0).length} unpaid invoices`) +
+    card('Overdue', moneyShort(overdueAmt, cur), overdue.length ? `${overdue.length} past due date` : 'Nothing overdue', overdue.length ? 'text-amber dark:text-amber-400' : '');
+
+  // chart: last 6 months
+  const months = []; const now = new Date();
+  for (let i = 5; i >= 0; i--) { const d = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push({ key: `${d.getFullYear()}-${pad(d.getMonth() + 1)}`, label: d.toLocaleDateString('en-GB', { month: 'short' }), billed: 0, coll: 0 }); }
+  withT.forEach(x => { const m = months.find(m => x.d.issueDate.startsWith(m.key)); if (m) m.billed += x.t.total; x.d.payments.forEach(p => { const pm = months.find(m => (p.date || '').startsWith(m.key)); if (pm) pm.coll += num(p.amount); }); });
+  const max = Math.max(1, ...months.map(m => Math.max(m.billed, m.coll)));
+  UI.chart = { months, max, cur }; drawChart();
+  $('#chartNote').textContent = `Last 6 months, ${cur}. Highest month ${moneyShort(max, cur)}.`;
+
+  // attention
+  const dueSoon = withT.filter(x => x.s !== 'overdue' && x.t.balance > 0 && x.d.dueDate >= todayISO() && daysBetween(todayISO(), x.d.dueDate) <= 7);
+  const att = [
+    ...overdue.sort((a, b) => a.d.dueDate.localeCompare(b.d.dueDate)).map(x => ({ d: x.d, tone: 'amber', text: `${daysBetween(x.d.dueDate, todayISO())} days overdue`, amt: x.t.balance })),
+    ...dueSoon.map(x => ({ d: x.d, tone: 'blue', text: x.d.dueDate === todayISO() ? 'Due today' : `Due in ${daysBetween(todayISO(), x.d.dueDate)} days`, amt: x.t.balance })),
+    ...openQ.filter(q => q.status === 'sent').map(q => ({ d: q, tone: 'slate', text: `Quote awaiting reply, valid to ${fmtDate(q.dueDate)}`, amt: calc(q).total }))
+  ].slice(0, 6);
+  $('#attention').innerHTML = att.length ? att.map(a => `<button class="flex w-full items-center gap-3 rounded-xl border border-line p-3 text-left transition hover:border-brand dark:border-edge" data-open="${a.d.id}">
+      <span class="h-9 w-1 shrink-0 rounded-full ${a.tone === 'amber' ? 'bg-amber' : a.tone === 'blue' ? 'bg-accent' : 'bg-neutral-300 dark:bg-neutral-600'}"></span>
+      <span class="min-w-0 flex-1"><span class="block truncate text-sm font-bold">${esc(clientLabel(a.d.client))}</span><span class="block truncate text-xs text-neutral-500 dark:text-neutral-400">${esc(a.d.number)} · ${a.text}</span></span>
+      <span class="num shrink-0 text-sm font-bold">${moneyShort(a.amt, a.d.currency)}</span></button>`).join('')
+    : `<p class="rounded-xl bg-neutral-50 p-4 text-sm text-neutral-500 dark:bg-white/5 dark:text-neutral-400">All clear. No overdue invoices or payments due this week.${winRate !== null ? ` Quote acceptance rate: ${winRate}%.` : ''}</p>`;
+
+  // recent
+  const recent = [...S.docs].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 6);
+  $('#recentDocs').innerHTML = recent.map(docRow).join('');
+  // top clients
+  const byClient = {};
+  withT.forEach(x => { const k = clientLabel(x.d.client); byClient[k] = (byClient[k] || 0) + x.t.total; });
+  const top = Object.entries(byClient).sort((a, b) => b[1] - a[1]).slice(0, 5); const tmax = top[0]?.[1] || 1;
+  $('#topClients').innerHTML = top.length ? top.map(([n, v]) => `<div><div class="flex justify-between gap-3 text-sm"><span class="truncate font-semibold">${esc(n)}</span><span class="num shrink-0 font-bold">${moneyShort(v, cur)}</span></div><div class="mt-1.5 h-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800"><div class="h-1.5 rounded-full bg-ink dark:bg-white" style="width:${Math.max(4, v / tmax * 100)}%"></div></div></div>`).join('')
+    : '<p class="text-sm text-neutral-500 dark:text-neutral-400">Clients appear here once invoices are sent.</p>';
+}
+
+function drawChart() {
+  const el = $('#chart'); if (!el || !UI.chart || UI.view !== 'dashboard') return;
+  const { months, max, cur } = UI.chart;
+  const W = Math.max(260, el.clientWidth || 600); const small = W < 480;
+  const H = small ? 170 : 210, top = 8, axis = 24, plotH = H - top;
+  const gw = W / months.length, bw = Math.max(8, Math.min(28, gw / 3.4)), gap = small ? 2 : 4;
+  let svg = `<svg width="${W}" height="${H + axis}" viewBox="0 0 ${W} ${H + axis}" role="img" aria-label="Billed and collected by month" style="display:block;max-width:100%">`;
+  [0.25, 0.5, 0.75, 1].forEach(f => { const y = H - f * plotH; svg += `<line x1="0" x2="${W}" y1="${y}" y2="${y}" stroke="currentColor" class="text-neutral-200 dark:text-neutral-800" stroke-dasharray="3 4"/>`; });
+  svg += `<text x="0" y="${top + 10}" font-size="11" fill="currentColor" class="text-neutral-400">${esc(moneyShort(max, cur))}</text>`;
+  svg += `<line x1="0" x2="${W}" y1="${H}" y2="${H}" stroke="currentColor" class="text-neutral-300 dark:text-neutral-700"/>`;
+  months.forEach((m, i) => {
+    const cx = gw * i + gw / 2; const hb = m.billed / max * plotH; const hc = m.coll / max * plotH;
+    svg += `<rect x="${cx - bw - gap / 2}" y="${H - hb}" width="${bw}" height="${Math.max(hb, m.billed ? 2 : 0)}" rx="${small ? 3 : 4}" fill="currentColor" class="text-ink dark:text-white"><title>${m.label}: billed ${money(m.billed, cur)}</title></rect>`;
+    svg += `<rect x="${cx + gap / 2}" y="${H - hc}" width="${bw}" height="${Math.max(hc, m.coll ? 2 : 0)}" rx="${small ? 3 : 4}" fill="currentColor" class="text-accent"><title>${m.label}: collected ${money(m.coll, cur)}</title></rect>`;
+    svg += `<text x="${cx}" y="${H + 17}" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" class="text-neutral-500">${m.label}</text>`;
+  });
+  el.innerHTML = svg + '</svg>';
+}
+
+/* ---------- Document list ---------- */
+function docRow(d) {
+  const t = calc(d); const s = effStatus(d, t);
+  const sub = d.type === 'invoice' && t.balance > 0 && t.paid > 0 ? `Due ${money(t.balance, d.currency)}` : '';
+  const tone = d.type === 'invoice' ? 'bg-brand-50 text-brand' : d.type === 'quotation' ? 'bg-blue-50 text-blue-700 dark:bg-accent/15 dark:text-accent' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300';
+  return `<div class="flex items-center gap-1 border-b border-line py-1 last:border-0 dark:border-edge">
+    <button class="flex min-w-0 flex-1 items-center gap-3 rounded-xl py-2.5 pr-1 text-left" data-open="${d.id}">
+      <span class="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl min-[400px]:flex ${tone}">${icon(d.type === 'receipt' ? 'receipt' : 'file', 18)}</span>
+      <span class="min-w-0 flex-1">
+        <span class="flex items-baseline justify-between gap-3">
+          <span class="min-w-0 truncate font-bold">${esc(clientLabel(d.client))}</span>
+          <span class="num shrink-0 font-bold">${money(t.total, d.currency)}</span>
+        </span>
+        <span class="mt-0.5 flex items-center justify-between gap-3">
+          <span class="min-w-0 truncate text-xs text-neutral-500 dark:text-neutral-400">${esc(d.number)} · ${fmtDate(d.issueDate)}${d.project ? '<span class="hidden sm:inline"> · ' + esc(d.project) + '</span>' : ''}</span>
+          <span class="flex shrink-0 items-center gap-2">${sub ? `<span class="num hidden text-xs font-semibold text-neutral-500 min-[400px]:inline dark:text-neutral-400">${sub}</span>` : ''}<span class="chip ${STATUS_CHIP[s] || ''}">${STATUS_LABEL[s] || s}</span></span>
+        </span>
+      </span>
+    </button>
+    <button class="icon-btn shrink-0" data-docmenu="${d.id}" aria-label="Actions for ${esc(d.number)}">${icon('more', 18)}</button>
+  </div>`;
+}
+function renderDocs() {
+  const q = $('#docSearch').value.trim().toLowerCase(); const ty = UI.docType || '';
+  $$('#docTypeChips [data-doctype]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.doctype === ty))); const stf = $('#docStatus').value; const sort = $('#docSort').value;
+  const stSel = $('#docStatus');
+  if (!stSel.dataset.filled) { stSel.innerHTML = '<option value="">Any status</option>' + ['draft', 'sent', 'partial', 'paid', 'overdue', 'accepted', 'declined', 'expired', 'cancelled'].map(s => `<option value="${s}">${STATUS_LABEL[s]}</option>`).join(''); stSel.dataset.filled = 1; }
+  let list = S.docs.map(d => ({ d, t: calc(d), s: effStatus(d) }));
+  if (ty) list = list.filter(x => x.d.type === ty);
+  if (stf) list = list.filter(x => x.s === stf);
+  if (q) list = list.filter(x => [x.d.number, x.d.client.name, x.d.client.company, x.d.client.email, x.d.project, x.d.reference].join(' ').toLowerCase().includes(q));
+  const cmp = { 'date-desc': (a, b) => b.d.issueDate.localeCompare(a.d.issueDate) || b.d.createdAt - a.d.createdAt, 'date-asc': (a, b) => a.d.issueDate.localeCompare(b.d.issueDate), 'amt-desc': (a, b) => b.t.total - a.t.total, 'due-asc': (a, b) => a.d.dueDate.localeCompare(b.d.dueDate), 'num-desc': (a, b) => b.d.number.localeCompare(a.d.number) }[sort];
+  list.sort(cmp);
+  $('#docsSub').textContent = S.docs.length ? `${list.length} of ${S.docs.length} documents` : 'Saved invoices, quotations and receipts appear here.';
+  $('#docList').innerHTML = list.length ? `<div class="panel px-2 sm:px-4">${list.map(x => docRow(x.d)).join('')}</div>`
+    : `<div class="panel p-8 text-center"><p class="font-bold">${S.docs.length ? 'No documents match these filters' : 'No saved documents yet'}</p><p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">${S.docs.length ? 'Clear the search or choose a different status.' : 'Create an invoice or quotation and save it to see it here.'}</p>${S.docs.length ? '' : '<button class="btn-primary mt-4" data-action="new" data-type="invoice">Create invoice</button>'}</div>`;
+}
+
+/* ---------- Editor ---------- */
+const cur = () => S.current;
+function fillSelect(sel, opts, val) { sel.innerHTML = opts.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join(''); if (val !== undefined) sel.value = val; }
+function fillEditor() {
+  const d = cur();
+  $$('#typeSeg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.settype === d.type)));
+  fillSelect($('#f-status'), STATUSES[d.type]);
+  fillSelect($('#f-currency'), Object.entries(CURRENCIES).map(([k, v]) => [k, v.label]));
+  fillSelect($('#f-terms'), TERMS.map(t => [t.v, t.l]));
+  $$('#view-editor [data-f]').forEach(el => {
+    const v = getPath(d, el.dataset.f);
+    if (el.type === 'checkbox') el.checked = !!v; else el.value = v ?? '';
+  });
+  if (!STATUSES[d.type].some(s => s[0] === d.status)) { d.status = STATUSES[d.type][0][0]; $('#f-status').value = d.status; }
+  $('#swatches').innerHTML = SWATCHES.map(c => `<button class="h-9 w-9 rounded-full border-2 lg:h-7 lg:w-7 ${c.toLowerCase() === (d.accent || '').toLowerCase() ? 'border-ink dark:border-white' : 'border-transparent'}" style="background:${c}" data-swatch="${c}" aria-label="Accent ${c}"></button>`).join('');
+  $('#optToggles').innerHTML = [['showBank', 'Bank details'], ['showQR', 'QR code'], ['showWords', 'Amount in words'], ['showSignature', 'Signature'], ['showStamp', 'Status stamp'], ['showNumbers', 'Line numbers']]
+    .map(([k, l]) => `<label class="flex items-center justify-between gap-3 rounded-lg border border-line px-3 py-2.5 text-sm font-semibold dark:border-edge">${l}<input type="checkbox" class="h-4 w-4 accent-brand" data-f="opts.${k}" ${d.opts[k] ? 'checked' : ''}></label>`).join('');
+  $('#serviceNames').innerHTML = S.services.map(s => `<option value="${esc(s.name)}">${esc(s.category)} · ${money(s.rate, S.settings.currency)}/${esc(s.unit)}</option>`).join('');
+  syncTypeUI(); renderItems(); renderPayments(); updateTotals(); renderPreview(); setDirty(UI.dirty);
+}
+function syncTypeUI() {
+  const d = cur();
+  $('#wrap-terms').hidden = d.type !== 'invoice';
+  $('#wrap-due').hidden = d.type === 'receipt';
+  $('#lbl-due').textContent = d.type === 'quotation' ? 'Valid until' : 'Due date';
+  $('#lbl-issue').textContent = d.type === 'receipt' ? 'Payment date' : 'Issue date';
+  $('#paymentsPanel').hidden = d.type === 'quotation';
+  $('#payTitle').textContent = d.type === 'receipt' ? 'Payment received' : 'Payments received';
+  $('#payHint').textContent = d.type === 'receipt' ? 'Record how and when the money arrived. The receipt shows the amount received.' : 'Advances and part payments reduce the balance due.';
+  $('#taxFields').style.opacity = d.taxEnabled ? 1 : .5;
+  $$('#taxFields input').forEach(i => i.disabled = !d.taxEnabled);
+  $('#edTitle').textContent = (d.saved ? '' : 'New ') + TYPE_LABEL[d.type].toLowerCase().replace(/^./, c => d.saved ? c.toUpperCase() : c) + (d.saved ? ' ' + d.number : '');
+  $('#edCrumb').textContent = d.saved ? d.number : 'New ' + TYPE_LABEL[d.type].toLowerCase();
+  $('#barLabel').textContent = d.type === 'quotation' ? 'Quoted total' : d.type === 'receipt' ? 'Amount received' : 'Balance due';
+}
+function renderItems() {
+  const d = cur(); const t = calc(d);
+  $('#itemCount').textContent = d.items.length ? `(${d.items.length})` : '';
+  $('#itemsList').innerHTML = d.items.map((it, k) => `
+    <div class="rounded-xl border border-line p-2.5 sm:p-3 dark:border-edge" data-item="${it.id}">
+      <div class="flex items-start gap-1.5 sm:gap-2">
+        <span class="mt-3 w-4 shrink-0 sm:w-5 text-center text-xs font-bold text-neutral-400 num">${k + 1}</span>
+        <div class="min-w-0 flex-1 space-y-2">
+          <input class="field font-semibold" placeholder="Service or item" list="serviceNames" data-ik="name" value="${esc(it.name)}" aria-label="Item ${k + 1} name">
+          <textarea class="field text-base lg:text-sm" rows="1" placeholder="Description (optional)" data-ik="desc" aria-label="Item ${k + 1} description">${esc(it.desc)}</textarea>
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-[1fr_1.1fr_1.5fr_.9fr]">
+            <div><label class="lbl text-xs">Qty</label><input type="number" step="any" min="0" class="field num" data-ik="qty" value="${esc(it.qty)}" inputmode="decimal"></div>
+            <div><label class="lbl text-xs">Unit</label><select class="field" data-ik="unit">${UNITS.map(u => `<option ${u === it.unit ? 'selected' : ''}>${u}</option>`).join('')}</select></div>
+            <div><label class="lbl text-xs">Rate</label><input type="number" step="any" min="0" class="field num" data-ik="rate" value="${esc(it.rate)}" inputmode="decimal"></div>
+            <div><label class="lbl text-xs">Disc. %</label><input type="number" step="any" min="0" max="100" class="field num" data-ik="disc" value="${esc(it.disc || '')}" placeholder="0" inputmode="decimal"></div>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 pt-0.5">
+            <label class="flex min-h-10 items-center gap-2 text-xs font-semibold text-neutral-500 dark:text-neutral-400"><input type="checkbox" class="h-4 w-4 accent-brand" data-ik="taxable" ${it.taxable !== false ? 'checked' : ''}>Taxable</label>
+            <div class="flex items-center">
+              <button class="icon-btn sm:h-8 sm:w-8" data-imove="-1" aria-label="Move up" ${k === 0 ? 'disabled' : ''}>${icon('up', 16)}</button>
+              <button class="icon-btn sm:h-8 sm:w-8" data-imove="1" aria-label="Move down" ${k === d.items.length - 1 ? 'disabled' : ''}>${icon('down', 16)}</button>
+              <button class="icon-btn sm:h-8 sm:w-8" data-idup aria-label="Duplicate item">${icon('copy', 16)}</button>
+              <button class="icon-btn sm:h-8 sm:w-8 hover:!text-red-600" data-idel aria-label="Remove item">${icon('trash', 16)}</button>
+              <span class="num ml-1 min-w-[88px] text-right text-sm font-extrabold sm:ml-2" data-iamt>${money(t.lines[k], d.currency)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`).join('') || '<p class="rounded-xl bg-neutral-50 p-4 text-center text-sm text-neutral-500 dark:bg-white/5 dark:text-neutral-400">No line items yet. Add one, or pick from your services.</p>';
+  $$('#itemsList textarea').forEach(autoGrow);
+}
+function autoGrow(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight + 2, 220) + 'px'; }
+function renderPayments() {
+  const d = cur();
+  $('#paymentsList').innerHTML = d.payments.map(p => `
+    <div class="grid grid-cols-2 gap-2 rounded-xl border border-line p-2.5 sm:p-3 md:grid-cols-[1fr_1.2fr_1fr_1fr_auto] dark:border-edge" data-pay="${p.id}">
+      <div><label class="lbl text-xs">Date</label><input type="date" class="field" data-pk="date" value="${esc(p.date)}"></div>
+      <div><label class="lbl text-xs">Method</label><select class="field" data-pk="method">${METHODS.map(m => `<option ${m === p.method ? 'selected' : ''}>${m}</option>`).join('')}</select></div>
+      <div><label class="lbl text-xs">Reference</label><input class="field" data-pk="ref" value="${esc(p.ref)}" placeholder="Txn / cheque no."></div>
+      <div><label class="lbl text-xs">Amount</label><input type="number" step="any" min="0" class="field num" data-pk="amount" value="${esc(p.amount)}" inputmode="decimal"></div>
+      <div class="col-span-2 flex items-end justify-end md:col-span-1"><button class="icon-btn hover:!text-red-600" data-pdel aria-label="Remove payment">${icon('trash', 16)}</button></div>
+    </div>`).join('') || (d.type === 'receipt' ? '<p class="rounded-xl bg-neutral-50 p-3 text-sm text-neutral-500 dark:bg-white/5 dark:text-neutral-400">No payment recorded, so the receipt shows the full total as received.</p>' : '');
+}
+function updateTotals() {
+  const d = cur(); const t = calc(d); const c = d.currency;
+  const cells = [['Subtotal', t.sub], ['Discount', -t.discount], [d.taxEnabled ? (d.taxName || 'Tax') : 'Tax', t.tax], ['Total', t.total], [d.type === 'quotation' ? 'Quoted' : d.type === 'receipt' ? 'Received' : 'Balance', d.type === 'quotation' ? t.total : d.type === 'receipt' ? t.paid : t.balance]];
+  $('#liveTotals').innerHTML = cells.map(([l, v], i) => `<div class="${i < 3 ? 'hidden sm:block' : ''}"><div class="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400">${esc(l)}</div><div class="num truncate text-[13px] sm:text-sm font-extrabold ${i === 4 ? 'text-brand' : ''}" title="${money(v, c)}">${money(v, c)}</div></div>`).join('');
+  $('#barTotal').textContent = money(cells[4][1], c);
+  $$('#itemsList [data-item]').forEach((el, k) => { const a = el.querySelector('[data-iamt]'); if (a) a.textContent = money(t.lines[k], c); });
+}
+function renderPreview() {
+  if (UI.view !== 'editor' || !cur()) return;
+  const paper = $('#previewPaper'); paper.innerHTML = renderInvoice(cur());
+  paper.querySelectorAll('img').forEach(i => { if (!i.complete) i.addEventListener('load', fitPreview, { once: true }); });
+  fitPreview();
+}
+const schedulePreview = debounce(renderPreview, 140);
+function fitPreview() {
+  const stage = $('#previewStage'), paper = $('#previewPaper'); if (!stage || !paper.firstElementChild) return;
+  const w = stage.clientWidth; if (!w) return;
+  const s = Math.min(1, w / 794);
+  paper.style.transform = `scale(${s})`;
+  stage.style.height = Math.ceil(paper.firstElementChild.offsetHeight * s) + 'px';
+}
+function setDirty(v) { UI.dirty = v; $('#dirtyDot').hidden = !(v && cur()?.saved); }
+function touch() { const d = cur(); d.updatedAt = Date.now(); setDirty(true); persist(); updateTotals(); schedulePreview(); }
+
+function onDocField(el) {
+  const d = cur(); const f = el.dataset.f; let v;
+  if (el.type === 'checkbox') v = el.checked; else if (el.type === 'number') v = el.value === '' ? '' : num(el.value); else v = el.value;
+  setPath(d, f, v);
+  if (f === 'terms') { const n = termDays(v); if (n != null) { d.dueDate = addDays(d.issueDate, n); $('#f-due').value = d.dueDate; } }
+  if (f === 'issueDate' && d.type === 'invoice') { const n = termDays(d.terms); if (n != null) { d.dueDate = addDays(d.issueDate, n); $('#f-due').value = d.dueDate; } }
+  if (f === 'issueDate' && d.type === 'quotation' && !d.saved) { d.dueDate = addDays(d.issueDate, S.settings.quoteValidity || 30); $('#f-due').value = d.dueDate; }
+  if (f === 'dueDate' && d.type === 'invoice') { const match = TERMS.find(t => t.d != null && addDays(d.issueDate, t.d) === v); d.terms = match ? match.v : 'custom'; $('#f-terms').value = d.terms; }
+  if (f === 'taxEnabled' || f === 'currency') syncTypeUI();
+  if (f === 'currency') renderItems();
+  if (f === 'accent') $$('#swatches [data-swatch]').forEach(b => { const on = b.dataset.swatch.toLowerCase() === v.toLowerCase(); b.classList.toggle('border-ink', on); b.classList.toggle('dark:border-white', on); b.classList.toggle('border-transparent', !on); });
+  touch();
+}
+function onItemField(el) {
+  const row = el.closest('[data-item]'); const it = cur().items.find(i => i.id === row.dataset.item); const k = el.dataset.ik;
+  it[k] = el.type === 'checkbox' ? el.checked : el.type === 'number' ? (el.value === '' ? '' : num(el.value)) : el.value;
+  if (el.tagName === 'TEXTAREA') autoGrow(el);
+  if (k === 'name') {
+    const svc = S.services.find(s => s.name.toLowerCase() === String(it.name).trim().toLowerCase());
+    if (svc && !num(it.rate)) { it.rate = svc.rate; it.unit = svc.unit; if (!it.desc) it.desc = svc.desc; const r = $(`[data-item="${it.id}"]`); r.querySelector('[data-ik=rate]').value = it.rate; r.querySelector('[data-ik=unit]').value = it.unit; const ta = r.querySelector('[data-ik=desc]'); ta.value = it.desc; autoGrow(ta); }
+  }
+  touch();
+}
+function onPayField(el) {
+  const row = el.closest('[data-pay]'); const p = cur().payments.find(x => x.id === row.dataset.pay); const k = el.dataset.pk;
+  p[k] = el.type === 'number' ? (el.value === '' ? '' : num(el.value)) : el.value; touch();
+}
+function addItem(item = {}, focus = true) {
+  const d = cur();
+  // replace a single blank starter row
+  if (d.items.length === 1 && !d.items[0].name && !num(d.items[0].rate) && item.name) d.items = [];
+  const it = Object.assign({ id: uid(), name: '', desc: '', qty: 1, unit: 'item', rate: 0, disc: 0, taxable: true }, item);
+  d.items.push(it); renderItems(); touch();
+  if (focus) { const el = $(`[data-item="${it.id}"] [data-ik=name]`); el?.focus({ preventScroll: true }); el?.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+}
+
+function setType(type) {
+  const d = cur(); if (d.type === type) return;
+  const wasSaved = d.saved;
+  d.type = type;
+  if (!wasSaved) d.number = peekNumber(type, d.issueDate);
+  d.status = STATUSES[type][0][0];
+  if (type === 'quotation') { d.terms = 'custom'; d.dueDate = addDays(d.issueDate, S.settings.quoteValidity || 30); if (!d.termsText || d.termsText === S.settings.invoiceTerms) d.termsText = S.settings.quoteTerms; }
+  if (type === 'invoice') { d.terms = S.settings.terms; d.dueDate = addDays(d.issueDate, termDays(d.terms) ?? 14); if (!d.termsText || d.termsText === S.settings.quoteTerms) d.termsText = S.settings.invoiceTerms; }
+  if (type === 'receipt') { d.terms = 'receipt'; if (d.termsText === S.settings.quoteTerms || d.termsText === S.settings.invoiceTerms) d.termsText = ''; }
+  fillEditor(); touch();
+}
+
+function validateDoc(d) {
+  const errs = [];
+  if (!d.number.trim()) errs.push('Add a document number.');
+  if (S.docs.some(x => x.id !== d.id && x.number.trim().toLowerCase() === d.number.trim().toLowerCase())) errs.push(`Number ${d.number} is already used by another document.`);
+  if (!(d.client.name || d.client.company).trim()) errs.push('Add the client name or company.');
+  if (!d.items.some(i => i.name.trim() || num(i.rate))) errs.push('Add at least one line item.');
+  if (d.client.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.client.email)) errs.push('Check the client email address.');
+  if (d.type === 'invoice' && d.dueDate && d.dueDate < d.issueDate) errs.push('The due date is before the issue date.');
+  return errs;
+}
+function saveDoc({ silent = false } = {}) {
+  const d = cur(); const errs = validateDoc(d);
+  if (errs.length) { toast(errs[0], 'error'); return false; }
+  d.items = d.items.filter(i => i.name.trim() || i.desc.trim() || num(i.rate));
+  d.saved = true; d.updatedAt = Date.now();
+  commitNumber(d);
+  const idx = S.docs.findIndex(x => x.id === d.id);
+  if (idx >= 0) S.docs[idx] = clone(d); else S.docs.push(clone(d));
+  autoSaveClient(d.client);
+  persist(true); setDirty(false); syncTypeUI(); renderItems(); renderPreview();
+  if (!silent) toast(`${docTitle(d)} saved`, 'success');
+  return true;
+}
+function autoSaveClient(c) {
+  const key = (c.email || c.company || c.name || '').trim().toLowerCase(); if (!key) return;
+  const ex = S.clients.find(x => ((x.email || x.company || x.name) || '').trim().toLowerCase() === key);
+  if (ex) Object.keys(c).forEach(k => { if (c[k]) ex[k] = c[k]; });
+  else S.clients.push(Object.assign({ id: uid(), createdAt: Date.now() }, clone(c)));
+}
+async function startNew(type = 'invoice', patch) {
+  if (UI.dirty && cur() && !(await confirmDiscard())) return false;
+  S.current = newDoc(type, patch); UI.dirty = false; persist();
+  go('editor'); setPane('form'); return true;
+}
+async function confirmDiscard() {
+  const d = cur(); if (!d) return true;
+  const blank = !d.saved && !d.client.name && !d.client.company && !d.items.some(i => i.name || num(i.rate));
+  if (blank) return true;
+  return confirmBox({ title: 'Leave without saving?', body: `Changes to ${docTitle(d)} have not been saved.`, ok: 'Discard changes', danger: true, alt: 'Save first', onAlt: () => saveDoc() });
+}
+async function openDoc(id) {
+  const d = S.docs.find(x => x.id === id); if (!d) return;
+  if (cur()?.id !== id && UI.dirty && !(await confirmDiscard())) return;
+  S.current = normalizeDoc(clone(d)); UI.dirty = false; persist(); go('editor');
+}
+function duplicateDoc(src, type = src.type) {
+  const d = normalizeDoc(clone(src)); d.id = uid(); d.type = type; d.saved = false; d.payments = type === 'receipt' ? d.payments : [];
+  d.status = STATUSES[type][0][0]; d.issueDate = todayISO(); d.createdAt = d.updatedAt = Date.now();
+  d.items.forEach(i => i.id = uid());
+  if (type === 'invoice') { d.terms = S.settings.terms; d.dueDate = addDays(d.issueDate, termDays(d.terms) ?? 14); if (src.type === 'quotation') { d.termsText = S.settings.invoiceTerms; d.reference = d.reference || src.number; } }
+  if (type === 'quotation') d.dueDate = addDays(d.issueDate, S.settings.quoteValidity || 30);
+  d.number = peekNumber(type, d.issueDate);
+  return d;
+}
+function convertQuote(id) {
+  const q = S.docs.find(x => x.id === id); if (!q) return;
+  if (q.status !== 'accepted') { q.status = 'accepted'; q.updatedAt = Date.now(); }
+  S.current = duplicateDoc(q, 'invoice'); S.current.notes = S.settings.defaultNotes; UI.dirty = true; persist();
+  go('editor'); toast(`Invoice drafted from ${q.number}. Review and save it.`, 'success');
+}
+function issueReceipt(id) {
+  const inv = S.docs.find(x => x.id === id); if (!inv) return;
+  const t = calc(inv); const last = inv.payments[inv.payments.length - 1];
+  const amount = last ? num(last.amount) : t.balance;
+  const r = newDoc('receipt', {
+    client: clone(inv.client), currency: inv.currency, project: inv.project, reference: inv.number, template: inv.template, accent: inv.accent,
+    items: [{ id: uid(), name: `Payment against ${inv.number}`, desc: inv.project ? `Project: ${inv.project}` : '', qty: 1, unit: 'item', rate: amount, taxable: false }],
+    taxEnabled: false, payments: [last ? Object.assign(clone(last), { id: uid() }) : { id: uid(), date: todayISO(), method: 'Bank transfer', ref: '', amount }],
+    notes: 'Thank you for your payment.', termsText: ''
+  });
+  r.issueDate = r.payments[0].date || todayISO(); r.number = peekNumber('receipt', r.issueDate);
+  S.current = r; UI.dirty = true; persist(); go('editor');
+}
+async function deleteDoc(id) {
+  const d = S.docs.find(x => x.id === id); if (!d) return;
+  if (!(await confirmBox({ title: `Delete ${docTitle(d)}?`, body: 'This removes it from this browser. Export a backup first if you might need it.', ok: 'Delete', danger: true }))) return;
+  S.docs = S.docs.filter(x => x.id !== id);
+  if (cur()?.id === id) { S.current = null; UI.dirty = false; }
+  persist(true); toast(`${docTitle(d)} deleted`);
+  if (UI.view === 'editor') go('documents'); else go(UI.view);
+}
+
+/* ---------- Payments ---------- */
+function recordPaymentModal(docId) {
+  const d = docId ? S.docs.find(x => x.id === docId) : cur(); if (!d) return;
+  const t = calc(d);
+  openModal(`
+    <h2 class="text-lg font-extrabold">Record payment</h2>
+    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">${esc(docTitle(d))} for ${esc(clientLabel(d.client))}. Balance ${money(Math.max(t.balance, 0), d.currency)}.</p>
+    <form class="mt-4 grid grid-cols-2 gap-3" id="payForm">
+      <div class="col-span-2"><label class="lbl" for="pm-amt">Amount (${d.currency})</label><input id="pm-amt" name="amount" type="number" step="any" min="0.01" required class="field num text-lg font-bold" value="${Math.max(t.balance, 0) || ''}"></div>
+      <div><label class="lbl" for="pm-date">Date</label><input id="pm-date" name="date" type="date" class="field" value="${todayISO()}" required></div>
+      <div><label class="lbl" for="pm-m">Method</label><select id="pm-m" name="method" class="field">${METHODS.map(m => `<option>${m}</option>`).join('')}</select></div>
+      <div class="col-span-2"><label class="lbl" for="pm-ref">Reference</label><input id="pm-ref" name="ref" class="field" placeholder="Transaction or cheque number"></div>
+      ${docId ? '<label class="col-span-2 flex items-center gap-2 text-sm font-semibold"><input type="checkbox" name="receipt" class="h-4 w-4 accent-brand" checked>Create a receipt for this payment</label>' : ''}
+      <div class="col-span-2 mt-2 flex justify-end gap-2"><button type="button" class="btn-ghost" data-close>Cancel</button><button class="btn-primary">Record payment</button></div>
+    </form>`);
+  $('#payForm').addEventListener('submit', e => {
+    e.preventDefault(); const f = new FormData(e.target);
+    const p = { id: uid(), date: f.get('date'), method: f.get('method'), ref: f.get('ref'), amount: num(f.get('amount')) };
+    if (!(p.amount > 0)) return toast('Enter an amount greater than zero.', 'error');
+    closeModal();
+    if (docId) {
+      if (d.status === 'draft') d.status = 'sent';
+      d.payments.push(p); d.updatedAt = Date.now();
+      if (cur()?.id === d.id) { S.current = normalizeDoc(clone(d)); }
+      persist(true); toast(`Payment of ${money(p.amount, d.currency)} recorded`, 'success');
+      if (f.get('receipt')) issueReceipt(d.id); else go(UI.view);
+    } else {
+      d.payments.push(p); renderPayments(); touch(); toast('Payment added. Save to keep it.', 'success');
+    }
+  });
+}
+
+/* ---------- Clients ---------- */
+function renderClients() {
+  const q = $('#clientSearch').value.trim().toLowerCase();
+  const list = S.clients.filter(c => !q || [c.name, c.company, c.email, c.phone].join(' ').toLowerCase().includes(q)).sort((a, b) => clientLabel(a).localeCompare(clientLabel(b)));
+  const stats = c => { const key = (clientLabel(c) || '').toLowerCase(); const docs = S.docs.filter(d => clientLabel(d.client).toLowerCase() === key && d.type === 'invoice' && !['draft', 'cancelled'].includes(d.status)); const ts = docs.map(calc); return { n: docs.length, billed: ts.reduce((a, t) => a + t.total, 0), due: ts.reduce((a, t) => a + Math.max(0, t.balance), 0) }; };
+  $('#clientList').innerHTML = list.length ? list.map(c => { const s = stats(c); const init = clientLabel(c).split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase(); return `
+    <div class="panel flex flex-col p-4">
+      <div class="flex items-start gap-3">
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-bold tracking-tight text-white dark:bg-white dark:text-ink">${esc(init)}</span>
+        <div class="min-w-0 flex-1"><div class="truncate font-bold">${esc(clientLabel(c))}</div>${c.company && c.name ? `<div class="truncate text-sm text-neutral-500 dark:text-neutral-400">${esc(c.name)}</div>` : ''}
+          <div class="mt-0.5 text-sm text-neutral-600 dark:text-neutral-300">${c.email ? `<a class="block truncate py-1 hover:text-brand" href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ''}${c.phone ? `<a class="block truncate py-1 hover:text-brand" href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : ''}</div>
+        </div>
+      </div>
+      <div class="mt-3 grid grid-cols-3 gap-2 rounded-xl bg-neutral-50 p-2.5 text-center dark:bg-white/5">
+        <div><div class="text-[11px] text-neutral-500 dark:text-neutral-400">Invoices</div><div class="num text-sm font-bold">${s.n}</div></div>
+        <div><div class="text-[11px] text-neutral-500 dark:text-neutral-400">Billed</div><div class="num truncate text-sm font-bold">${moneyShort(s.billed, S.settings.currency)}</div></div>
+        <div><div class="text-[11px] text-neutral-500 dark:text-neutral-400">Due</div><div class="num truncate text-sm font-bold ${s.due ? 'text-amber dark:text-amber-400' : ''}">${moneyShort(s.due, S.settings.currency)}</div></div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-1">
+        <button class="btn-primary flex-1 py-2" data-client-invoice="${c.id}">Invoice</button>
+        <button class="btn-line py-2" data-client-quote="${c.id}">Quote</button>
+        <button class="icon-btn" data-client-edit="${c.id}" aria-label="Edit client">${icon('edit', 16)}</button>
+        <button class="icon-btn hover:!text-red-600" data-client-del="${c.id}" aria-label="Delete client">${icon('trash', 16)}</button>
+      </div>
+    </div>`; }).join('')
+    : `<div class="panel p-8 text-center sm:col-span-2 xl:col-span-3"><p class="font-bold">${S.clients.length ? 'No clients match your search' : 'No clients saved yet'}</p><p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Clients are added automatically when you save a document, or you can add one now.</p><button class="btn-primary mt-4" data-action="client-form">Add client</button></div>`;
+}
+function clientForm(id) {
+  const c = S.clients.find(x => x.id === id) || { name: '', company: '', email: '', phone: '', address: '', taxId: '', notes: '' };
+  openModal(`
+    <h2 class="text-lg font-extrabold">${id ? 'Edit client' : 'Add client'}</h2>
+    <form id="clientForm" class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div><label class="lbl" for="cf-n">Contact name</label><input id="cf-n" name="name" class="field" value="${esc(c.name)}"></div>
+      <div><label class="lbl" for="cf-c">Company</label><input id="cf-c" name="company" class="field" value="${esc(c.company)}"></div>
+      <div><label class="lbl" for="cf-e">Email</label><input id="cf-e" name="email" type="email" class="field" value="${esc(c.email)}"></div>
+      <div><label class="lbl" for="cf-p">Phone</label><input id="cf-p" name="phone" type="tel" class="field" value="${esc(c.phone)}"></div>
+      <div class="sm:col-span-2"><label class="lbl" for="cf-a">Address</label><textarea id="cf-a" name="address" rows="2" class="field">${esc(c.address)}</textarea></div>
+      <div><label class="lbl" for="cf-t">VAT / TIN</label><input id="cf-t" name="taxId" class="field" value="${esc(c.taxId)}"></div>
+      <div class="sm:col-span-2 mt-2 flex justify-end gap-2"><button type="button" class="btn-ghost" data-close>Cancel</button><button class="btn-primary">${id ? 'Save client' : 'Add client'}</button></div>
+    </form>`);
+  $('#clientForm').addEventListener('submit', e => {
+    e.preventDefault(); const f = Object.fromEntries(new FormData(e.target));
+    if (!f.name.trim() && !f.company.trim()) return toast('Add a contact name or company.', 'error');
+    if (id) Object.assign(c, f); else S.clients.push(Object.assign({ id: uid(), createdAt: Date.now() }, f));
+    persist(); closeModal(); renderClients(); toast(id ? 'Client saved' : 'Client added', 'success');
+  });
+}
+function pickClientModal() {
+  if (!S.clients.length) return toast('No saved clients yet. Fill in the details and use Save client.', 'info');
+  openModal(`
+    <h2 class="text-lg font-extrabold">Choose client</h2>
+    <input id="pcSearch" class="field mt-3" placeholder="Search clients" type="search" autofocus>
+    <div id="pcList" class="mt-3 max-h-[55vh] space-y-1 overflow-y-auto"></div>`);
+  const draw = () => { const q = $('#pcSearch').value.toLowerCase(); $('#pcList').innerHTML = S.clients.filter(c => [c.name, c.company, c.email].join(' ').toLowerCase().includes(q)).map(c => `<button class="flex w-full items-center justify-between gap-3 rounded-xl p-3 text-left hover:bg-neutral-50 dark:hover:bg-white/10" data-pick="${c.id}"><span class="min-w-0"><span class="block truncate font-bold">${esc(clientLabel(c))}</span><span class="block truncate text-xs text-neutral-500 dark:text-neutral-400">${esc([c.company ? c.name : '', c.email, c.phone].filter(Boolean).join(' · '))}</span></span>${icon('check', 16)}</button>`).join('') || '<p class="p-3 text-sm text-neutral-500">No match.</p>'; };
+  draw(); $('#pcSearch').addEventListener('input', draw);
+  $('#pcList').addEventListener('click', e => { const b = e.target.closest('[data-pick]'); if (!b) return; const c = S.clients.find(x => x.id === b.dataset.pick); applyClient(c); closeModal(); });
+}
+function applyClient(c) {
+  const d = cur(); d.client = { name: c.name || '', company: c.company || '', email: c.email || '', phone: c.phone || '', address: c.address || '', taxId: c.taxId || '' };
+  $$('#view-editor [data-f^="client."]').forEach(el => el.value = getPath(d, el.dataset.f) || ''); touch();
+}
+
+/* ---------- Services ---------- */
+function renderServices() {
+  const q = $('#serviceSearch').value.trim().toLowerCase(); const catSel = $('#serviceCat');
+  const cats = [...new Set(S.services.map(s => s.category || 'Other'))];
+  const prev = catSel.value; catSel.innerHTML = '<option value="">All categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join(''); catSel.value = cats.includes(prev) ? prev : '';
+  const list = S.services.filter(s => (!catSel.value || s.category === catSel.value) && (!q || [s.name, s.desc, s.category].join(' ').toLowerCase().includes(q)));
+  const groups = {}; list.forEach(s => (groups[s.category || 'Other'] ??= []).push(s));
+  $('#serviceList').innerHTML = Object.keys(groups).length ? Object.entries(groups).map(([g, items]) => `
+    <div><h2 class="mb-2 text-sm font-bold text-neutral-500 dark:text-neutral-400">${esc(g)} <span class="font-semibold text-neutral-400">(${items.length})</span></h2>
+    <div class="panel divide-y divide-line dark:divide-edge">${items.map(s => `
+      <div class="flex items-start gap-2 p-3.5 sm:items-center sm:gap-3">
+        <div class="min-w-0 flex-1 sm:flex sm:items-center sm:gap-4">
+          <div class="min-w-0 sm:flex-1"><div class="font-bold">${esc(s.name)}</div><div class="line-clamp-2 text-sm text-neutral-500 dark:text-neutral-400">${esc(s.desc)}</div></div>
+          <div class="num mt-1.5 sm:mt-0 sm:shrink-0 sm:text-right"><span class="font-extrabold sm:block">${money(s.rate, S.settings.currency)}</span> <span class="text-xs text-neutral-500 dark:text-neutral-400">per ${esc(s.unit)}</span></div>
+        </div>
+        <div class="flex shrink-0 sm:flex-row"><button class="icon-btn" data-svc-edit="${s.id}" aria-label="Edit ${esc(s.name)}">${icon('edit', 16)}</button><button class="icon-btn hover:!text-red-600" data-svc-del="${s.id}" aria-label="Delete ${esc(s.name)}">${icon('trash', 16)}</button></div>
+      </div>`).join('')}</div></div>`).join('')
+    : `<div class="panel p-8 text-center"><p class="font-bold">No services found</p><p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Add the services you sell with a standard rate.</p></div>`;
+}
+function serviceForm(id) {
+  const s = S.services.find(x => x.id === id) || { name: '', category: '', desc: '', unit: 'project', rate: 0 };
+  const cats = [...new Set(S.services.map(x => x.category))];
+  openModal(`
+    <h2 class="text-lg font-extrabold">${id ? 'Edit service' : 'Add service'}</h2>
+    <form id="svcForm" class="mt-4 grid grid-cols-2 gap-3">
+      <div class="col-span-2"><label class="lbl" for="sf-n">Service name</label><input id="sf-n" name="name" required class="field" value="${esc(s.name)}"></div>
+      <div class="col-span-2"><label class="lbl" for="sf-c">Category</label><input id="sf-c" name="category" list="catList" class="field" value="${esc(s.category)}"><datalist id="catList">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist></div>
+      <div class="col-span-2"><label class="lbl" for="sf-d">Description</label><textarea id="sf-d" name="desc" rows="3" class="field">${esc(s.desc)}</textarea></div>
+      <div><label class="lbl" for="sf-r">Rate (${S.settings.currency})</label><input id="sf-r" name="rate" type="number" step="any" min="0" class="field num" value="${esc(s.rate)}"></div>
+      <div><label class="lbl" for="sf-u">Unit</label><select id="sf-u" name="unit" class="field">${UNITS.map(u => `<option ${u === s.unit ? 'selected' : ''}>${u}</option>`).join('')}</select></div>
+      <div class="col-span-2 mt-2 flex justify-end gap-2"><button type="button" class="btn-ghost" data-close>Cancel</button><button class="btn-primary">${id ? 'Save service' : 'Add service'}</button></div>
+    </form>`);
+  $('#svcForm').addEventListener('submit', e => {
+    e.preventDefault(); const f = Object.fromEntries(new FormData(e.target)); f.rate = num(f.rate); f.category = f.category.trim() || 'Other';
+    if (id) Object.assign(s, f); else S.services.push(Object.assign({ id: uid() }, f));
+    persist(); closeModal(); renderServices(); toast(id ? 'Service saved' : 'Service added', 'success');
+  });
+}
+function catalogModal() {
+  const picked = {};
+  openModal(`
+    <div class="flex items-center justify-between"><h2 class="text-lg font-extrabold">Add from services</h2><button class="icon-btn" data-close aria-label="Close">${icon('x')}</button></div>
+    <input id="catSearch" class="field mt-3" placeholder="Search services" type="search">
+    <div id="catList2" class="mt-3 max-h-[52vh] space-y-4 overflow-y-auto pr-1"></div>
+    <div class="mt-4 flex items-center justify-between gap-2 border-t border-line pt-3 dark:border-edge"><span class="text-sm text-neutral-500 dark:text-neutral-400" id="catCount">Nothing selected</span><button class="btn-primary" id="catAdd" disabled>Add to document</button></div>`, 'max-w-xl');
+  const draw = () => {
+    const q = $('#catSearch').value.toLowerCase(); const groups = {};
+    S.services.filter(s => [s.name, s.desc, s.category].join(' ').toLowerCase().includes(q)).forEach(s => (groups[s.category] ??= []).push(s));
+    $('#catList2').innerHTML = Object.entries(groups).map(([g, it]) => `<div><div class="mb-1 text-xs font-bold text-neutral-500 dark:text-neutral-400">${esc(g)}</div>${it.map(s => `
+      <label class="flex cursor-pointer items-center gap-3 rounded-xl p-2.5 hover:bg-neutral-50 dark:hover:bg-white/10">
+        <input type="checkbox" class="h-4 w-4 accent-brand" data-cat="${s.id}" ${picked[s.id] ? 'checked' : ''}>
+        <span class="min-w-0 flex-1"><span class="block truncate text-sm font-bold">${esc(s.name)}</span><span class="block truncate text-xs text-neutral-500 dark:text-neutral-400">${esc(s.desc)}</span></span>
+        <span class="num shrink-0 text-sm font-bold">${moneyShort(s.rate, S.settings.currency)}<span class="font-semibold text-neutral-400">/${esc(s.unit)}</span></span>
+      </label>`).join('')}</div>`).join('') || '<p class="p-3 text-sm text-neutral-500">No services match.</p>';
+  };
+  draw(); $('#catSearch').addEventListener('input', draw);
+  $('#catList2').addEventListener('change', e => { const id = e.target.dataset.cat; if (!id) return; e.target.checked ? picked[id] = 1 : delete picked[id]; const n = Object.keys(picked).length; $('#catCount').textContent = n ? `${n} selected` : 'Nothing selected'; $('#catAdd').disabled = !n; });
+  $('#catAdd').addEventListener('click', () => {
+    const ids = Object.keys(picked); ids.forEach((id, k) => { const s = S.services.find(x => x.id === id); addItem({ name: s.name, desc: s.desc, unit: s.unit, rate: s.rate, qty: 1 }, k === ids.length - 1); });
+    closeModal(); toast(`${ids.length} item${ids.length > 1 ? 's' : ''} added`, 'success');
+  });
+}
+
+/* ---------- Settings ---------- */
+function fillSettings() {
+  fillSelect($('#d-cur'), Object.entries(CURRENCIES).map(([k, v]) => [k, v.label]));
+  fillSelect($('#d-terms'), TERMS.filter(t => t.v !== 'custom').map(t => [t.v, t.l]));
+  $$('[data-s]').forEach(el => { const v = getPath(S.settings, el.dataset.s); if (el.type === 'checkbox') el.checked = !!v; else el.value = v ?? ''; });
+  renderLogoBits(); updateNextNumbers(); updateStorageInfo();
+}
+function updateNextNumbers() { $('#nextNumbers').innerHTML = `Next numbers: <b class="num">${esc(peekNumber('invoice'))}</b>, <b class="num">${esc(peekNumber('quotation'))}</b>, <b class="num">${esc(peekNumber('receipt'))}</b>`; }
+function renderLogoBits() {
+  const st = S.settings; const name = esc(st.company.name);
+  const brand = st.logo === BRAND_LOGO;
+  const word = cls => `<span class="${cls}">${name}</span>`;
+  const img = (src, cls) => `<img src="${esc(src)}" alt="${name} logo" class="${cls}" onerror="this.hidden=true;var n=this.nextElementSibling;if(n)n.hidden=false">`;
+  const hcls = 'text-lg font-extrabold tracking-tight text-brand';
+  const lp = $('#logoPreview');
+  if (lp) lp.innerHTML = brand ? img(BRAND_URI.ink, 'max-h-full max-w-full object-contain')
+    : st.logo ? img(st.logo, 'max-h-full max-w-full object-contain') + `<span hidden class="font-extrabold text-ink">${name}</span>` : word('font-extrabold text-ink');
+  $('#hdrLogoWrap').innerHTML = brand
+    ? img(BRAND_URI.mark, 'h-9 w-9 dark:hidden') + img(BRAND_URI.markPaper, 'hidden h-9 w-9 dark:block')
+    : st.logo ? img(st.logo, 'h-8 w-auto max-w-[140px] object-contain dark:rounded-md dark:bg-white dark:px-1.5 dark:py-0.5') + `<span hidden class="${hcls}">${name}</span>` : word(hcls);
+  $('#hdrCompany').textContent = st.company.name;
+  const sp = $('#sigPreview'); if (sp) sp.innerHTML = st.signatory.image ? `<img src="${esc(st.signatory.image)}" alt="Signature" class="max-h-full max-w-full object-contain">` : '<span class="text-xs text-neutral-400">No signature</span>';
+}
+function onSettingField(el) {
+  let v = el.type === 'checkbox' ? el.checked : (el.type === 'number' || el.type === 'range') ? num(el.value) : el.value;
+  setPath(S.settings, el.dataset.s, v);
+  if (el.dataset.s.startsWith('prefixes.')) updateNextNumbers();
+  if (el.dataset.s.startsWith('company.') || el.dataset.s === 'logoHeight') { $('#hdrCompany').textContent = S.settings.company.name; }
+  persist();
+}
+function readImage(file, maxW = 600) {
+  return new Promise((res, rej) => {
+    if (!file || !file.type.startsWith('image/')) return rej(new Error('Choose an image file.'));
+    const fr = new FileReader();
+    fr.onload = () => {
+      if (file.type === 'image/svg+xml') return res(fr.result);
+      const img = new Image(); img.onload = () => {
+        const s = Math.min(1, maxW / img.width); const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); res(c.toDataURL('image/png'));
+      }; img.onerror = () => rej(new Error('That image could not be read.')); img.src = fr.result;
+    };
+    fr.onerror = () => rej(new Error('That file could not be read.')); fr.readAsDataURL(file);
+  });
+}
+function signatureModal() {
+  openModal(`
+    <h2 class="text-lg font-extrabold">Draw signature</h2>
+    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Sign with your finger, stylus or mouse.</p>
+    <canvas id="sigCanvas" class="mt-3 rounded-xl border border-line bg-white dark:border-neutral-800" style="display:block;width:100%;height:176px;touch-action:none"></canvas>
+    <div class="mt-3 flex justify-between gap-2"><button class="btn-ghost" id="sigClear">Clear</button><div class="flex gap-2"><button class="btn-ghost" data-close>Cancel</button><button class="btn-primary" id="sigSave">Use signature</button></div></div>`);
+  const cv = $('#sigCanvas'); const ratio = window.devicePixelRatio || 1; const box = cv.getBoundingClientRect();
+  cv.width = Math.round((box.width || 440) * ratio); cv.height = Math.round((box.height || 176) * ratio);
+  const ctx = cv.getContext('2d'); ctx.lineWidth = 2.4 * ratio; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = ctx.fillStyle = '#0A0A0A';
+  let drawing = false, drawn = false, last;
+  const pos = e => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * cv.width / r.width, (e.clientY - r.top) * cv.height / r.height]; };
+  cv.addEventListener('pointerdown', e => { drawing = true; drawn = true; last = pos(e); cv.setPointerCapture(e.pointerId); ctx.beginPath(); ctx.arc(last[0], last[1], 1.1 * ratio, 0, Math.PI * 2); ctx.fill(); });
+  cv.addEventListener('pointermove', e => { if (!drawing) return; const p = pos(e); ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(...p); ctx.stroke(); last = p; });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(t => cv.addEventListener(t, () => drawing = false));
+  $('#sigClear').onclick = () => { ctx.clearRect(0, 0, cv.width, cv.height); drawn = false; };
+  $('#sigSave').onclick = () => { if (!drawn) return toast('Draw your signature first.', 'error'); S.settings.signatory.image = trimCanvas(cv); persist(); renderLogoBits(); closeModal(); toast('Signature saved', 'success'); };
+}
+function trimCanvas(cv) {
+  const ctx = cv.getContext('2d'); const { width: w, height: h } = cv; const data = ctx.getImageData(0, 0, w, h).data;
+  let x0 = w, y0 = h, x1 = 0, y1 = 0;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (data[(y * w + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 <= x0) return cv.toDataURL();
+  const pd = 6; const out = document.createElement('canvas'); out.width = x1 - x0 + pd * 2; out.height = y1 - y0 + pd * 2;
+  out.getContext('2d').drawImage(cv, x0, y0, x1 - x0, y1 - y0, pd, pd, x1 - x0, y1 - y0); return out.toDataURL('image/png');
+}
+
+/* ---------- Export / output ---------- */
+const fileName = d => `${d.number || TYPE_LABEL[d.type]}${d.client.company || d.client.name ? '_' + (d.client.company || d.client.name) : ''}`.replace(/[^\w\-]+/g, '_').replace(/_+/g, '_').slice(0, 80) + '.pdf';
+// html2canvas draws SVG images unreliably in some browsers, so PDFs get PNG copies of SVG logos
+function svgToPng(src, width = 1200) {
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      const w = width, h = Math.round(width * (img.naturalHeight || LOGO.h) / (img.naturalWidth || LOGO.w));
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      try { c.getContext('2d').drawImage(img, 0, 0, w, h); res(c.toDataURL('image/png')); } catch { res(src); }
+    };
+    img.onerror = () => res(src); img.src = src;
+  });
+}
+async function logosForExport() {
+  const l = S.settings.logo;
+  if (l === BRAND_LOGO) {
+    if (!UI.brandPng) UI.brandPng = { ink: await svgToPng(BRAND_URI.ink), paper: await svgToPng(BRAND_URI.paper) };
+    return UI.brandPng;
+  }
+  if (!l) return {};
+  if (l.startsWith('data:image/svg')) return { custom: await svgToPng(l, 900) };
+  if (l.startsWith('data:')) return { custom: l };
+  if (UI.logoData === null) {
+    try { const r = await fetch(l, { mode: 'cors' }); if (!r.ok) throw 0; const b = await r.blob(); UI.logoData = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(b); }); }
+    catch { UI.logoData = ''; }
+  }
+  return UI.logoData ? { custom: UI.logoData } : {};
+}
+const PAGE_H = 1120; // px height of one A4 page at the 794px document width (kept under 1122.5 so it never spills)
+const FIT_MIN = 0.85; // smallest scale used to keep a nearly-fitting document on one page
+async function waitImages(root) { await Promise.all([...root.querySelectorAll('img')].map(i => i.complete ? (i.decode ? i.decode().catch(() => { }) : 0) : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 4000); }))); }
+// Split the line items into A4 pages: rows fill each page, totals and notes go on the last one
+async function paginate(d, host, logos) {
+  const n = invoiceRows(d).length;
+  const height = async pg => {
+    host.innerHTML = renderInvoice(d, { exporting: true, logos, page: Object.assign({ no: 1, count: 2 }, pg) });
+    const el = host.firstElementChild; el.classList.add('measure'); await waitImages(el); return el.offsetHeight;
+  };
+  // A document only a little too tall for one page is scaled down slightly instead of being split
+  const full = await height({ from: 0, to: n, first: true, last: true });
+  if (full > PAGE_H && full * FIT_MIN <= PAGE_H) {
+    const fit = Math.floor(PAGE_H / full * 1000) / 1000;
+    if (await height({ from: 0, to: n, first: true, last: true, fit }) * fit <= PAGE_H) return [{ from: 0, to: n, first: true, last: true, fit, no: 1, count: 1 }];
+  }
+  const pages = []; let from = 0;
+  while (true) {
+    const first = from === 0;
+    if (await height({ from, to: n, first, last: true }) <= PAGE_H) { pages.push({ from, to: n, first, last: true }); break; }
+    if (from >= n) { pages.push({ from, to: n, first, last: true, tall: true }); break; } // the closing section alone is taller than a page
+    let to = from + 1;
+    while (to < n && await height({ from, to: to + 1, first, last: false }) <= PAGE_H) to++;
+    if (to === n && to - from > 1) to--; // carry at least one line item over with the totals
+    pages.push({ from, to, first, last: false }); from = to;
+    if (pages.length > 60) break;
+  }
+  return pages.map((pg, k) => Object.assign(pg, { no: k + 1, count: pages.length }));
+}
+async function buildPdf(d, mode = 'save') {
+  try { await loadScript(LIB.pdf); } catch { toast('The PDF tool could not load. Check your connection, or use Print and choose Save as PDF.', 'error'); return null; }
+  if (d.opts.showQR && !window.QRCode) { try { await loadScript(LIB.qr); } catch { } }
+  const logos = await logosForExport();
+  if (S.settings.logo && !logos.ink && !logos.custom && !UI.logoWarned) { UI.logoWarned = true; toast('The logo could not be added to the PDF, so the company name is used. Upload the logo file in Settings, or use the brand logo.', 'info'); }
+  // Off-screen host for measuring; html2pdf renders its own copy of each page
+  const host = document.createElement('div'); host.style.cssText = 'position:absolute;left:-10000px;top:0;width:794px;background:#fff;';
+  document.body.appendChild(host);
+  const opt = {
+    margin: 0, filename: fileName(d), image: { type: 'jpeg', quality: 0.95 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, scrollX: 0, scrollY: 0 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
+  };
+  // html2canvas cannot parse Tailwind's oklch() colours, which dark mode puts on <body> (inherited by
+  // html2pdf's render container), so switch to the light palette while the PDF is drawn
+  const wasDark = document.documentElement.classList.contains('dark');
+  document.documentElement.classList.remove('dark');
+  try {
+    if (document.fonts?.ready) await document.fonts.ready;
+    const pages = await paginate(d, host, logos);
+    let pdf = null;
+    for (const pg of pages) {
+      const html = renderInvoice(d, { exporting: true, logos, page: pg });
+      host.innerHTML = pg.fit ? `<div style="width:794px;height:${PAGE_H}px;overflow:hidden;background:#fff"><div style="transform:scale(${pg.fit});transform-origin:0 0">${html}</div></div>` : html;
+      const el = host.firstElementChild; if (pg.tall) el.classList.add('measure');
+      await waitImages(el);
+      const canvas = await html2pdf().set(opt).from(el).toCanvas().get('canvas');
+      if (!pdf) pdf = await emptyPdf(opt);
+      addCanvasPages(pdf, canvas);
+    }
+    if (mode === 'blob') return pdf.output('blob');
+    pdf.save(fileName(d)); return true;
+  } catch (e) { console.error(e); toast('The PDF could not be created. Use Print and choose Save as PDF instead.', 'error'); return null; }
+  finally { host.remove(); if (wasDark) document.documentElement.classList.add('dark'); }
+}
+// html2pdf's bundle does not expose jsPDF, so take the document from a tiny throwaway render and empty it
+async function emptyPdf(opt) {
+  const dot = document.createElement('div'); dot.style.cssText = 'width:20px;height:20px;background:#fff;color:#000';
+  const pdf = await html2pdf().set(Object.assign({}, opt, { html2canvas: Object.assign({}, opt.html2canvas, { scale: 0.2 }) })).from(dot).toPdf().get('pdf');
+  while (pdf.getNumberOfPages() > 0) pdf.deletePage(1);
+  return pdf;
+}
+// Add a rendered page to the PDF, slicing it onto extra A4 pages only if it is taller than one page
+function addCanvasPages(pdf, canvas) {
+  const pageW = 210, pageH = 297; const slicePx = Math.floor(canvas.width * pageH / pageW);
+  for (let y = 0; y < canvas.height; y += slicePx) {
+    const h = Math.min(slicePx, canvas.height - y);
+    if (y > 0 && h < 8) break; // ignore a rounding sliver
+    const part = document.createElement('canvas'); part.width = canvas.width; part.height = h;
+    const ctx = part.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, part.width, h); ctx.drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h);
+    pdf.addPage('a4', 'portrait');
+    pdf.addImage(part.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, pageW, h * pageW / canvas.width, undefined, 'FAST');
+  }
+}
+async function downloadPdf(d = cur()) {
+  const b = $('[data-action=pdf]'); b && (b.disabled = true);
+  toast('Preparing PDF…');
+  const ok = await buildPdf(d, 'save'); b && (b.disabled = false);
+  if (ok) toast(`${fileName(d)} downloaded`, 'success');
+}
+function printDoc(d = cur()) {
+  $('#printArea').innerHTML = renderInvoice(d); document.body.classList.add('printing-doc');
+  const imgs = [...$('#printArea').querySelectorAll('img')];
+  Promise.all(imgs.map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; setTimeout(r, 2500); }))).then(() => {
+    const t = document.title; document.title = fileName(d).replace(/\.pdf$/, ''); window.print(); document.title = t;
+  });
+}
+function shareText(d) {
+  const t = calc(d); const co = S.settings.company;
+  const amt = d.type === 'quotation' ? `Quoted total: ${money(t.total, d.currency)}\nValid until: ${fmtDate(d.dueDate)}` : d.type === 'receipt' ? `Amount received: ${money(t.paid, d.currency)}` : `Amount due: ${money(Math.max(t.balance, 0), d.currency)}\nDue date: ${fmtDate(d.dueDate)}`;
+  const b = S.settings.bank;
+  const bank = d.type === 'invoice' && b.accountNo ? `\n\nPay to: ${b.accountName}\n${b.bankName}${b.branch ? ', ' + b.branch : ''}\nAccount: ${b.accountNo}` : '';
+  return `Hello ${d.client.name || d.client.company || ''},\n\nPlease find ${d.type === 'invoice' ? 'invoice' : d.type === 'quotation' ? 'our quotation' : 'your payment receipt'} ${d.number}${d.project ? ' for ' + d.project : ''} from ${co.name}.\n\n${amt}${bank}\n\nThank you,\n${S.settings.signatory.name || co.name}\n${co.phone || ''}`.replace(/\n{3,}/g, '\n\n');
+}
+function shareModal(d = cur()) {
+  if (!d.saved || UI.dirty) { if (!saveDoc({ silent: true })) return; }
+  const canFile = !!(navigator.canShare && navigator.share);
+  const phone = (d.client.phone || '').replace(/[^\d+]/g, '').replace(/^0/, '94').replace(/^\+/, '');
+  const text = shareText(d);
+  openModal(`
+    <div class="flex items-center justify-between"><h2 class="text-lg font-extrabold">Share ${esc(docTitle(d))}</h2><button class="icon-btn" data-close aria-label="Close">${icon('x')}</button></div>
+    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">Messages include the amount${d.type === 'invoice' ? ', due date and bank details' : ''}. Attach the PDF where the app allows it.</p>
+    <div class="mt-4 grid gap-2">
+      ${canFile ? `<button class="btn-primary justify-start" id="shNative">${icon('share', 18)}Share PDF to an app</button>` : ''}
+      <a class="btn-line justify-start" target="_blank" rel="noopener" href="https://wa.me/${phone}?text=${encodeURIComponent(text)}">${icon('chat', 18)}WhatsApp${phone ? ' to ' + esc(d.client.phone) : ''}</a>
+      <a class="btn-line justify-start" href="mailto:${encodeURIComponent(d.client.email || '')}?subject=${encodeURIComponent(`${TYPE_LABEL[d.type]} ${d.number} from ${S.settings.company.name}`)}&body=${encodeURIComponent(text)}">${icon('mail', 18)}Email${d.client.email ? ' ' + esc(d.client.email) : ''}</a>
+      <button class="btn-line justify-start" id="shCopy">${icon('copy', 18)}Copy message</button>
+      <button class="btn-line justify-start" id="shPdf">${icon('download', 18)}Download PDF to attach</button>
+    </div>
+    ${d.type === 'invoice' && d.status === 'draft' ? `<label class="mt-4 flex items-center gap-2 text-sm font-semibold"><input type="checkbox" id="shMark" class="h-4 w-4 accent-brand" checked>Mark as sent</label>` : ''}`);
+  const markSent = () => { const m = $('#shMark'); if (m && m.checked) { const sd = S.docs.find(x => x.id === d.id); sd.status = 'sent'; cur().status = 'sent'; $('#f-status').value = 'sent'; persist(); renderPreview(); } };
+  $$('#modalRoot a').forEach(a => a.addEventListener('click', markSent));
+  $('#shCopy').onclick = async () => { try { await navigator.clipboard.writeText(text); toast('Message copied', 'success'); markSent(); } catch { toast('Copy is blocked in this browser.', 'error'); } };
+  $('#shPdf').onclick = () => { markSent(); downloadPdf(d); };
+  $('#shNative') && ($('#shNative').onclick = async () => {
+    const blob = await buildPdf(d, 'blob'); if (!blob) return;
+    const file = new File([blob], fileName(d), { type: 'application/pdf' });
+    try { if (navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: docTitle(d), text }); else await navigator.share({ title: docTitle(d), text }); markSent(); }
+    catch (e) { if (e.name !== 'AbortError') toast('Sharing was not completed.', 'error'); }
+  });
+}
+function exportJSON() {
+  const data = { app: 'lankan-invoice-studio', exportedAt: new Date().toISOString(), ...S };
+  downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `lankan-invoices-backup-${todayISO()}.json`);
+  toast('Backup exported', 'success');
+}
+async function importJSON(file) {
+  try {
+    const d = JSON.parse(await file.text());
+    if (!d || !Array.isArray(d.docs) || !d.settings) throw new Error('This file is not an Invoice Studio backup.');
+    const choice = await confirmBox({ title: 'Import backup', body: `The file has ${d.docs.length} documents and ${(d.clients || []).length} clients. Merge keeps your current records and adds new ones. Replace swaps everything for the file's contents.`, ok: 'Merge', alt: 'Replace all', returnAlt: true });
+    if (!choice) return;
+    if (choice === 'alt') { localStorage.setItem(LS_KEY, JSON.stringify(d)); S = loadState(); UI.logoData = null; UI.dirty = false; }
+    else {
+      const ids = new Set(S.docs.map(x => x.id)); d.docs.forEach(x => { if (!ids.has(x.id)) S.docs.push(normalizeDoc(x)); });
+      const cids = new Set(S.clients.map(x => x.id)); (Array.isArray(d.clients) ? d.clients : []).map(cleanClient).forEach(x => { if (!cids.has(x.id)) S.clients.push(x); });
+      const sids = new Set(S.services.map(x => x.id)); (Array.isArray(d.services) ? d.services : []).map(cleanService).forEach(x => { if (!sids.has(x.id)) S.services.push(x); });
+      Object.entries(d.settings.counters || {}).forEach(([k, v]) => { if (/^\w+-\d{4}$/.test(k)) S.settings.counters[k] = Math.max(S.settings.counters[k] || 0, num(v)); });
+    }
+    persist(true); applyTheme(); renderLogoBits(); go(UI.view); toast('Backup imported', 'success');
+  } catch (e) { toast(e.message || 'That file could not be imported.', 'error'); }
+}
+function exportCSV() {
+  if (!S.docs.length) return toast('There are no saved documents to export.', 'info');
+  const head = ['Number', 'Type', 'Status', 'Client', 'Contact', 'Email', 'Project', 'Issue date', 'Due / valid until', 'Currency', 'Subtotal', 'Discount', 'Tax', 'Other', 'Total', 'Paid', 'Balance'];
+  const rows = S.docs.map(d => { const t = calc(d); return [d.number, TYPE_LABEL[d.type], STATUS_LABEL[effStatus(d, t)], d.client.company, d.client.name, d.client.email, d.project, d.issueDate, d.dueDate, d.currency, t.sub, t.discount, t.tax, t.other, t.total, t.paid, t.balance]; });
+  const csv = [head, ...rows].map(r => r.map(v => { let s = String(v ?? ''); if (typeof v === 'string' && /^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }).join(',')).join('\r\n');
+  downloadBlob(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }), `lankan-documents-${todayISO()}.csv`);
+  toast('CSV exported', 'success');
+}
+function downloadBlob(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+
+/* ---------- Sample data ---------- */
+function loadSample() {
+  const mk = (type, client, items, o = {}) => {
+    const d = newDoc(type, Object.assign({ client }, o)); d.items = items.map(i => Object.assign({ id: uid(), desc: '', unit: 'project', qty: 1, disc: 0, taxable: true }, i));
+    d.saved = true; d.number = peekNumber(type, d.issueDate); commitNumber(d); S.docs.push(d); return d;
+  };
+  const c1 = { name: 'Nadeesha Perera', company: 'Kiri Bakehouse', email: 'hello@kiribakehouse.example', phone: '+94 77 123 4567', address: '12 Station Road,\nNugegoda', taxId: '' };
+  const c2 = { name: 'Ravi Kumar', company: 'Saltwater Surf Co.', email: 'ravi@saltwatersurf.example', phone: '+94 71 555 0101', address: 'Main Street,\nArugam Bay', taxId: '' };
+  const c3 = { name: 'Amaya Silva', company: 'Ceylon Thread', email: 'amaya@ceylonthread.example', phone: '+94 76 222 9090', address: 'Peradeniya Road,\nKandy', taxId: '' };
+  [c1, c2, c3].forEach(c => S.clients.push(Object.assign({ id: uid(), createdAt: Date.now() }, c)));
+  const t = todayISO();
+  const a = mk('invoice', c1, [{ name: 'Brand strategy workshop', unit: 'session', rate: 100000 }, { name: 'Logo suite', desc: 'Primary logo, secondary marks and favicon.', rate: 225000 }, { name: 'Packaging design', desc: 'Cake box and bread bag, print-ready.', unit: 'design', qty: 2, rate: 135000 }], { issueDate: addDays(t, -75), dueDate: addDays(t, -61), status: 'sent', project: 'Bakery identity and packaging' });
+  a.payments = [{ id: uid(), date: addDays(t, -74), method: 'Bank transfer', ref: 'DEP-221', amount: 300000 }, { id: uid(), date: addDays(t, -40), method: 'Bank transfer', ref: 'TX-8812', amount: 295000 }];
+  const b = mk('invoice', c2, [{ name: 'Ad campaign set-up', desc: 'Meta campaigns for off-season lessons and rentals.', rate: 100000 }, { name: 'Ad management', unit: 'month', qty: 2, rate: 90000 }, { name: 'Ad creative', unit: 'design', qty: 8, rate: 18000, disc: 10 }], { issueDate: addDays(t, -38), dueDate: addDays(t, -8), terms: 'net30', status: 'sent', project: 'Off-season ad campaign' });
+  b.payments = [{ id: uid(), date: addDays(t, -30), method: 'Wise', ref: 'WISE 004512', amount: 150000 }];
+  mk('invoice', c3, [{ name: 'Social media management', unit: 'month', rate: 135000 }, { name: 'Search-led content', unit: 'page', qty: 2, rate: 35000 }], { issueDate: addDays(t, -6), dueDate: addDays(t, 8), status: 'sent', project: 'Monthly content and SEO' });
+  mk('quotation', c3, [{ name: 'Website design', desc: 'Brand-led online storefront, up to six pages.', rate: 450000 }, { name: 'Photo and reel direction', desc: 'Workshop shoot for new collection.', unit: 'day', rate: 85000 }], { issueDate: addDays(t, -3), dueDate: addDays(t, 27), status: 'sent', project: 'Online storefront launch' });
+  const r = mk('receipt', c1, [{ name: `Payment against ${a.number}`, rate: 295000, taxable: false }], { issueDate: addDays(t, -40) });
+  r.payments = [{ id: uid(), date: addDays(t, -40), method: 'Bank transfer', ref: 'TX-8812', amount: 295000 }];
+  persist(true); renderDashboard(); toast('Sample data loaded. Erase it any time from Settings.', 'success');
+}
+
+/* ---------- Modal, confirm, toast, menus ---------- */
+let modalReturn = null;
+function openModal(html, size = 'max-w-lg') {
+  modalReturn = document.activeElement;
+  $('#modalRoot').innerHTML = `<div class="modal-backdrop fixed inset-0 z-[80] flex items-end justify-center p-0 sm:items-center sm:p-4" data-backdrop>
+    <div class="modal-card sheet-pad max-h-[92dvh] w-full ${size} overflow-y-auto overscroll-contain rounded-t-3xl bg-white p-5 pt-3 shadow-2xl sm:rounded-2xl sm:pt-5 dark:bg-card" role="dialog" aria-modal="true"><div class="mx-auto mb-3 h-1.5 w-10 rounded-full bg-neutral-300 sm:hidden dark:bg-neutral-700" aria-hidden="true"></div>${html}</div></div>`;
+  document.body.style.overflow = 'hidden';
+  hydrateIcons($('#modalRoot'));
+  setTimeout(() => ($('#modalRoot [autofocus]') || $('#modalRoot input:not([type=checkbox]):not([type=hidden]), #modalRoot button'))?.focus(), 30);
+}
+function closeModal() { $('#modalRoot').innerHTML = ''; if (!$('#pv')) document.body.style.overflow = ''; modalReturn?.focus?.(); if (UI._resolve) { const r = UI._resolve; UI._resolve = null; r(false); } }
+function confirmBox({ title, body, ok = 'Confirm', danger = false, alt, onAlt, returnAlt = false }) {
+  return new Promise(res => {
+    openModal(`<h2 class="text-lg font-extrabold">${esc(title)}</h2><p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">${esc(body)}</p>
+      <div class="mt-5 flex flex-wrap justify-end gap-2"><button class="btn-ghost" data-close>Cancel</button>${alt ? `<button class="btn-line" id="cfAlt">${esc(alt)}</button>` : ''}<button class="${danger ? 'btn bg-red-600 text-white hover:bg-red-700' : 'btn-primary'}" id="cfOk">${esc(ok)}</button></div>`, 'max-w-md');
+    UI._resolve = res;
+    $('#cfOk').onclick = () => { UI._resolve = null; closeModal(); res(returnAlt ? 'ok' : true); };
+    $('#cfAlt') && ($('#cfAlt').onclick = () => { UI._resolve = null; closeModal(); if (returnAlt) return res('alt'); const r = onAlt?.(); res(r !== false); });
+  });
+}
+function toast(msg, kind = 'info') {
+  const colors = { success: 'bg-ink text-white dark:bg-white dark:text-ink', error: 'bg-red-700 text-white', info: 'bg-ink text-white dark:bg-white dark:text-ink' };
+  const el = document.createElement('div'); el.className = `pointer-events-auto flex max-w-md items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold shadow-xl ${colors[kind]}`;
+  el.innerHTML = (kind === 'success' ? icon('check', 16) : kind === 'error' ? icon('alert', 16) : '') + `<span>${esc(msg)}</span>`;
+  el.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+  $('#toasts').appendChild(el); setTimeout(() => { el.style.transition = 'opacity .3s'; el.style.opacity = 0; setTimeout(() => el.remove(), 300); }, kind === 'error' ? 5000 : 2800);
+}
+function actionSheet(title, items) {
+  openModal(`<div class="flex items-center justify-between"><h2 class="font-extrabold">${esc(title)}</h2><button class="icon-btn" data-close aria-label="Close">${icon('x')}</button></div>
+    <div class="mt-2 grid gap-1">${items.filter(Boolean).map((it, k) => `<button class="flex min-h-12 items-center gap-3 rounded-xl px-3 py-3 text-left text-[15px] font-semibold hover:bg-neutral-50 dark:hover:bg-white/10 ${it.danger ? 'text-red-700 dark:text-red-400' : ''}" data-sheet="${k}">${icon(it.icon, 18)}<span><span class="block">${esc(it.label)}</span>${it.hint ? `<span class="block text-xs font-medium text-neutral-500 dark:text-neutral-400">${esc(it.hint)}</span>` : ''}</span></button>`).join('')}</div>`, 'max-w-sm');
+  const list = items.filter(Boolean);
+  $$('#modalRoot [data-sheet]').forEach(b => b.onclick = () => { closeModal(); list[+b.dataset.sheet].run(); });
+}
+function newMenu() {
+  actionSheet('Create', [
+    { icon: 'file', label: 'Invoice', hint: 'Bill a client for work done', run: () => startNew('invoice') },
+    { icon: 'file', label: 'Quotation', hint: 'Send an estimate before work starts', run: () => startNew('quotation') },
+    { icon: 'receipt', label: 'Receipt', hint: 'Confirm a payment you received', run: () => startNew('receipt') }
+  ]);
+}
+function docMenu(id) {
+  const d = S.docs.find(x => x.id === id); if (!d) return; const t = calc(d);
+  actionSheet(docTitle(d), [
+    { icon: 'edit', label: 'Open', run: () => openDoc(id) },
+    d.type === 'invoice' && t.balance > 0 && d.status !== 'cancelled' ? { icon: 'wallet', label: 'Record payment', hint: `Balance ${money(t.balance, d.currency)}`, run: () => recordPaymentModal(id) } : null,
+    d.type === 'invoice' && t.paid > 0 ? { icon: 'receipt', label: 'Issue receipt', hint: 'For the latest payment', run: () => issueReceipt(id) } : null,
+    d.type === 'quotation' ? { icon: 'swap', label: 'Convert to invoice', hint: 'Marks this quotation accepted', run: () => convertQuote(id) } : null,
+    { icon: 'download', label: 'Download PDF', run: () => downloadPdf(normalizeDoc(clone(d))) },
+    { icon: 'printer', label: 'Print', run: () => printDoc(normalizeDoc(clone(d))) },
+    { icon: 'copy', label: 'Duplicate', hint: 'New number, today\'s date', run: () => { S.current = duplicateDoc(d); UI.dirty = true; persist(); go('editor'); toast('Copy created. Save it when ready.'); } },
+    d.type === 'invoice' && d.status !== 'cancelled' && t.paid === 0 ? { icon: 'x', label: 'Cancel invoice', hint: 'Keeps the record and number', run: () => { d.status = 'cancelled'; d.updatedAt = Date.now(); persist(); go(UI.view); toast(`${d.number} cancelled`); } } : null,
+    { icon: 'trash', label: 'Delete', danger: true, run: () => deleteDoc(id) }
+  ]);
+}
+function editorMoreMenu() {
+  const d = cur(); const saved = S.docs.find(x => x.id === d.id);
+  actionSheet('More actions', [
+    d.type === 'quotation' && saved ? { icon: 'swap', label: 'Convert to invoice', run: () => convertQuote(d.id) } : null,
+    d.type === 'invoice' && saved && calc(d).paid > 0 ? { icon: 'receipt', label: 'Issue receipt', run: () => issueReceipt(d.id) } : null,
+    { icon: 'copy', label: 'Duplicate', run: () => { S.current = duplicateDoc(d); UI.dirty = true; persist(); fillEditor(); toast('Copy created. Save it when ready.'); } },
+    { icon: 'share', label: 'Share', hint: 'WhatsApp, email or another app', run: () => shareModal() },
+    { icon: 'printer', label: 'Print', run: () => printDoc() },
+    { icon: 'eye', label: 'Full-size preview', run: () => previewViewer() },
+    { icon: 'plus', label: 'Start a new document', run: () => newMenu() },
+    saved ? { icon: 'trash', label: 'Delete', danger: true, run: () => deleteDoc(d.id) } : { icon: 'x', label: 'Discard this draft', danger: true, run: async () => { if (await confirmBox({ title: 'Discard this draft?', body: 'The unsaved document will be cleared.', ok: 'Discard', danger: true })) { S.current = newDoc(d.type); UI.dirty = false; persist(); fillEditor(); } } }
+  ]);
+}
+function setPane(p) {
+  UI.pane = p;
+  $$('[data-pane]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pane === p)));
+  $('#paneForm').classList.toggle('hidden', p === 'preview'); $('#paneForm').classList.add('lg:block');
+  $('#panePreview').classList.toggle('hidden', p !== 'preview');
+  renderPreview(); window.scrollTo({ top: 0 });
+}
+
+function previewViewer(d = cur()) {
+  if (!d || $('#pv')) return;
+  const root = document.createElement('div'); root.id = 'pv';
+  root.className = 'z-[85] text-white';
+  root.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;z-index:85;background:#000';
+  root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-label', 'Document preview');
+  root.innerHTML = `<div class="safe-top flex items-center gap-1 border-b border-white/10 px-2 py-2 sm:px-4">
+      <button class="icon-btn text-white hover:bg-white/10 hover:text-white" data-pv="close" aria-label="Close preview">${icon('x', 20)}</button>
+      <div class="min-w-0 flex-1 px-1"><div class="truncate text-sm font-bold">${esc(docTitle(d))}</div><div class="truncate text-xs text-white/60">${esc(clientLabel(d.client))}</div></div>
+      <button class="icon-btn text-white hover:bg-white/10 hover:text-white" data-pv="out" aria-label="Zoom out"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+      <button class="min-h-10 min-w-14 rounded-lg px-2 text-sm font-bold hover:bg-white/10" data-pv="fit" id="pvPct" aria-label="Fit to width">Fit</button>
+      <button class="icon-btn text-white hover:bg-white/10 hover:text-white" data-pv="in" aria-label="Zoom in">${icon('plus', 20)}</button>
+    </div>
+    <div id="pvScroll" class="overscroll-contain" style="flex:1 1 auto;min-height:0;overflow:auto;touch-action:pan-x pan-y">
+      <div id="pvSize" style="box-sizing:content-box;margin:0 auto;padding:16px 0"><div id="pvInner" style="transform-origin: top left; width:794px; box-shadow: 0 20px 50px -20px rgba(0,0,0,.6)">${renderInvoice(d)}</div></div>
+    </div>
+    <div class="flex items-center justify-center gap-2 border-t border-white/10 p-2 sheet-pad sm:pb-2">
+      <button class="btn min-h-11 bg-white text-ink hover:bg-neutral-200" data-pv="pdf">${icon('download', 16)}Download PDF</button>
+      <button class="btn min-h-11 text-white hover:bg-white/10" data-pv="share">${icon('share', 16)}Share</button>
+    </div>`;
+  document.body.appendChild(root); document.body.style.overflow = 'hidden';
+  const sc = $('#pvScroll'), size = $('#pvSize'), inner = $('#pvInner'); let z = 1, fitZ = 1;
+  const setZ = (nz, keepCenter = true) => {
+    const old = z; z = Math.min(3, Math.max(fitZ * 0.75, nz));
+    const cx = sc.scrollLeft + sc.clientWidth / 2, cy = sc.scrollTop + sc.clientHeight / 2;
+    inner.style.transform = `scale(${z})`; size.style.width = 794 * z + 'px'; size.style.height = inner.offsetHeight * z + 'px';
+    if (keepCenter && old) { sc.scrollLeft = cx * z / old - sc.clientWidth / 2; sc.scrollTop = cy * z / old - sc.clientHeight / 2; }
+    $('#pvPct').textContent = Math.abs(z - fitZ) < 0.01 ? 'Fit' : Math.round(z * 100) + '%';
+  };
+  const fit = () => { fitZ = Math.min(1.15, (sc.clientWidth - 24) / 794); setZ(fitZ, false); sc.scrollTo(0, 0); };
+  fit(); requestAnimationFrame(fit); setTimeout(fit, 120);
+  root.querySelectorAll('img').forEach(i => i.complete || i.addEventListener('load', () => setZ(z, false), { once: true }));
+  root.addEventListener('click', e => {
+    const b = e.target.closest('[data-pv]'); if (!b) return;
+    const a = b.dataset.pv;
+    if (a === 'close') closeViewer();
+    if (a === 'in') setZ(z * 1.25); if (a === 'out') setZ(z / 1.25);
+    if (a === 'fit') Math.abs(z - fitZ) < 0.01 ? setZ(1) : fit();
+    if (a === 'pdf') { if (validateDoc(d).length) return toast(validateDoc(d)[0], 'error'); downloadPdf(d); }
+    if (a === 'share') { closeViewer(); shareModal(d); }
+  });
+  // pinch to zoom
+  let pinch = null;
+  const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  sc.addEventListener('touchstart', e => { if (e.touches.length === 2) pinch = { d: dist(e.touches), z }; }, { passive: true });
+  sc.addEventListener('touchmove', e => { if (pinch && e.touches.length === 2) { e.preventDefault(); setZ(pinch.z * dist(e.touches) / pinch.d); } }, { passive: false });
+  sc.addEventListener('touchend', e => { if (e.touches.length < 2) pinch = null; });
+  // double tap toggles fit / 160%
+  let lastTap = 0;
+  sc.addEventListener('touchend', e => { if (e.changedTouches.length !== 1 || pinch) return; const now = Date.now(); if (now - lastTap < 280) { Math.abs(z - fitZ) < 0.01 ? setZ(fitZ * 1.8) : fit(); lastTap = 0; } else lastTap = now; });
+  sc.addEventListener('wheel', e => { if (e.ctrlKey) { e.preventDefault(); setZ(z * (e.deltaY < 0 ? 1.1 : 0.9)); } }, { passive: false });
+  root._fit = fit;
+  $('[data-pv=close]').focus();
+}
+function closeViewer() { const v = $('#pv'); if (!v) return; v.remove(); if (!$('#modalRoot').innerHTML) document.body.style.overflow = ''; }
+
+/* ---------- Theme ---------- */
+function applyTheme() {
+  const m = S.settings.theme || 'system'; const dark = m === 'dark' || (m === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.classList.toggle('dark', dark);
+  $('#themeBtn').innerHTML = icon(m === 'dark' ? 'moon' : m === 'light' ? 'sun' : 'monitor', 18);
+  $('#themeBtn').title = `Theme: ${m}`; $('#themeBtn').setAttribute('aria-label', `Theme: ${m}. Change theme`);
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.closest('#view-editor')) {
+    if (el.dataset.f) return onDocField(el);
+    if (el.dataset.ik) return onItemField(el);
+    if (el.dataset.pk) return onPayField(el);
+  }
+  if (el.dataset.s) return onSettingField(el);
+  if (el.id === 'docSearch') return renderDocs();
+  if (el.id === 'clientSearch') return renderClients();
+  if (el.id === 'serviceSearch') return renderServices();
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.closest('#view-editor') && el.tagName === 'SELECT' && el.dataset.ik) return; // handled by input
+  if (['docStatus', 'docSort'].includes(el.id)) return renderDocs();
+  if (el.id === 'serviceCat') return renderServices();
+  if (el.id === 'logoFile') { readImage(el.files[0], 700).then(d => { S.settings.logo = d; UI.logoData = null; persist(); renderLogoBits(); toast('Logo updated', 'success'); }).catch(err => toast(err.message, 'error')); el.value = ''; }
+  if (el.id === 'sigFile') { readImage(el.files[0], 500).then(d => { S.settings.signatory.image = d; persist(); renderLogoBits(); toast('Signature updated', 'success'); }).catch(err => toast(err.message, 'error')); el.value = ''; }
+  if (el.id === 'importFile') { if (el.files[0]) importJSON(el.files[0]); el.value = ''; }
+});
+document.addEventListener('click', async e => {
+  const t = e.target.closest('button, a, [data-backdrop], #previewStage'); if (!t) return;
+  if (t.matches('[data-backdrop]') && e.target === t) return closeModal();
+  if (t.matches('[data-close]')) return closeModal();
+  if (t.dataset.nav) { if (t.dataset.nav === 'editor' && !cur()) S.current = newDoc('invoice'); return go(t.dataset.nav); }
+  if (t.dataset.open) return openDoc(t.dataset.open);
+  if (t.dataset.docmenu) return docMenu(t.dataset.docmenu);
+  if (t.dataset.settype) return setType(t.dataset.settype);
+  if (t.dataset.pane) return setPane(t.dataset.pane);
+  if (t.dataset.doctype !== undefined) { UI.docType = t.dataset.doctype; return renderDocs(); }
+  if (t.dataset.swatch) { cur().accent = t.dataset.swatch; $('#f-accent').value = t.dataset.swatch; onDocField($('#f-accent')); return; }
+  const row = t.closest('[data-item]');
+  if (row && (t.dataset.imove || t.hasAttribute('data-idup') || t.hasAttribute('data-idel'))) {
+    const d = cur(); const k = d.items.findIndex(i => i.id === row.dataset.item);
+    if (t.dataset.imove) { const j = k + +t.dataset.imove; if (j < 0 || j >= d.items.length) return; [d.items[k], d.items[j]] = [d.items[j], d.items[k]]; }
+    if (t.hasAttribute('data-idup')) d.items.splice(k + 1, 0, Object.assign(clone(d.items[k]), { id: uid() }));
+    if (t.hasAttribute('data-idel')) { const removed = d.items.splice(k, 1)[0]; toastUndo(`Removed ${removed.name || 'item'}`, () => { d.items.splice(k, 0, removed); renderItems(); touch(); }); }
+    renderItems(); touch(); return;
+  }
+  const prow = t.closest('[data-pay]');
+  if (prow && t.hasAttribute('data-pdel')) { cur().payments = cur().payments.filter(p => p.id !== prow.dataset.pay); renderPayments(); touch(); return; }
+  if (t.dataset.clientEdit) return clientForm(t.dataset.clientEdit);
+  if (t.dataset.clientDel) { const c = S.clients.find(x => x.id === t.dataset.clientDel); if (await confirmBox({ title: `Delete ${clientLabel(c)}?`, body: 'Saved documents keep their client details.', ok: 'Delete', danger: true })) { S.clients = S.clients.filter(x => x !== c); persist(); renderClients(); toast('Client deleted'); } return; }
+  if (t.dataset.clientInvoice || t.dataset.clientQuote) { const c = S.clients.find(x => x.id === (t.dataset.clientInvoice || t.dataset.clientQuote)); if (await startNew(t.dataset.clientInvoice ? 'invoice' : 'quotation')) { applyClient(c); setDirty(false); } return; }
+  if (t.dataset.svcEdit) return serviceForm(t.dataset.svcEdit);
+  if (t.dataset.svcDel) { const s = S.services.find(x => x.id === t.dataset.svcDel); if (await confirmBox({ title: `Delete ${s.name}?`, body: 'Existing documents are not affected.', ok: 'Delete', danger: true })) { S.services = S.services.filter(x => x !== s); persist(); renderServices(); toast('Service deleted'); } return; }
+
+  switch (t.dataset.action) {
+    case 'new': return startNew(t.dataset.type || 'invoice');
+    case 'new-menu': return newMenu();
+    case 'add-item': return addItem();
+    case 'open-catalog': return catalogModal();
+    case 'add-payment': { const d = cur(); const t = calc(d); const bal = d.type === 'receipt' && !d.payments.length ? t.total : t.balance; d.payments.push({ id: uid(), date: todayISO(), method: 'Bank transfer', ref: '', amount: bal > 0 ? bal : 0 }); renderPayments(); touch(); $('#paymentsList [data-pay]:last-child [data-pk=amount]')?.focus(); return; }
+    case 'regen-number': { const d = cur(); d.number = peekNumber(d.type, d.issueDate); $('#f-number').value = d.number; touch(); return; }
+    case 'pick-client': return pickClientModal();
+    case 'save-client': { const c = cur().client; if (!(c.name || c.company).trim()) return toast('Add a client name or company first.', 'error'); autoSaveClient(c); persist(); return toast(`${clientLabel(c)} saved to clients`, 'success'); }
+    case 'save': return saveDoc();
+    case 'pdf': if (validateDoc(cur()).length) return toast(validateDoc(cur())[0], 'error'); return downloadPdf();
+    case 'print': return printDoc();
+    case 'share': return shareModal();
+    case 'more-doc': return editorMoreMenu();
+    case 'zoom-preview': if (window.matchMedia('(min-width: 1024px)').matches && t.id === 'previewStage') return; return previewViewer();
+    case 'client-form': return clientForm();
+    case 'service-form': return serviceForm();
+    case 'load-sample': return loadSample();
+    case 'export-json': return exportJSON();
+    case 'export-csv': return exportCSV();
+    case 'logo-default':
+      S.settings.logo = BRAND_LOGO; UI.logoData = null; UI.logoWarned = false; persist(); renderLogoBits();
+      return toast('Brand logo restored', 'success');
+    case 'draw-signature': return signatureModal();
+    case 'clear-signature': S.settings.signatory.image = ''; persist(); renderLogoBits(); return toast('Signature removed');
+    case 'reset-all':
+      if (await confirmBox({ title: 'Erase all data?', body: 'All documents, clients, services and settings in this browser will be deleted. This cannot be undone.', ok: 'Erase everything', danger: true })) { localStorage.removeItem(LS_KEY); S = defaultState(); UI.dirty = false; persist(true); applyTheme(); renderLogoBits(); go('dashboard'); toast('All data erased'); }
+      return;
+  }
+});
+function toastUndo(msg, undo) {
+  const el = document.createElement('div'); el.className = 'pointer-events-auto flex items-center gap-3 rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white shadow-xl dark:bg-white dark:text-ink';
+  el.innerHTML = `<span>${esc(msg)}</span><button class="rounded-full px-2.5 py-1 text-accent hover:bg-white/10 dark:text-blue-700 dark:hover:bg-black/5">Undo</button>`;
+  el.querySelector('button').onclick = () => { undo(); el.remove(); };
+  $('#toasts').appendChild(el); setTimeout(() => el.remove(), 5000);
+}
+$('#themeBtn').addEventListener('click', () => { const order = ['system', 'light', 'dark']; S.settings.theme = order[(order.indexOf(S.settings.theme) + 1) % 3]; persist(); applyTheme(); toast(`Theme: ${S.settings.theme}`); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', applyTheme);
+document.addEventListener('keydown', e => {
+  const mod = e.ctrlKey || e.metaKey;
+  if (e.key === 'Escape' && $('#pv')) return closeViewer();
+  if (e.key === 'Escape' && $('#modalRoot').innerHTML) return closeModal();
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.id === 'previewStage') { e.preventDefault(); return previewViewer(); }
+  if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); if (UI.view === 'editor') saveDoc(); return; }
+  if (mod && e.key.toLowerCase() === 'p' && UI.view === 'editor') { e.preventDefault(); printDoc(); return; }
+  if (e.altKey && e.code === 'KeyN') { e.preventDefault(); startNew('invoice'); return; }
+  if (e.altKey && e.code === 'KeyI' && UI.view === 'editor') { e.preventDefault(); addItem(); }
+});
+window.addEventListener('resize', debounce(() => { fitPreview(); drawChart(); $('#pv')?._fit?.(); }, 80));
+if ('ResizeObserver' in window) new ResizeObserver(debounce(fitPreview, 50)).observe($('#previewStage'));
+window.addEventListener('beforeunload', e => { persist(true); if (UI.dirty && cur()?.saved) { e.preventDefault(); e.returnValue = ''; } });
+window.addEventListener('hashchange', () => { const v = location.hash.slice(1); if (v && v !== UI.view) go(v); });
+// Printing from the browser menu while in the editor prints the document, not the app screen
+window.addEventListener('beforeprint', () => { if (UI.view === 'editor' && cur() && !document.body.classList.contains('printing-doc')) { $('#printArea').innerHTML = renderInvoice(cur()); document.body.classList.add('printing-doc'); } });
+window.addEventListener('afterprint', () => { $('#printArea').innerHTML = ''; document.body.classList.remove('printing-doc'); });
+
+/* ---------- Init ---------- */
+function init() {
+  hydrateIcons(); applyTheme(); renderLogoBits();
+  if (S.current) UI.dirty = !S.docs.some(d => d.id === S.current.id && d.updatedAt === S.current.updatedAt);
+  const start = location.hash.slice(1) || S.lastView || 'dashboard';
+  go(start);
+  setPane('form');
+  // warm up QR library in background
+  setTimeout(() => loadScript(LIB.qr).then(() => UI.view === 'editor' && renderPreview()).catch(() => { }), 600);
+}
+init();
+</script>
+</body>
+</html>

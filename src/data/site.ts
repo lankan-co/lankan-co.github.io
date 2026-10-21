@@ -90,7 +90,7 @@ export const services = [
 
 /** Optional choices on the contact form. */
 export const enquiry = {
-  budgets: ['Under $500', '$500 – $1,500', '$1,500 – $5,000', '$5,000+', 'Not sure yet'],
+  budgets: ['Under Rs. 150,000', 'Rs. 150,000 – 450,000', 'Rs. 450,000 – 1,500,000', 'Rs. 1,500,000+', 'Not sure yet'],
   timelines: ['As soon as possible', 'Within a month', 'In 1–3 months', 'Just exploring'],
 } as const;
 
