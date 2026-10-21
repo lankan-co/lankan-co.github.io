@@ -1,0 +1,75 @@
+---
+/**
+ * Film — a full-bleed, black-and-white loop of makers at work, under one line.
+ *
+ *  - The frame opens from an inset, rounded card to full width as it scrolls
+ *    in (--open, set by src/scripts/reveal.ts → initFilm).
+ *  - The video only downloads and plays while it's on screen. With reduced
+ *    motion or Data Saver it stays on its poster frame; a button pauses it
+ *    at any time.
+ * Footage: Pexels (free licence) — see src/assets/makers/CREDITS.md.
+ */
+import Magnetic from '@/components/islands/Magnetic';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<section aria-labelledby="film-title" class="relative border-t border-line py-16 md:py-24" data-film>
+  <div class="film-frame relative mx-auto h-[78svh] min-h-[28rem] overflow-hidden bg-card md:h-[86svh]">
+    <video
+      class="absolute inset-0 h-full w-full object-cover"
+      poster={`${base}media/makers-poster.webp`}
+      muted
+      loop
+      playsinline
+      preload="none"
+      aria-hidden="true"
+      tabindex="-1"
+      data-film-video
+    >
+      <source src={`${base}media/makers.webm`} type="video/webm" />
+      <source src={`${base}media/makers.mp4`} type="video/mp4" />
+    </video>
+    <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/20"></div>
+    <div aria-hidden="true" class="bg-grain absolute inset-0"></div>
+
+    <div class="container-site relative flex h-full flex-col justify-end pb-10 md:pb-16">
+      <p class="eyebrow text-white/70" data-reveal>Made by hand</p>
+      <h2
+        id="film-title"
+        class="mt-6 max-w-[16ch] text-[clamp(2.25rem,5.4vw,5rem)] leading-[1.02] font-semibold tracking-[-0.045em]"
+        data-reveal
+      >
+        Every brand starts with someone making something.
+      </h2>
+      <div class="mt-10 flex flex-wrap items-center justify-between gap-6" data-reveal>
+        <Magnetic client:visible>
+          <a href="#contact" class="btn btn-primary">
+            Show us what you’re making <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+        </Magnetic>
+        <button
+          type="button"
+          data-film-toggle
+          hidden
+          class="group flex items-center gap-3 rounded-full border border-white/25 px-4 py-2 text-sm text-white/80 backdrop-blur transition-colors hover:border-white/60 hover:text-white"
+        >
+          <span aria-hidden="true" class="grid h-4 w-4 place-items-center">
+            <span data-film-icon="pause" class="flex gap-[3px]"><span class="h-3 w-[3px] bg-current"></span><span class="h-3 w-[3px] bg-current"></span></span>
+            <span data-film-icon="play" hidden class="h-0 w-0 border-y-[6px] border-l-[10px] border-y-transparent border-l-current"></span>
+          </span>
+          <span data-film-label>Pause film</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Opens from an inset card to full bleed as it scrolls in */
+  .film-frame {
+    --open: 1;
+    --side: calc((1 - var(--open)) * min(5vw, 4rem));
+    clip-path: inset(calc((1 - var(--open)) * 2rem) var(--side) round calc((1 - var(--open)) * 2rem));
+  }
+</style>

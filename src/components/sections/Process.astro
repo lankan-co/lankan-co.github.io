@@ -1,7 +1,8 @@
 ---
 /**
  * How we work — 4 steps. A hairline fills as you scroll through the section
- * (driven by Framer Motion's scroll() in src/scripts/reveal.ts via --progress).
+ * (driven by Framer Motion's scroll() in src/scripts/reveal.ts via --progress),
+ * and each step's dot lights up as the line reaches it.
  * Horizontal on desktop, vertical on mobile.
  */
 import SectionHeading from '@/components/ui/SectionHeading.astro';
@@ -12,7 +13,7 @@ import { process } from '@/data/site';
   <div class="container-site">
     <SectionHeading
       id="process-title"
-      index="03"
+      index="04"
       label="Process"
       title="A simple process, done properly."
       lede="Four clear stages, one small team, and you in the loop the whole way. No surprises, no disappearing acts."
@@ -27,11 +28,8 @@ import { process } from '@/data/site';
       <ol class="relative grid gap-14 lg:grid-cols-4 lg:gap-10" data-reveal-group>
         {
           process.map((step, i) => (
-            <li class="relative pl-12 lg:pl-0 lg:pt-14" data-reveal>
-              <span
-                aria-hidden="true"
-                class="absolute top-0.5 left-0 h-[15px] w-[15px] rounded-full border border-paper bg-ink lg:top-0"
-              />
+            <li class="step relative pl-12 lg:pl-0 lg:pt-14" data-reveal data-step>
+              <span aria-hidden="true" class="dot absolute top-0.5 left-0 h-[15px] w-[15px] rounded-full border border-paper bg-ink lg:top-0" />
               <p class="font-mono text-xs tracking-widest text-muted">STEP {String(i + 1).padStart(2, '0')}</p>
               <h3 class="mt-3 text-3xl font-semibold tracking-tight">{step.title}</h3>
               <p class="mt-4 max-w-xs leading-relaxed text-muted">{step.body}</p>
@@ -44,6 +42,17 @@ import { process } from '@/data/site';
 </section>
 
 <style>
+  .dot {
+    transition:
+      background-color 0.5s var(--ease-out-expo),
+      box-shadow 0.6s var(--ease-out-expo),
+      scale 0.6s var(--ease-out-expo);
+  }
+  .step[data-active] .dot {
+    background: var(--color-paper);
+    box-shadow: 0 0 0 6px rgb(255 255 255 / 0.08), 0 0 24px 2px rgb(96 165 250 / 0.45);
+    scale: 1.15;
+  }
   .progress-fill {
     transform-origin: top;
     transform: scaleY(var(--progress, 1));

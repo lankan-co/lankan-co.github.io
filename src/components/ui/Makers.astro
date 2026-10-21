@@ -1,0 +1,75 @@
+---
+/**
+ * Makers — "who we build for": a bento of the businesses named in the
+ * philosophy statement. Photos rest in black and white and bloom into colour
+ * on hover; a few tiles drift gently with scroll.
+ * Photos: Pexels (free licence) — see src/assets/makers/CREDITS.md.
+ */
+import { Picture } from 'astro:assets';
+import bakery from '@/assets/makers/bakery.jpg';
+import studio from '@/assets/makers/studio.jpg';
+import cafe from '@/assets/makers/cafe.jpg';
+import loom from '@/assets/makers/loom.jpg';
+import stall from '@/assets/makers/stall.jpg';
+import sketch from '@/assets/makers/sketch.jpg';
+
+const tiles = [
+  { img: stall, label: 'The stall', alt: 'Shoe stall packed with sandals in Pettah Market, Colombo', cls: 'row-span-2 lg:col-[1/4] lg:row-[1/5]', drift: '-0.5' },
+  { img: bakery, label: 'The bakery', alt: 'Hands shaping bread dough on a floured counter', cls: 'lg:col-[4/9] lg:row-[1/3]' },
+  { img: cafe, label: 'The café', alt: 'Café owner standing with arms crossed in a coffee shop', cls: 'lg:col-[9/13] lg:row-[1/3]', drift: '0.4' },
+  { img: studio, label: 'The studio', alt: 'Potter’s hands shaping clay on a spinning wheel', cls: 'col-span-2 lg:col-[4/8] lg:row-[3/5]' },
+  { img: sketch, label: 'The side project', alt: 'A hand sketching logo ideas with a marker', cls: 'lg:col-[8/10] lg:row-[3/5]', drift: '-0.4' },
+  { img: loom, label: 'The loom', alt: 'Hands weaving colourful thread on a wooden loom', cls: 'lg:col-[10/13] lg:row-[3/5]' },
+];
+---
+
+<figure class="mt-20 md:mt-28">
+  <ul class="grid auto-rows-[11rem] grid-cols-2 gap-3 sm:auto-rows-[14rem] md:gap-4 lg:auto-rows-[10rem] lg:grid-cols-12" data-reveal-group>
+    {
+      tiles.map((t, i) => (
+        <li class:list={['maker group relative overflow-hidden rounded-2xl bg-card', t.cls]} data-reveal>
+          <div class="absolute -inset-y-[10%] inset-x-0" data-drift={t.drift}>
+            <Picture
+              src={t.img}
+              alt={t.alt}
+              formats={['avif', 'webp']}
+              widths={[400, 700, 1000, 1400]}
+              sizes="(min-width: 1024px) 34vw, 50vw"
+              class="photo h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0"></div>
+          <span class="absolute bottom-0 left-0 flex items-baseline gap-2 p-4 text-sm font-medium md:p-5">
+            <span class="font-mono text-[0.65rem] tracking-widest text-white/60">{String(i + 1).padStart(2, '0')}</span>
+            {t.label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <figcaption class="mt-5 text-sm text-muted">
+    The businesses we’re for: built by hand, run by their owners.
+  </figcaption>
+</figure>
+
+<style>
+  .photo {
+    filter: grayscale(1) contrast(1.05) brightness(0.85);
+    transform: scale(1.02);
+    transition:
+      filter 0.9s var(--ease-out-expo),
+      transform 1.4s var(--ease-out-expo);
+  }
+  .maker:hover .photo {
+    filter: grayscale(0) contrast(1) brightness(1);
+    transform: scale(1.07);
+  }
+  /* Touch screens have no hover, so let the colour through gently */
+  @media (hover: none) {
+    .photo {
+      filter: grayscale(0.35) brightness(0.92);
+    }
+  }
+</style>
