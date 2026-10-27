@@ -1,0 +1,19 @@
+---
+/**
+ * Floating WhatsApp chat button. Bottom-left on mobile, so it never sits on the
+ * "Start a project" pill that rides bottom-right; bottom-right from md up.
+ */
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { site, whatsappHref } from '@/data/site';
+---
+
+<a
+  href={whatsappHref(`Hi ${site.name}, I’d like to talk about a project.`)}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={`Chat with us on WhatsApp at ${site.phone.display} (opens in a new tab)`}
+  title="Chat on WhatsApp"
+  class="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-30 grid h-13 w-13 place-items-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-black/60 transition-transform duration-300 hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper motion-reduce:transition-none motion-reduce:hover:scale-100 md:right-6 md:bottom-6 md:left-auto md:h-14 md:w-14"
+>
+  <WhatsAppIcon class="h-7 w-7" />
+</a>

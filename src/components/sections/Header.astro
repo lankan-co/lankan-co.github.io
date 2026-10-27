@@ -5,7 +5,8 @@
  * its bottom edge shows how far through the page you are.
  */
 import Logo from '@/components/ui/Logo.astro';
-import { nav } from '@/data/site';
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { nav, site, whatsappHref } from '@/data/site';
 ---
 
 <header
@@ -83,7 +84,14 @@ import { nav } from '@/data/site';
         ))
       }
     </ul>
-    <a href="#contact" class="btn btn-primary mt-12 self-start">Start a project <span aria-hidden="true">→</span></a>
+    <div class="mt-12 flex flex-wrap gap-3">
+      <a href="#contact" class="btn btn-primary">Start a project <span aria-hidden="true">→</span></a>
+      <a href={whatsappHref(`Hi ${site.name}, I’d like to talk about a project.`)} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+        <WhatsAppIcon class="h-5 w-5 text-[#25D366]" />
+        WhatsApp
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </div>
   </nav>
 </div>
 

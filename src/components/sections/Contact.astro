@@ -2,7 +2,8 @@
 /** Final CTA + contact form (React island, hydrates when visible; emails enquiries via Web3Forms). */
 import ContactForm from '@/components/islands/ContactForm';
 import Magnetic from '@/components/islands/Magnetic';
-import { enquiry, services, site } from '@/data/site';
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { enquiry, services, site, whatsappHref } from '@/data/site';
 
 // Where Web3Forms sends visitors after a no-JavaScript submission.
 const thanksUrl = new URL(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}thanks/`, Astro.site).href;
@@ -10,6 +11,7 @@ const thanksUrl = new URL(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}thank
 const callHref = `mailto:${site.email}?subject=${encodeURIComponent('Discovery call')}&body=${encodeURIComponent(
   'Hi Lankan team,\n\nI’d love to book a free 30-minute discovery call. A few times that suit me:\n\n- \n- \n\nThanks!',
 )}`;
+const chatHref = whatsappHref(`Hi ${site.name}, I’d like to talk about a project.`);
 ---
 
 <section id="contact" aria-labelledby="contact-title" class="bg-grain relative isolate overflow-hidden border-t border-line py-28 md:py-40">
@@ -30,13 +32,28 @@ const callHref = `mailto:${site.email}?subject=${encodeURIComponent('Discovery c
         Tell us where you are and where you want to go. We’ll come back within one working day with honest thoughts
         — even if we’re not the right fit.
       </p>
-      <div class="mt-10" data-reveal>
+      <div class="mt-10 flex flex-wrap gap-3" data-reveal>
         <Magnetic client:idle>
-          <a href={callHref} class="btn btn-ghost">
-            Book a free discovery call <span class="btn-arrow" aria-hidden="true">→</span>
+          <a href={chatHref} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            <WhatsAppIcon class="h-5 w-5" />
+            Chat on WhatsApp
+            <span class="sr-only">(opens in a new tab)</span>
           </a>
         </Magnetic>
+        <a href={callHref} class="btn btn-ghost">
+          Book a free discovery call <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
+      <dl class="mt-12 flex flex-wrap gap-x-12 gap-y-6 text-sm" data-reveal>
+        <div>
+          <dt class="text-xs tracking-[0.18em] text-muted uppercase">Call or WhatsApp</dt>
+          <dd class="mt-2"><a href={`tel:${site.phone.e164}`} class="link-draw text-base text-paper">{site.phone.display}</a></dd>
+        </div>
+        <div>
+          <dt class="text-xs tracking-[0.18em] text-muted uppercase">Email</dt>
+          <dd class="mt-2"><a href={`mailto:${site.email}`} class="link-draw text-base text-paper">{site.email}</a></dd>
+        </div>
+      </dl>
     </div>
 
     <div class="lg:col-span-6 lg:col-start-7" data-reveal>
@@ -44,6 +61,7 @@ const callHref = `mailto:${site.email}?subject=${encodeURIComponent('Discovery c
         client:visible
         accessKey={site.web3formsKey}
         email={site.email}
+        whatsappUrl={chatHref}
         siteName={site.name}
         redirectUrl={thanksUrl}
         services={services.map((s) => s.title)}

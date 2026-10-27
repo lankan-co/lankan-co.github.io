@@ -104,6 +104,15 @@ Everything you'll want to change is in **`src/data/site.ts`** — tagline, servi
 
 > ⚠️ **Case studies and testimonials are placeholders, so their sections are currently hidden.** Replace them with real clients in `site.ts`, then re-add `<Work />` and `<Testimonials />` (and the `Work` nav link) in `src/pages/index.astro`. Drop real photos into `src/assets/work/` (JPG/PNG at ~1600px wide) and point each case study's `image` at the new file — Astro generates AVIF/WebP and responsive sizes automatically.
 
+## ✦ Contact details
+
+Email and phone live in `site.email` and `site.phone` in `src/data/site.ts`. The phone has three forms: `display` for the visible text, `e164` for `tel:` links, and `whatsapp` for `wa.me` links. One number powers all of these:
+- calls and WhatsApp in the Contact section
+- the footer
+- the mobile menu
+- the floating WhatsApp button, which sits bottom-left on mobile so it clears the "Start a project" pill, and bottom-right on desktop
+- the JSON-LD contact point
+
 ## ✦ Contact form
 
 The Contact section's form emails every enquiry through [Web3Forms](https://web3forms.com) to the inbox linked to the access key. Change the recipient in the Web3Forms dashboard; no code change is needed.
@@ -118,7 +127,7 @@ Locally, copy `.env.example` to `.env`. On GitHub, add them under **Settings →
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `PUBLIC_CONTACT_EMAIL` | `hello@lankanbrands.com` | Footer, discovery-call & email-fallback links |
+| `PUBLIC_CONTACT_EMAIL` | `lankanbrands.co@gmail.com` | Footer, Contact section, discovery-call & email-fallback links |
 | `PUBLIC_WEB3FORMS_KEY` | the Lankan Brands & Co. key | Web3Forms access key for the contact form |
 | `SITE_URL` | set by CI | Absolute origin for canonical / OG URLs |
 | `BASE_PATH` | set by CI | `/` or `/<repo-name>` |
