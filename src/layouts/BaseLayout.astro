@@ -31,6 +31,14 @@ const jsonLd = {
   logo: new URL(`${base}brand/lankan-logo.png`, Astro.site).href,
   image: ogImage.href,
   email: site.email,
+  telephone: site.phone.e164,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: site.email,
+    telephone: site.phone.e164,
+    availableLanguage: ['English', 'Sinhala'],
+  },
   areaServed: 'Worldwide',
   knowsAbout: ['Branding', 'Digital marketing', 'Social media', 'SEO', 'Paid advertising', 'Creative direction'],
 };

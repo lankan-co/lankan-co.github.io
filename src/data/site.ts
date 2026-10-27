@@ -15,7 +15,13 @@ export const site = {
   secondary: 'Your business. Your style.',
   description:
     'Lankan Brands & Co. is a boutique branding and digital marketing studio for small businesses and founders who want authentic, stylish growth — not corporate noise.',
-  email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'hello@lankanbrands.com',
+  email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'lankanbrands.co@gmail.com',
+  // One number for calls and WhatsApp. `e164` drives tel: links, `whatsapp` drives wa.me links.
+  phone: {
+    display: '+94 72 788 6000',
+    e164: '+94727886000',
+    whatsapp: '94727886000',
+  },
   // Web3Forms access key for the contact form. Public by design: it only routes
   // mail to the inbox the key was created for.
   web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY || '52518f06-f2e7-4455-910d-9ab7dc0e46ce',
@@ -28,6 +34,10 @@ export const site = {
     { label: 'Behance', href: '' },
   ],
 } as const;
+
+/** WhatsApp click-to-chat link, optionally with a pre-filled message. */
+export const whatsappHref = (text?: string) =>
+  `https://wa.me/${site.phone.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
 
 export const nav = [
   { label: 'Philosophy', href: '#philosophy' },

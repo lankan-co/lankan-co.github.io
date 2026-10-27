@@ -1,13 +1,15 @@
 ---
 /** Footer — logo, minimal links, socials, copyright. */
 import Logo from '@/components/ui/Logo.astro';
-import { nav, site } from '@/data/site';
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { nav, site, whatsappHref } from '@/data/site';
 
 const year = new Date().getFullYear();
 const social = site.social.filter((s) => s.href);
 ---
 
-<footer class="border-t border-line pt-20 pb-10">
+<!-- Extra bottom room on mobile and right-hand room on desktop keep the floating WhatsApp button clear of the last row -->
+<footer class="border-t border-line pt-20 pb-28 md:pb-10">
   <div class="container-site">
     <div class="grid gap-14 md:grid-cols-12">
       <div class="md:col-span-4">
@@ -51,11 +53,21 @@ const social = site.social.filter((s) => s.href);
 
       <div class="md:col-span-3">
         <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Say hello</h2>
-        <a href={`mailto:${site.email}`} class="link-draw mt-5 inline-block">{site.email}</a>
+        <ul class="mt-5 space-y-3">
+          <li><a href={`mailto:${site.email}`} class="link-draw break-all">{site.email}</a></li>
+          <li><a href={`tel:${site.phone.e164}`} class="link-draw">{site.phone.display}</a></li>
+          <li>
+            <a href={whatsappHref()} class="link-draw inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+              <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
+              WhatsApp
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="mt-20 flex flex-col gap-4 border-t border-line pt-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-20 flex flex-col gap-4 border-t border-line pt-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between md:pr-20">
       <p>© {year} {site.name} All rights reserved.</p>
       <p class="font-bold text-paper">{site.secondary}</p>
       <a href="#top" class="link-draw self-start sm:self-auto">Back to top ↑</a>

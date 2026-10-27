@@ -20,6 +20,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 type Props = {
   accessKey: string;
   email: string;
+  whatsappUrl: string;
   siteName: string;
   redirectUrl: string;
   services: readonly string[];
@@ -81,7 +82,7 @@ function Err({ id, message }: { id: string; message?: string }) {
   ) : null;
 }
 
-export default function ContactForm({ accessKey, email, siteName, redirectUrl, services, budgets, timelines }: Props) {
+export default function ContactForm({ accessKey, email, whatsappUrl, siteName, redirectUrl, services, budgets, timelines }: Props) {
   const id = useId();
   const reduce = useReducedMotion();
   const [status, setStatus] = useState<Status>('idle');
@@ -342,9 +343,13 @@ export default function ContactForm({ accessKey, email, siteName, redirectUrl, s
                 </span>
               </button>
               <p className="text-sm text-neutral-400">
-                Prefer email?{' '}
+                Prefer to chat?{' '}
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="link-draw text-paper">
+                  WhatsApp us<span className="sr-only"> (opens in a new tab)</span>
+                </a>{' '}
+                or{' '}
                 <a href={`mailto:${email}`} className="link-draw text-paper">
-                  {email}
+                  email
                 </a>
               </p>
             </div>
@@ -353,9 +358,13 @@ export default function ContactForm({ accessKey, email, siteName, redirectUrl, s
               {status === 'sending' && <span className="sr-only">Sending your message…</span>}
               {status === 'error' && (
                 <p className="text-red-400">
-                  {serverError} Your message hasn’t been sent. Please try again, or{' '}
+                  {serverError} Your message hasn’t been sent. Please try again,{' '}
                   <a href={fallbackHref} className="link-draw text-paper">
-                    send it by email instead
+                    send it by email
+                  </a>
+                  , or{' '}
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="link-draw text-paper">
+                    message us on WhatsApp<span className="sr-only"> (opens in a new tab)</span>
                   </a>
                   .
                 </p>
