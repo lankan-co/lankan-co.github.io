@@ -2,7 +2,7 @@
   <img src="public/brand/lankan-logo.png" alt="Lankan Brands & Co." width="420" />
 </p>
 
-<h3 align="center">For small businesses building something of their own</h3>
+<h3 align="center">For every business building something of its own</h3>
 <p align="center"><strong>Your business. Your style.</strong></p>
 
 <p align="center">
@@ -11,7 +11,7 @@
 
 ---
 
-The website for **Lankan Brands & Co.**, a boutique branding and digital marketing studio for small businesses and founders. It's a fully static, multi-page site with a deliberately simple look: light pages, big thin uppercase titles, generous whitespace, and the work at the centre.
+The website for **Lankan Brands & Co.**, a boutique branding and digital marketing studio for businesses of every size, from first-time founders to established companies. It's a fully static, multi-page site with a deliberately simple look: light pages, big thin uppercase titles, generous whitespace, and the work at the centre.
 
 ## ✦ Highlights
 
@@ -49,12 +49,11 @@ npm run preview    # serve dist/ locally
 │   └── og-image.png               # 1200×630 social card
 ├── scripts/brand-assets.mjs       # Regenerates public/brand, icons and the OG image
 └── src/
-    ├── assets/makers/             # "Who we're for" stock photos (Pexels) + CREDITS.md
     ├── assets/projects/<slug>/    # Project photos: cover.jpg + gallery (01.jpg, 02.jpg…)
     ├── components/
     │   ├── islands/ContactForm.tsx  # Web3Forms contact form (React, client:visible)
     │   ├── sections/              # Header, Footer
-    │   └── ui/                    # Logo, ProjectCard, MakersGrid, CtaBand, WhatsApp button/icon
+    │   └── ui/                    # Logo, ProjectCard, CtaBand, SocialIcon, WhatsApp button/icon
     ├── data/
     │   ├── site.ts                # ← COPY & CONTACT: services, values, process, FAQ, email, phone, socials
     │   ├── projects.ts            # ← WORK: one entry per project
@@ -92,7 +91,7 @@ Buttons are `.btn` combined with `.btn-primary` (black pill) or `.btn-ghost` (ou
 
 ## ✦ Editing content
 
-Site copy is in **`src/data/site.ts`**: the tagline, services, values, process steps, FAQ, email, phone, location and social links. Social profiles (`site.social`: label, icon, handle, URL) appear with icons in the footer and on the Contact page, and are listed as `sameAs` in the structured data. Links with an empty `href` are hidden. Icons are in `src/components/ui/SocialIcon.astro`: Facebook, Instagram and Threads come from Simple Icons (CC0), and LinkedIn comes from Lucide (ISC).
+Site copy is in **`src/data/site.ts`**: the tagline, who we work with, services, values, process steps, FAQ, email, phone, location and social links. Social profiles (`site.social`: label, icon, handle, URL) appear with icons in the footer and on the Contact page, and are listed as `sameAs` in the structured data. Links with an empty `href` are hidden. Icons are in `src/components/ui/SocialIcon.astro`: Facebook, Instagram and Threads come from Simple Icons (CC0), and LinkedIn comes from Lucide (ISC).
 
 ## ✦ Adding a project
 
@@ -101,8 +100,6 @@ Site copy is in **`src/data/site.ts`**: the tagline, services, values, process s
 3. Add an entry to `src/data/projects.ts` with the same `slug`, plus a title, date (`YYYY-MM-DD`), category, a one- or two-sentence summary and a short description of the cover photo. Set `featured: true` to show it on the homepage.
 
 The Work grid, the filter tabs (one per category), the project page and the homepage's "Selected work" all appear automatically. Until the first project is added, the Work page shows a short "coming soon" note.
-
-> The "Who we're for" photos are illustrative Pexels stock photos, not client work. Keep them out of the Work pages.
 
 ## ✦ Contact details
 

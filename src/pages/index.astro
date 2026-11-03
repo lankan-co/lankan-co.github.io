@@ -1,15 +1,14 @@
 ---
 /**
  * Home — short and simple: intro, selected work (once projects exist),
- * who we're for, a services teaser and a call to action.
+ * who we work with, a services teaser and a call to action.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CtaBand from '@/components/ui/CtaBand.astro';
-import MakersGrid from '@/components/ui/MakersGrid.astro';
 import ProjectCard from '@/components/ui/ProjectCard.astro';
 import { href } from '@/data/paths';
 import { featured } from '@/data/projects';
-import { services, site } from '@/data/site';
+import { audiences, services, site } from '@/data/site';
 ---
 
 <BaseLayout>
@@ -17,8 +16,8 @@ import { services, site } from '@/data/site';
     <p class="label text-muted">Branding & digital marketing studio · {site.location}</p>
     <h1 id="hero-title" class="page-title mt-8">Your business.<br />Your style.</h1>
     <p class="mt-10 max-w-xl text-lg leading-relaxed text-muted md:text-xl">
-      A boutique studio for small businesses and founders building something of their own. We make brands that feel
-      like you — and help the right people find them.
+      A boutique branding and digital marketing studio for businesses of every size — from first-time founders to
+      established companies. We make brands that feel like you, and help the right people find them.
     </p>
     <div class="mt-10 flex flex-wrap gap-3">
       <a href={href('contact/')} class="btn btn-primary">Start a project <span class="btn-arrow" aria-hidden="true">→</span></a>
@@ -48,18 +47,27 @@ import { services, site } from '@/data/site';
     <div class="container-site py-20 md:py-28">
       <div class="grid gap-6 md:grid-cols-12 md:items-end">
         <div class="md:col-span-7">
-          <p class="label text-muted">Who we’re for</p>
+          <p class="label text-muted">Who we work with</p>
           <h2 id="for-title" class="mt-6 text-[clamp(1.75rem,3.6vw,3rem)] leading-[1.1] font-light tracking-[-0.02em]">
-            The bakery, the studio, the side project that became the main thing.
+            From a first idea to a name everyone knows.
           </h2>
         </div>
         <p class="leading-relaxed text-muted md:col-span-4 md:col-start-9">
-          Big agencies build brands for big companies. We build them for businesses that are truly someone’s own.
+          Start-up, family business or established company — we shape the brand around who you are, not around a house
+          style.
         </p>
       </div>
-      <div class="mt-14">
-        <MakersGrid />
-      </div>
+      <ul class="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          audiences.map((a, i) => (
+            <li class="border-t border-ink pt-6" data-reveal>
+              <p class="meta">{String(i + 1).padStart(2, '0')}</p>
+              <h3 class="mt-3 text-xl font-light tracking-tight uppercase">{a.title}</h3>
+              <p class="mt-3 leading-relaxed text-muted">{a.body}</p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
