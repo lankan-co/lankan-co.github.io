@@ -17,15 +17,26 @@ const isCurrent = (path: string) => here.startsWith(href(path));
 >
   <div class="container-site flex h-16 items-center justify-between gap-6 md:h-20">
     <a href={href()} class="relative z-[60] -m-2 rounded p-2" aria-label={`${site.name} — home`}>
-      <!-- A raster copy of the light logo (see scripts/brand-assets.mjs): forced dark modes can't split its colours -->
+      <!--
+        Raster logos with the page colour baked in (see scripts/brand-assets.mjs), one per theme:
+        browsers that force a dark mode can't split an image's colours.
+      -->
       <img
         src={href('brand/lankan-logo-header.png')}
         alt=""
         width="432"
         height="192"
-        class="h-8 w-auto md:h-9"
+        class="h-8 w-auto md:h-9 dark:hidden"
         decoding="async"
         fetchpriority="high"
+      />
+      <img
+        src={href('brand/lankan-logo-header-dark.png')}
+        alt=""
+        width="432"
+        height="192"
+        class="hidden h-8 w-auto md:h-9 dark:block"
+        decoding="async"
       />
     </a>
 
@@ -47,7 +58,23 @@ const isCurrent = (path: string) => here.startsWith(href(path));
       </ul>
     </nav>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 md:gap-3">
+      <button
+        type="button"
+        data-theme-toggle
+        aria-pressed="false"
+        class="theme-toggle relative z-[60] grid h-10 w-10 place-items-center rounded-full border border-line text-ink transition-colors hover:border-ink"
+      >
+        <span class="sr-only">Dark mode</span>
+        <!-- Moon in light mode, sun in dark mode -->
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-[1.1rem] w-[1.1rem] dark:hidden" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" />
+        </svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="hidden h-[1.15rem] w-[1.15rem] dark:block" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" />
+        </svg>
+      </button>
       <a href={href('contact/')} class="btn btn-primary hidden min-h-10 px-6 md:inline-flex">Start a project</a>
       <button
         type="button"

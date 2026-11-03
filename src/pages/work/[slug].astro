@@ -21,7 +21,7 @@ const { project: p, next } = Astro.props;
 ---
 
 <BaseLayout title={p.title} description={p.summary}>
-  <section aria-labelledby="page-title" class="relative isolate grid min-h-[70svh] place-items-center overflow-hidden bg-ink text-center text-white">
+  <section aria-labelledby="page-title" class="relative isolate grid min-h-[70svh] place-items-center overflow-hidden bg-night text-center text-white">
     <Picture
       src={p.cover}
       alt={p.coverAlt}
@@ -35,7 +35,7 @@ const { project: p, next } = Astro.props;
     <div class="container-site py-24">
       <h1 id="page-title" class="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] font-light tracking-[0.02em] uppercase">{p.title}</h1>
       <p class="meta mt-6 text-white/80">{p.dateLabel}</p>
-      {p.gallery.length > 0 && <a href="#gallery" class="label mt-10 inline-block border border-white px-8 py-4 transition-colors hover:bg-white hover:text-ink">View gallery</a>}
+      {p.gallery.length > 0 && <a href="#gallery" class="label mt-10 inline-block border border-white px-8 py-4 transition-colors hover:bg-white hover:text-night">View gallery</a>}
     </div>
   </section>
 

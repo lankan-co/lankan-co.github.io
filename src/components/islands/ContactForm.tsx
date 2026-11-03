@@ -56,7 +56,7 @@ function Choices({ name, legend, options }: { name: string; legend: string; opti
         {options.map((o) => (
           <label
             key={o}
-            className="cursor-pointer rounded-full border border-[#bdbdbd] px-4 py-2 text-sm text-ink/80 transition-colors select-none hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-accent"
+            className="cursor-pointer rounded-full border border-field px-4 py-2 text-sm text-ink/80 transition-colors select-none hover:border-ink has-checked:border-ink has-checked:bg-ink has-checked:text-paper has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-accent"
           >
             <input type="checkbox" name={name} value={o} className="sr-only" />
             {o}
@@ -69,7 +69,7 @@ function Choices({ name, legend, options }: { name: string; legend: string; opti
 
 function Err({ id, message }: { id: string; message?: string }) {
   return message ? (
-    <p id={id} className="mt-2 text-sm text-red-700">
+    <p id={id} className="mt-2 text-sm text-danger">
       {message}
     </p>
   ) : null;
@@ -268,7 +268,7 @@ export default function ContactForm({ accessKey, email, whatsappUrl, siteName, r
       <div id={`${id}-status`} aria-live="polite" className="text-sm">
         {status === 'sending' && <span className="sr-only">Sending your message…</span>}
         {status === 'error' && (
-          <p className="text-red-700">
+          <p className="text-danger">
             {serverError} Your message hasn’t been sent. Please try again,{' '}
             <a href={fallbackHref} className="link-draw text-ink">
               send it by email

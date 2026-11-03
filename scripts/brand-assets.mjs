@@ -11,6 +11,8 @@
  *                                         wordmark on warm off-white (as supplied)
  *   public/brand/lankan-logo-header.png    the site header logo (light lockup,
  *                                         background baked in — see below)
+ *   public/brand/lankan-logo-header-dark.png  the same for the dark theme: original
+ *                                         white lockup on the dark page colour
  *   public/favicon.svg, apple-touch-icon.png, icon-512.png
  *   public/og-image.png                   1200x630 social card
  *
@@ -70,6 +72,11 @@ writeFileSync(out('public/brand/lankan-logo-light.svg'), lightLockup(120));
 await sharp(Buffer.from(lightLockup(120))).resize(2400).png({ compressionLevel: 9 }).toFile(out('public/brand/lankan-logo-light.png'));
 // Header: 6x the 32px display height for crisp high-DPI screens.
 await sharp(Buffer.from(lightLockup(24))).resize({ height: 192 }).png({ compressionLevel: 9 }).toFile(out('public/brand/lankan-logo-header.png'));
+
+// Dark-theme header logo: the original white lockup on the dark page colour (--color-paper in dark theme).
+const DARK_PAPER = '#111312';
+const darkHeader = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 ${W + 48} ${H + 48}"><rect x="-24" y="-24" width="${W + 48}" height="${H + 48}" fill="${DARK_PAPER}"/>${markGroup}${wordGroup}</svg>`;
+await sharp(Buffer.from(darkHeader)).resize({ height: 192 }).png({ compressionLevel: 9 }).toFile(out('public/brand/lankan-logo-header-dark.png'));
 
 /* ---------- Background: vertical bands echoing the artwork ---------- */
 const bands = (w, h, cols) =>

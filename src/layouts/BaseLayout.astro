@@ -60,7 +60,23 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#f8f7f2" />
-    <meta name="color-scheme" content="only light" />
+    <meta name="color-scheme" content="light dark" />
+    <!--
+      Theme before first paint (no flash): the visitor's saved choice, else the OS
+      preference. src/scripts/theme.ts wires up the toggle.
+    -->
+    <script is:inline>
+      (function () {
+        var t;
+        try {
+          t = localStorage.getItem('theme');
+        } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', t === 'dark' ? '#111312' : '#f8f7f2');
+      })();
+    </script>
     <meta name="generator" content={Astro.generator} />
     <link rel="preload" href={dmSansLatin} as="font" type="font/woff2" crossorigin />
 
@@ -117,8 +133,10 @@ const jsonLd = {
     <script>
       import { initHeader } from '@/scripts/header';
       import { initReveal } from '@/scripts/reveal';
+      import { initTheme } from '@/scripts/theme';
 
       (window as unknown as { __lankanReveal: boolean }).__lankanReveal = true;
+      initTheme();
       initHeader();
       initReveal();
     </script>
