@@ -26,7 +26,7 @@ export const site = {
     { label: 'Instagram', icon: 'instagram', handle: '@lankanbrands.co', href: 'https://www.instagram.com/lankanbrands.co/' },
     { label: 'Facebook', icon: 'facebook', handle: 'Lankan Brands & Co.', href: 'https://www.facebook.com/share/19jaLr12zz/' },
     { label: 'Threads', icon: 'threads', handle: '@lankanbrands.co', href: 'https://www.threads.com/@lankanbrands.co' },
-    { label: 'LinkedIn', icon: 'linkedin', handle: 'Lankan Brands & Co.', href: 'https://www.linkedin.com/in/lankan-brands-and-corporation-45a6b5448/' },
+    { label: 'LinkedIn', icon: 'linkedin', handle: 'Lankan Brands & Co.', href: 'https://www.linkedin.com/company/lankan-brands-co/' },
   ],
 } as const;
 
