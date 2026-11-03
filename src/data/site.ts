@@ -4,10 +4,10 @@
  */
 export const site = {
   name: 'Lankan Brands & Co.',
-  tagline: 'For small businesses building something of their own',
+  tagline: 'For every business building something of its own',
   secondary: 'Your business. Your style.',
   description:
-    'Lankan Brands & Co. is a boutique branding and digital marketing studio for small businesses and founders who want authentic, stylish growth — not corporate noise.',
+    'Lankan Brands & Co. is a boutique branding and digital marketing studio for businesses of every size — from first-time founders to established companies — that want authentic, stylish growth.',
   email: import.meta.env.PUBLIC_CONTACT_EMAIL || 'lankanbrands.co@gmail.com',
   // One number for calls and WhatsApp. `e164` drives tel: links, `whatsapp` drives wa.me links.
   phone: {
@@ -66,6 +66,16 @@ export const values = [
   },
 ] as const;
 
+/** Who we work with — the range of clients, shown on the homepage. */
+export const audiences = [
+  { title: 'Founders & start-ups', body: 'Naming, identity and a confident launch for something brand new.' },
+  { title: 'Small & family businesses', body: 'Shops, cafés and studios that want a brand with a personal touch.' },
+  { title: 'Growing companies', body: 'Sharper positioning and marketing that keeps pace as you scale.' },
+  { title: 'Established brands', body: 'Refreshes, sub-brands and campaigns that keep a known name ahead.' },
+  { title: 'Corporates & institutions', body: 'Clear, consistent communication across every team and touchpoint.' },
+  { title: 'Events, causes & personal brands', body: 'Launches, campaigns and public profiles that need to be seen.' },
+] as const;
+
 export const services = [
   {
     title: 'Branding & Identity',
@@ -89,7 +99,7 @@ export const services = [
   },
   {
     title: 'Paid Advertising',
-    summary: 'Small budgets, spent with intent.',
+    summary: 'Every budget, spent with intent.',
     detail: 'Meta & Google campaigns, creative testing, tracking set-up and honest monthly reporting.',
   },
   {
@@ -121,8 +131,8 @@ export const process = [
 /** Frequently asked questions — answers only restate what the rest of the site promises. */
 export const faqs = [
   {
-    q: 'We’re a very small business. Is that okay?',
-    a: 'That’s exactly who we’re for. We build brands for the bakery, the studio and the side project that became the main thing — the businesses that are truly someone’s own.',
+    q: 'What size of business do you work with?',
+    a: 'Every size. We work with first-time founders, family businesses, growing companies and established brands — and shape every engagement around your stage, your budget and your goals.',
   },
   {
     q: 'Do we have to sign up for everything?',
