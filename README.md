@@ -77,6 +77,16 @@ Tokens live in `src/styles/global.css` under `@theme` and are available as Tailw
 | `muted` | `#6B6B6B` | Secondary text |
 | `line` | `#DEDEDE` | Borders & dividers |
 | `accent` | `#2563EB` | Focus rings only |
+| `field` | `#BDBDBD` | Form field and pill borders |
+| `danger` | `#B91C1C` | Form errors |
+| `night` | `#0E100F` | Footer and project covers (dark in both themes) |
+
+**Light and dark themes.** The values above are the light theme. A sun/moon button in the header switches to a dark theme (`#111312` page, `#F2F1EC` text), which redefines the same tokens under `:root[data-theme='dark']` in `global.css`. Use `dark:` utilities for anything that isn't a token.
+- **First visit:** the site follows the device's setting.
+- **Saved choice:** the visitor's pick is kept in `localStorage` and applied before first paint by an inline script in `BaseLayout`, so the wrong theme never flashes.
+- **Following the device:** until a visitor picks a theme, it follows device changes and stays in sync across tabs (`src/scripts/theme.ts`).
+- **Without JavaScript:** the dark theme still applies on dark-mode devices, and the toggle is hidden.
+- **Forced dark:** declaring `color-scheme: light dark` keeps browsers from forcing their own dark mode onto the site.
 
 **Type:** DM Sans Variable (self-hosted), a geometric sans that matches the letterforms in the artwork. The building blocks are:
 
@@ -167,7 +177,7 @@ If the logo vectors in `src/data/logo-paths.json` ever change, update the `LOGO`
 
 ## ✦ Brand assets
 
-`npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image from `src/data/logo-paths.json`. It also builds the light lockup (`lankan-logo-light.svg`/`.png`: charcoal square and black wordmark on warm off-white) and `lankan-logo-header.png`, the raster copy used in the site header. The header uses an image rather than inline SVG on purpose: browsers that force dark mode onto light sites recolour SVG shapes one by one, which hid the wordmark, but keep an image intact. The site also declares `color-scheme: only light` to opt out of Chrome and Edge's automatic dark mode. Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.
+`npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image from `src/data/logo-paths.json`. It also builds the light lockup (`lankan-logo-light.svg`/`.png`: charcoal square and black wordmark on warm off-white) and `lankan-logo-header.png`, the raster copy used in the site header. The header uses an image rather than inline SVG on purpose: browsers that force dark mode onto light sites recolour SVG shapes one by one, which hid the wordmark, but keep an image intact. There is a dark-theme twin, `lankan-logo-header-dark.png` (the original white lockup on the dark page colour). Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.
 
 ## ✦ Accessibility & motion notes
 

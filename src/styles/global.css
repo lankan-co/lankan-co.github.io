@@ -4,18 +4,23 @@
    e.g. bg-paper, text-ink, text-muted, border-line.
    Light, quiet and type-led: off-white pages, near-black text, a black
    footer, large thin uppercase titles and small tracked labels.
+   A dark theme swaps the token values (see "Themes" below); the header
+   toggle sets <html data-theme="light|dark">.
    ========================================================================== */
 @import 'tailwindcss';
 @import '@fontsource-variable/dm-sans';
 
 @theme {
-  /* Palette — monochrome */
+  /* Palette — monochrome (light theme values; dark values under "Themes") */
   --color-paper: #f8f7f2; /* page background — the light logo's off-white */
   --color-card: #ffffff; /* raised surfaces */
-  --color-ink: #111111; /* primary text, buttons, footer */
-  --color-muted: #6b6b6b; /* secondary text (4.9:1 on paper) */
+  --color-ink: #111111; /* primary text, buttons */
+  --color-muted: #6b6b6b; /* secondary text (5.2:1 on paper) */
   --color-line: #dedede; /* borders / dividers */
+  --color-field: #bdbdbd; /* form field and pill borders */
+  --color-danger: #b91c1c; /* form errors */
   --color-accent: #2563eb; /* focus rings only */
+  --color-night: #0e100f; /* footer — dark in both themes */
 
   --font-sans: 'DM Sans Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -24,12 +29,64 @@
   --container-site: 84rem;
 }
 
+/* `dark:` utilities follow the chosen theme, not just the OS setting. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---------- Themes ----------
+   Light is the default. Dark applies when <html data-theme="dark"> (set by the
+   toggle, or from the OS preference before first paint), and — without
+   JavaScript — when the OS prefers dark. Declaring both schemes also keeps
+   browsers' automatic "force dark" from recolouring the design.          */
+:root {
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-paper: #111312;
+  --color-card: #1a1d1c;
+  --color-ink: #f2f1ec;
+  --color-muted: #a3a39d; /* 7.4:1 on paper */
+  --color-line: #2b2f2d;
+  --color-field: #4b504d;
+  --color-danger: #f87171;
+  --color-accent: #60a5fa;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --color-paper: #111312;
+    --color-card: #1a1d1c;
+    --color-ink: #f2f1ec;
+    --color-muted: #a3a39d;
+    --color-line: #2b2f2d;
+    --color-field: #4b504d;
+    --color-danger: #f87171;
+    --color-accent: #60a5fa;
+  }
+}
+
+/* The theme toggle needs JavaScript; without it the site simply follows the OS. */
+html:not(.js) [data-theme-toggle] {
+  display: none;
+}
+
+/* Brief cross-fade when the theme is switched (added and removed by the toggle). */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-fade,
+  html.theme-fade *,
+  html.theme-fade *::before,
+  html.theme-fade *::after {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease,
+      fill 0.3s ease !important;
+  }
+}
+
 /* ---------- Base ---------- */
 @layer base {
-  /* Light-only: also opts out of browsers' automatic dark mode (Chrome, Edge),
-     which would recolour the light design and the logo. */
   :root {
-    color-scheme: only light;
     interpolate-size: allow-keywords;
   }
 
@@ -151,7 +208,7 @@
     color: var(--color-paper);
   }
   .btn-primary:hover {
-    background: #333;
+    background: color-mix(in srgb, var(--color-ink) 82%, var(--color-paper));
   }
   .btn-ghost {
     color: var(--color-ink);
@@ -189,7 +246,7 @@
     width: 100%;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid #bdbdbd;
+    border-bottom: 1px solid var(--color-field);
     padding: 0.85rem 0;
     color: var(--color-ink);
     font-size: 1.05rem;
@@ -200,7 +257,7 @@
     color: #9a9a9a;
   }
   .field:hover {
-    border-color: #8a8a8a;
+    border-color: var(--color-muted);
   }
   .field:focus {
     outline: none;
@@ -211,7 +268,7 @@
     box-shadow: 0 1px 0 0 var(--color-ink);
   }
   .field[aria-invalid='true'] {
-    border-color: #b91c1c;
+    border-color: var(--color-danger);
   }
 }
 
