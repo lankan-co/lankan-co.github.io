@@ -1,0 +1,93 @@
+---
+/** Project page: full-width cover with title, date and category, then the gallery. */
+import { Picture } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { href } from '@/data/paths';
+import { projects, type Project } from '@/data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+const { project: p, next } = Astro.props;
+---
+
+<BaseLayout title={p.title} description={p.summary}>
+  <section aria-labelledby="page-title" class="relative isolate grid min-h-[70svh] place-items-center overflow-hidden bg-ink text-center text-white">
+    <Picture
+      src={p.cover}
+      alt={p.coverAlt}
+      formats={['avif', 'webp']}
+      widths={[800, 1400, 2000]}
+      sizes="100vw"
+      class="absolute inset-0 -z-10 h-full w-full object-cover opacity-70"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="container-site py-24">
+      <h1 id="page-title" class="text-[clamp(2.5rem,7vw,5.5rem)] leading-[1] font-light tracking-[0.02em] uppercase">{p.title}</h1>
+      <p class="meta mt-6 text-white/80">{p.dateLabel}</p>
+      {p.gallery.length > 0 && <a href="#gallery" class="label mt-10 inline-block border border-white px-8 py-4 transition-colors hover:bg-white hover:text-ink">View gallery</a>}
+    </div>
+  </section>
+
+  <section aria-label="About this project" class="container-site grid gap-10 py-16 md:grid-cols-12 md:py-24">
+    <dl class="grid grid-cols-2 gap-6 md:col-span-4 md:grid-cols-1">
+      {p.client && (
+        <div>
+          <dt class="label text-muted">Client</dt>
+          <dd class="mt-2">{p.client}</dd>
+        </div>
+      )}
+      <div>
+        <dt class="label text-muted">Category</dt>
+        <dd class="mt-2"><span class="tag">{p.category}</span></dd>
+      </div>
+    </dl>
+    <p class="text-xl leading-relaxed font-light md:col-span-7 md:col-start-6 md:text-2xl">{p.summary}</p>
+  </section>
+
+  {
+    p.gallery.length > 0 && (
+      <section id="gallery" aria-label="Gallery" class="container-site pb-24">
+        <ul class="grid gap-6 md:grid-cols-2">
+          {p.gallery.map((img, i) => (
+            <li class:list={[i % 3 === 0 && 'md:col-span-2']} data-reveal>
+              <Picture
+                src={img}
+                alt={`${p.title} — photo ${i + 1}`}
+                formats={['avif', 'webp']}
+                widths={[600, 1000, 1600]}
+                sizes={i % 3 === 0 ? '(min-width: 768px) 90vw, 100vw' : '(min-width: 768px) 45vw, 100vw'}
+                class:list={['w-full', i % 3 === 0 ? 'h-auto' : 'aspect-[4/5] object-cover']}
+                loading="lazy"
+                decoding="async"
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <nav aria-label="More work" class="border-t border-line">
+    <div class="container-site flex flex-wrap items-center justify-between gap-6 py-10">
+      <a href={href('work/')} class="label link-draw">← All work</a>
+      {next.slug !== p.slug && (
+        <a href={href(`work/${next.slug}/`)} class="label link-draw text-right">
+          Next: {next.title} →
+        </a>
+      )}
+    </div>
+  </nav>
+
+  <CtaBand />
+</BaseLayout>

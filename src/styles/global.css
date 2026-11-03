@@ -1,70 +1,63 @@
 /* ==========================================================================
    Lankan Brands & Co. — design system
    Tailwind CSS 4 (CSS-first config). Tokens below become utilities,
-   e.g. bg-ink, bg-card, text-muted, border-line, text-accent.
+   e.g. bg-paper, text-ink, text-muted, border-line.
+   Light, quiet and type-led: off-white pages, near-black text, a black
+   footer, large thin uppercase titles and small tracked labels.
    ========================================================================== */
 @import 'tailwindcss';
 @import '@fontsource-variable/dm-sans';
 
 @theme {
-  /* Palette — dark-first, monochrome with one refined accent */
-  --color-ink: #000000; /* primary background */
-  --color-card: #0a0a0a; /* secondary background / cards */
-  --color-card-2: #111111; /* raised cards */
-  --color-paper: #ffffff; /* primary text */
-  --color-muted: #a3a3a3; /* secondary text */
-  --color-soft: #f5f5f5; /* warm off-white */
-  --color-accent: #60a5fa; /* electric soft blue — used sparingly */
-  --color-line: #1f1f1f; /* borders / dividers */
+  /* Palette — monochrome */
+  --color-paper: #f4f4f2; /* page background */
+  --color-card: #ffffff; /* raised surfaces */
+  --color-ink: #111111; /* primary text, buttons, footer */
+  --color-muted: #6b6b6b; /* secondary text (4.9:1 on paper) */
+  --color-line: #dedede; /* borders / dividers */
+  --color-accent: #2563eb; /* focus rings only */
 
-  /* Type — DM Sans matches the geometric letterforms in the artwork */
   --font-sans: 'DM Sans Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-display: 'DM Sans Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  /* Easing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Container */
   --container-site: 84rem;
 }
 
 /* ---------- Base ---------- */
 @layer base {
   :root {
-    color-scheme: dark;
-    /* lets <details> (FAQ) animate to height: auto where supported */
+    color-scheme: light;
     interpolate-size: allow-keywords;
   }
 
   html {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-paper);
+    color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 6rem;
   }
 
-  /* Native smooth scrolling only when Lenis isn't running (and motion is OK) */
   @media (prefers-reduced-motion: no-preference) {
-    html:not(.lenis) {
+    html {
       scroll-behavior: smooth;
     }
   }
 
   body {
     min-height: 100dvh;
-    background: var(--color-ink);
+    background: var(--color-paper);
     overflow-x: clip;
   }
 
   ::selection {
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
 
-  /* Visible, consistent focus for keyboard users */
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
@@ -74,21 +67,11 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
-}
-
-/* ---------- Lenis smooth scroll ---------- */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
 }
 
 /* ---------- Components ---------- */
@@ -97,7 +80,7 @@ html.lenis body {
     width: 100%;
     max-width: var(--container-site);
     margin-inline: auto;
-    padding-inline: 1.25rem;
+    padding-inline: 1.5rem;
   }
   @media (min-width: 768px) {
     .container-site {
@@ -105,65 +88,79 @@ html.lenis body {
     }
   }
 
-  /* Small uppercase section label: "01 — Services" */
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
+  /* Big, thin, uppercase page title: "WORK", "SERVICES" */
+  .page-title {
+    font-size: clamp(3.25rem, 10vw, 7.5rem);
+    line-height: 0.95;
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+
+  /* Small, bold, tracked uppercase label */
+  .label {
     font-size: 0.75rem;
+    font-weight: 600;
     letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Monospaced dates / numbers */
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-muted);
   }
-  .eyebrow::before {
-    content: '';
-    width: 1.75rem;
-    height: 1px;
-    background: currentColor;
-    opacity: 0.6;
+
+  /* Outlined category tag */
+  .tag {
+    display: inline-block;
+    border: 1px solid var(--color-line);
+    padding: 0.3rem 0.6rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
   }
 
   /* Buttons */
   .btn {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
     min-height: 3rem;
-    padding: 0 1.5rem;
+    padding: 0 1.6rem;
     border-radius: 999px;
-    font-weight: 500;
-    font-size: 0.95rem;
-    letter-spacing: -0.005em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     transition:
-      background-color 0.4s var(--ease-out-expo),
-      color 0.4s var(--ease-out-expo),
-      border-color 0.4s var(--ease-out-expo),
-      box-shadow 0.5s var(--ease-out-expo),
-      transform 0.4s var(--ease-out-expo);
-    will-change: transform;
+      background-color 0.3s,
+      color 0.3s,
+      border-color 0.3s;
   }
   .btn-primary {
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
   .btn-primary:hover {
-    background: var(--color-soft);
-    box-shadow:
-      0 0 0 6px rgb(255 255 255 / 0.06),
-      0 10px 40px -10px rgb(255 255 255 / 0.35);
+    background: #333;
   }
   .btn-ghost {
-    color: var(--color-paper);
-    border: 1px solid rgb(255 255 255 / 0.18);
+    color: var(--color-ink);
+    border: 1px solid var(--color-ink);
   }
   .btn-ghost:hover {
-    border-color: rgb(255 255 255 / 0.5);
-    background: rgb(255 255 255 / 0.04);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
   .btn .btn-arrow {
-    transition: transform 0.4s var(--ease-out-expo);
+    transition: transform 0.3s var(--ease-out-expo);
   }
   .btn:hover .btn-arrow {
     transform: translateX(3px);
@@ -171,13 +168,12 @@ html.lenis body {
 
   /* Underline that draws in on hover */
   .link-draw {
-    position: relative;
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 0% 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
     transition:
-      background-size 0.5s var(--ease-out-expo),
+      background-size 0.4s var(--ease-out-expo),
       color 0.3s;
     padding-bottom: 2px;
   }
@@ -186,90 +182,50 @@ html.lenis body {
     background-size: 100% 1px;
   }
 
-  /* Hairline card */
-  .card {
-    background: var(--color-card);
-    border: 1px solid var(--color-line);
-    border-radius: 1.25rem;
-  }
-
-
   /* Form fields */
   .field {
     width: 100%;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid rgb(255 255 255 / 0.18);
-    padding: 0.9rem 0;
-    color: var(--color-paper);
+    border-bottom: 1px solid #bdbdbd;
+    padding: 0.85rem 0;
+    color: var(--color-ink);
     font-size: 1.05rem;
-    transition: border-color 0.3s;
     border-radius: 0;
+    transition: border-color 0.3s;
   }
   .field::placeholder {
-    color: #737373;
+    color: #9a9a9a;
   }
   .field:hover {
-    border-color: rgb(255 255 255 / 0.35);
+    border-color: #8a8a8a;
   }
   .field:focus {
     outline: none;
-    border-color: var(--color-paper);
+    border-color: var(--color-ink);
   }
   .field:focus-visible {
     outline: none;
-    box-shadow: 0 1px 0 0 var(--color-paper);
+    box-shadow: 0 1px 0 0 var(--color-ink);
   }
   .field[aria-invalid='true'] {
-    border-color: #f87171;
+    border-color: #b91c1c;
   }
 }
 
-/* ---------- Background textures (echo the vertical bands in the artwork) ---------- */
-.bg-bands {
-  background-image: linear-gradient(
-    90deg,
-    transparent 0 7.5%,
-    var(--color-card) 7.5% 30.5%,
-    transparent 30.5% 38.5%,
-    var(--color-card) 38.5% 61.5%,
-    transparent 61.5% 69.5%,
-    var(--color-card) 69.5% 92.5%,
-    transparent 92.5%
-  );
-}
-.bg-grain::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-}
-
-/* ---------- Scroll reveal (progressive enhancement) ----------
-   Content is visible by default. Only when JS is running *and* motion
-   is allowed do we pre-hide [data-reveal] elements; src/scripts/reveal.ts
-   animates them in with Framer Motion's DOM API.                      */
+/* ---------- Gentle fade-in on scroll (progressive enhancement) ----------
+   Content is visible by default. Only when JS runs and motion is allowed do
+   [data-reveal] elements start hidden; src/scripts/reveal.ts adds .is-in.  */
 @media (prefers-reduced-motion: no-preference) {
   html.js [data-reveal] {
     opacity: 0;
-    transform: translateY(28px);
-    filter: blur(8px);
+    transform: translateY(16px);
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo);
   }
-}
-
-/* Horizontal rows that scroll without a visible bar (still keyboard/trackpad scrollable) */
-.no-scrollbar {
-  scrollbar-width: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Philosophy statement: words light up as you scroll (src/scripts/reveal.ts → initWordScrub) */
-.scrub-word {
-  opacity: var(--o, 1);
-  transition: opacity 0.25s linear;
+  html.js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
 }

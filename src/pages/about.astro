@@ -1,0 +1,48 @@
+---
+/** About — who we are, what we believe, and how we work with you. */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { site, values } from '@/data/site';
+---
+
+<BaseLayout
+  title="About"
+  description="Lankan Brands & Co. is a small, founder-led branding and digital marketing studio for small businesses and founders."
+>
+  <section aria-labelledby="page-title" class="container-site pt-16 pb-20 md:pt-28 md:pb-28">
+    <h1 id="page-title" class="page-title">About</h1>
+    <div class="mt-16 grid gap-10 md:mt-24 md:grid-cols-12">
+      <p class="text-[clamp(1.6rem,3.2vw,2.75rem)] leading-[1.15] font-light tracking-[-0.02em] md:col-span-8" data-reveal>
+        Big agencies build brands for big companies. We build them for the bakery, the studio, the side project that
+        became the main thing — the businesses that are truly someone’s own.
+      </p>
+      <div class="space-y-5 leading-relaxed text-muted md:col-span-5 md:col-start-8" data-reveal>
+        <p>
+          We’re founders too, so we know what it costs to put your name on something. That’s why we keep our studio
+          small, our process honest and our work grounded in what makes you different.
+        </p>
+        <p>No jargon. No templates. Just a brand with your fingerprints all over it.</p>
+        <p class="label text-ink">Based in {site.location} · Working worldwide</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="values-title" class="border-t border-line">
+    <div class="container-site py-20 md:py-28">
+      <h2 id="values-title" class="label text-muted">What we believe</h2>
+      <ul class="mt-10 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          values.map((v, i) => (
+            <li class="border-t border-ink pt-6" data-reveal>
+              <p class="meta">{String(i + 1).padStart(2, '0')}</p>
+              <h3 class="mt-3 text-xl font-light tracking-tight uppercase">{v.title}</h3>
+              <p class="mt-3 leading-relaxed text-muted">{v.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+/**
+ * Work — project archive: category filters and a three-column grid.
+ * Filters are progressive enhancement: without JS every project shows.
+ * Until the first project is added (src/data/projects.ts) an honest
+ * "coming soon" note shows instead of the grid.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import ProjectCard from '@/components/ui/ProjectCard.astro';
+import { href } from '@/data/paths';
+import { categories, projects } from '@/data/projects';
+---
+
+<BaseLayout title="Work" description="Selected branding, social and campaign work by Lankan Brands & Co.">
+  <section aria-labelledby="page-title" class="container-site pt-16 pb-24 md:pt-28 md:pb-32">
+    <h1 id="page-title" class="page-title">Work</h1>
+
+    {
+      projects.length > 0 ? (
+        <>
+          {categories.length > 1 && (
+            <div role="group" aria-label="Filter projects" class="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-b border-line pb-6" data-filters>
+              {['All', ...categories].map((c, i) => (
+                <button
+                  type="button"
+                  data-filter={c}
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                  class="label border-b-2 border-transparent pb-1 text-muted transition-colors hover:text-ink aria-pressed:border-ink aria-pressed:text-ink"
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
+          <ul class="mt-14 grid gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-3" data-grid>
+            {projects.map((p, i) => (
+              <ProjectCard project={p} eager={i < 3} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        <div class="mt-16 max-w-2xl border-t border-line pt-10" data-reveal>
+          <p class="label text-muted">Coming soon</p>
+          <p class="mt-6 text-2xl leading-snug font-light md:text-3xl">
+            Our first case studies are being photographed. Want your business to be one of them?
+          </p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={href('contact/')} class="btn btn-primary">Start a project <span class="btn-arrow" aria-hidden="true">→</span></a>
+            <a href={href('services/')} class="btn btn-ghost">Our services</a>
+          </div>
+        </div>
+      )
+    }
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-filters]');
+  const items = document.querySelectorAll<HTMLElement>('[data-grid] > li');
+  bar?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+    if (!btn) return;
+    const pick = btn.dataset.filter;
+    bar.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    items.forEach((li) => {
+      li.hidden = pick !== 'All' && li.dataset.category !== pick;
+      li.classList.add('is-in');
+    });
+  });
+</script>

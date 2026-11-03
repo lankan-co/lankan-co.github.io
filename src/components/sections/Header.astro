@@ -1,35 +1,35 @@
 ---
 /**
- * Fixed header — transparent over the hero, gains a blurred backdrop
- * and hairline once scrolled (see src/scripts/header.ts). A thin line along
- * its bottom edge shows how far through the page you are.
+ * Sticky header: logo left, uppercase page links centred, "Start a project"
+ * pill right. On phones the links move into a full-screen menu.
  */
 import Logo from '@/components/ui/Logo.astro';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
-import { nav, site, whatsappHref } from '@/data/site';
+import { href } from '@/data/paths';
+import { chatMessage, nav, site, whatsappHref } from '@/data/site';
+
+const here = Astro.url.pathname;
+const isCurrent = (path: string) => here.startsWith(href(path));
 ---
 
 <header
   data-header
-  class="group/header fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 border-b border-transparent data-[scrolled]:border-line data-[scrolled]:bg-ink/70 data-[scrolled]:backdrop-blur-xl"
+  class="sticky top-0 z-50 border-b border-transparent bg-paper/90 backdrop-blur-md transition-colors duration-300 data-[scrolled]:border-line"
 >
-  <div aria-hidden="true" class="absolute inset-x-0 -bottom-px h-px overflow-hidden">
-    <div data-page-progress class="h-full origin-left scale-x-0 bg-gradient-to-r from-paper/60 via-paper to-accent"></div>
-  </div>
-  <div class="container-site flex h-16 items-center justify-between md:h-20">
-    <a href="#top" class="relative z-[60] -m-2 rounded p-2" aria-label="Lankan Brands & Co. — back to top">
-      <Logo variant="full" class="h-7 w-auto md:h-8" />
+  <div class="container-site flex h-16 items-center justify-between gap-6 md:h-20">
+    <a href={href()} class="relative z-[60] -m-2 rounded p-2" aria-label={`${site.name} — home`}>
+      <Logo class="h-7 w-auto md:h-8" />
     </a>
 
     <nav aria-label="Primary" class="hidden md:block">
-      <ul class="flex items-center gap-8 text-sm text-muted">
+      <ul class="flex items-center gap-10">
         {
           nav.map((item) => (
             <li>
               <a
-                href={item.href}
-                data-nav-link
-                class="link-draw transition-colors hover:text-paper aria-[current]:text-paper"
+                href={href(item.path)}
+                aria-current={isCurrent(item.path) ? 'page' : undefined}
+                class="label link-draw text-ink/70 transition-colors hover:text-ink aria-[current]:text-ink aria-[current]:[background-size:100%_1px]"
               >
                 {item.label}
               </a>
@@ -40,68 +40,58 @@ import { nav, site, whatsappHref } from '@/data/site';
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="#contact" class="btn btn-primary hidden min-h-10 px-5 text-sm sm:inline-flex">
-        Start a project
-      </a>
+      <a href={href('contact/')} class="btn btn-primary hidden min-h-10 px-6 md:inline-flex">Start a project</a>
       <button
         type="button"
         data-menu-toggle
         aria-controls="mobile-menu"
         aria-expanded="false"
         aria-label="Open menu"
-        class="group relative z-[60] grid h-11 w-11 place-items-center rounded-full border border-white/15 md:hidden"
+        class="group relative z-[60] grid h-11 w-11 place-items-center md:hidden"
       >
-        <span class="sr-only">Menu</span>
         <span
           aria-hidden="true"
-          class="absolute h-px w-5 -translate-y-1 bg-paper transition-transform duration-500 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"
+          class="absolute h-px w-6 -translate-y-1 bg-ink transition-transform duration-300 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"
         ></span>
         <span
           aria-hidden="true"
-          class="absolute h-px w-5 translate-y-1 bg-paper transition-transform duration-500 group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"
+          class="absolute h-px w-6 translate-y-1 bg-ink transition-transform duration-300 group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"
         ></span>
       </button>
     </div>
   </div>
 </header>
 
-<!-- Mobile menu: full-screen, large type -->
-<div
-  id="mobile-menu"
-  inert
-  class="bg-bands pointer-events-none fixed inset-0 z-40 flex flex-col bg-ink opacity-0 transition-opacity duration-500 data-[open]:pointer-events-auto data-[open]:opacity-100 md:hidden"
->
-  <nav aria-label="Mobile" class="container-site flex flex-1 flex-col justify-center">
-    <ul class="space-y-2">
-      {
-        nav.map((item, i) => (
-          <li>
-            <a href={item.href} class="flex items-baseline gap-4 py-2 text-4xl font-semibold tracking-tight">
-              <span class="text-xs font-normal tracking-widest text-muted">0{i + 1}</span>
-              {item.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-    <div class="mt-12 flex flex-wrap gap-3">
-      <a href="#contact" class="btn btn-primary">Start a project <span aria-hidden="true">→</span></a>
-      <a href={whatsappHref(`Hi ${site.name}, I’d like to talk about a project.`)} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
-        <WhatsAppIcon class="h-5 w-5 text-[#25D366]" />
-        WhatsApp
-        <span class="sr-only">(opens in a new tab)</span>
-      </a>
-    </div>
-  </nav>
-</div>
-
-<!-- Mobile: a call to action that rides along after the hero, and steps aside at the contact form -->
-<a
-  href="#contact"
-  data-float-cta
-  tabindex="-1"
-  aria-hidden="true"
-  class="btn btn-primary fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 translate-y-[150%] opacity-0 shadow-2xl shadow-black/70 transition-[translate,opacity] duration-500 data-[show]:translate-y-0 data-[show]:opacity-100 md:hidden"
->
-  Start a project <span aria-hidden="true">→</span>
-</a>
+<!-- Mobile menu: full-screen, large type. Lives outside <header>, whose backdrop blur would trap a fixed child. -->
+  <div
+    id="mobile-menu"
+    inert
+    class="pointer-events-none fixed inset-0 z-40 flex flex-col bg-paper opacity-0 transition-opacity duration-300 data-[open]:pointer-events-auto data-[open]:opacity-100 md:hidden"
+  >
+    <nav aria-label="Mobile" class="container-site flex flex-1 flex-col justify-center pt-16">
+      <ul class="space-y-3">
+        <li><a href={href()} class="block py-1 text-4xl font-light tracking-tight uppercase">Home</a></li>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={href(item.path)}
+                aria-current={isCurrent(item.path) ? 'page' : undefined}
+                class="block py-1 text-4xl font-light tracking-tight uppercase aria-[current]:font-normal"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-12 flex flex-wrap gap-3">
+        <a href={href('contact/')} class="btn btn-primary">Start a project</a>
+        <a href={whatsappHref(chatMessage)} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+          <WhatsAppIcon class="h-4 w-4" />
+          WhatsApp
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </div>
+    </nav>
+  </div>

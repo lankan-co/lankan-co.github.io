@@ -1,14 +1,7 @@
 /**
  * All site copy lives here so it can be edited without touching layout code.
- * Case studies and testimonials are PLACEHOLDERS — replace with real clients.
- * Their sections are not rendered until then (see src/pages/index.astro).
+ * Projects for the Work pages live in src/data/projects.ts.
  */
-import type { ImageMetadata } from 'astro';
-import kiri from '@/assets/work/kiri-bakehouse.png';
-import surf from '@/assets/work/saltwater-surf.png';
-import thread from '@/assets/work/ceylon-thread.png';
-import lumen from '@/assets/work/lumen-coffee.png';
-
 export const site = {
   name: 'Lankan Brands & Co.',
   tagline: 'For small businesses building something of their own',
@@ -22,6 +15,8 @@ export const site = {
     e164: '+94727886000',
     whatsapp: '94727886000',
   },
+  // Shown in the footer and on the Contact page. Add a city when you want it shown, e.g. 'Colombo, Sri Lanka'.
+  location: 'Sri Lanka',
   // Web3Forms access key for the contact form. Public by design: it only routes
   // mail to the inbox the key was created for.
   web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY || '52518f06-f2e7-4455-910d-9ab7dc0e46ce',
@@ -29,9 +24,11 @@ export const site = {
   // "Follow" column disappears entirely while all are empty.
   social: [
     { label: 'Instagram', href: '' },
-    { label: 'LinkedIn', href: '' },
     { label: 'Facebook', href: '' },
+    { label: 'TikTok', href: '' },
+    { label: 'LinkedIn', href: '' },
     { label: 'Behance', href: '' },
+    { label: 'Google Review', href: '' },
   ],
 } as const;
 
@@ -39,12 +36,14 @@ export const site = {
 export const whatsappHref = (text?: string) =>
   `https://wa.me/${site.phone.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
 
+export const chatMessage = `Hi ${site.name}, I’d like to talk about a project.`;
+
+/** Top navigation. Paths are relative to the site root; see `href()` in src/data/paths.ts. */
 export const nav = [
-  { label: 'Philosophy', href: '#philosophy' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', path: 'about/' },
+  { label: 'Work', path: 'work/' },
+  { label: 'Services', path: 'services/' },
+  { label: 'Contact', path: 'contact/' },
 ] as const;
 
 export const values = [
@@ -99,50 +98,6 @@ export const services = [
   },
 ] as const;
 
-/** "Your brand, everywhere" — the touchpoints we design for. `art` picks the illustration in Showcase.astro. */
-export const touchpoints = [
-  { art: 'identity', title: 'Identity', body: 'A logo with a point of view, built on a system that scales from favicon to shopfront.' },
-  { art: 'packaging', title: 'Packaging', body: 'Boxes, bags and labels that make the product the best advert you have.' },
-  { art: 'social', title: 'Social', body: 'A feed that sounds like you, with templates your team can keep using.' },
-  { art: 'web', title: 'Web', body: 'A website that loads fast, reads clearly and turns visitors into enquiries.' },
-  { art: 'storefront', title: 'Storefront', body: 'Signage and spaces that make the brand feel real the moment people walk in.' },
-  { art: 'campaigns', title: 'Campaigns', body: 'Ads and launches with small budgets, spent with intent and measured honestly.' },
-] as const;
-
-/** Frequently asked questions — answers only restate what the rest of the site promises. */
-export const faqs = [
-  {
-    q: 'We’re a very small business. Is that okay?',
-    a: 'That’s exactly who we’re for. We build brands for the bakery, the studio and the side project that became the main thing — the businesses that are truly someone’s own.',
-  },
-  {
-    q: 'Do we have to sign up for everything?',
-    a: 'No. Pick one thing, or let us take care of the lot. Every engagement is shaped around your stage, your budget and your goals.',
-  },
-  {
-    q: 'How much does it cost?',
-    a: 'It depends on what you need, so we don’t do one-size packages. Share a rough budget in the form below and we’ll suggest the plan that gets the most out of it.',
-  },
-  {
-    q: 'What does a project look like?',
-    a: 'Four stages: we listen, shape a strategy and creative direction, build in focused sprints with you in the loop, then launch, measure and refine.',
-  },
-  {
-    q: 'Who owns the work at the end?',
-    a: 'You do. You leave with the systems, guidelines and know-how to keep the brand growing long after launch.',
-  },
-  {
-    q: 'How quickly will we hear back?',
-    a: 'Within one working day, with honest thoughts — even if we’re not the right fit. Prefer to talk first? Book a free 30-minute discovery call.',
-  },
-] as const;
-
-/** Optional choices on the contact form. */
-export const enquiry = {
-  budgets: ['Under Rs. 150,000', 'Rs. 150,000 – 450,000', 'Rs. 450,000 – 1,500,000', 'Rs. 1,500,000+', 'Not sure yet'],
-  timelines: ['As soon as possible', 'Within a month', 'In 1–3 months', 'Just exploring'],
-} as const;
-
 export const process = [
   {
     title: 'Listen',
@@ -162,77 +117,26 @@ export const process = [
   },
 ] as const;
 
-export type CaseStudy = {
-  client: string;
-  sector: string;
-  title: string;
-  metric: string;
-  metricLabel: string;
-  body: string;
-  image: ImageMetadata;
-  alt: string;
-};
-
-export const work: CaseStudy[] = [
+/** Frequently asked questions — answers only restate what the rest of the site promises. */
+export const faqs = [
   {
-    client: 'Kiri Bakehouse',
-    sector: 'Neighbourhood bakery',
-    title: 'From corner shop to weekend queue',
-    metric: '+212%',
-    metricLabel: 'online pre-orders',
-    body: 'A warm new identity, packaging and an Instagram-first launch that turned regulars into evangelists.',
-    image: kiri,
-    alt: 'Abstract cover: white square with a ring, beside concentric circles on black',
+    q: 'We’re a very small business. Is that okay?',
+    a: 'That’s exactly who we’re for. We build brands for the bakery, the studio and the side project that became the main thing — the businesses that are truly someone’s own.',
   },
   {
-    client: 'Saltwater Surf Co.',
-    sector: 'Surf school & rentals',
-    title: 'A brand that rides the swell',
-    metric: '3.4×',
-    metricLabel: 'return on ad spend',
-    body: 'Positioning, reel-led content and tightly targeted ads that filled lessons through the off-season.',
-    image: surf,
-    alt: 'Abstract cover: layered wave lines beneath a soft blue sun',
+    q: 'Do we have to sign up for everything?',
+    a: 'No. Pick one thing, or let us take care of the lot. Every engagement is shaped around your stage, your budget and your goals.',
   },
   {
-    client: 'Ceylon Thread',
-    sector: 'Handloom textiles',
-    title: 'Heritage craft, modern storefront',
-    metric: '+180%',
-    metricLabel: 'organic search traffic',
-    body: 'A refined visual system and search-led content strategy that took a family weaver online and global.',
-    image: thread,
-    alt: 'Abstract cover: woven grid of vertical and horizontal bars',
+    q: 'How much does it cost?',
+    a: 'It depends on what you need, so we don’t do one-size packages. Tell us about your project and your budget, and we’ll suggest the plan that gets the most out of it.',
   },
   {
-    client: 'Lumen Coffee',
-    sector: 'Specialty café',
-    title: 'Small café, big local presence',
-    metric: '#1',
-    metricLabel: 'in local map results',
-    body: 'Local SEO, a calm new identity and a loyalty campaign that made Lumen the neighbourhood default.',
-    image: lumen,
-    alt: 'Abstract cover: a bold white arc rising over a dot, like a sunrise',
-  },
-];
-
-export const testimonials = [
-  {
-    quote:
-      'They didn’t give us a template. They gave us a brand that finally sounds like us — and customers noticed straight away.',
-    name: 'Nadeesha P.',
-    role: 'Founder, home bakery',
+    q: 'Who owns the work at the end?',
+    a: 'You do. You leave with the systems, guidelines and know-how to keep the brand growing long after launch.',
   },
   {
-    quote:
-      'Honest, fast and genuinely invested. Our ad budget is half what we used to spend and the bookings have never been better.',
-    name: 'Ravi K.',
-    role: 'Owner, surf school',
-  },
-  {
-    quote:
-      'Working with Lankan felt like having a creative co-founder. Every decision came back to what was right for our business.',
-    name: 'Amaya S.',
-    role: 'Co-founder, textile studio',
+    q: 'How quickly will we hear back?',
+    a: 'Within one working day, with honest thoughts — even if we’re not the right fit. Prefer to talk first? Message us on WhatsApp.',
   },
 ] as const;

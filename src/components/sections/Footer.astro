@@ -1,29 +1,30 @@
 ---
-/** Footer — logo, minimal links, socials, copyright. */
+/** Black footer: brand line, pages, contact details, social links and copyright. */
 import Logo from '@/components/ui/Logo.astro';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
-import { nav, site, whatsappHref } from '@/data/site';
+import { href } from '@/data/paths';
+import { chatMessage, nav, site, whatsappHref } from '@/data/site';
 
 const year = new Date().getFullYear();
 const social = site.social.filter((s) => s.href);
 ---
 
-<!-- Extra bottom room on mobile and right-hand room on desktop keep the floating WhatsApp button clear of the last row -->
-<footer class="border-t border-line pt-20 pb-28 md:pb-10">
+<!-- Extra bottom room keeps the floating WhatsApp button clear of the last row -->
+<footer class="bg-ink pt-20 pb-28 text-white md:pb-12">
   <div class="container-site">
     <div class="grid gap-14 md:grid-cols-12">
-      <div class="md:col-span-4">
-        <Logo variant="full" class="h-12 w-auto md:h-14" />
-        <p class="mt-6 max-w-xs text-muted">{site.tagline}.</p>
+      <div class="md:col-span-5">
+        <Logo tone="light" class="h-10 w-auto md:h-12" />
+        <p class="mt-6 max-w-xs leading-relaxed text-white/60">{site.tagline}. Based in {site.location}, working worldwide.</p>
       </div>
 
-      <nav aria-label="Footer" class="md:col-span-2 md:col-start-6">
-        <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Studio</h2>
-        <ul class="mt-5 space-y-3">
+      <nav aria-label="Footer" class="md:col-span-2">
+        <h2 class="label text-white/50">Studio</h2>
+        <ul class="mt-6 space-y-3">
           {
             nav.map((n) => (
               <li>
-                <a href={n.href} class="link-draw">
+                <a href={href(n.path)} class="link-draw text-white/85 hover:text-white">
                   {n.label}
                 </a>
               </li>
@@ -32,45 +33,43 @@ const social = site.social.filter((s) => s.href);
         </ul>
       </nav>
 
-      {social.length > 0 && (
-      <div class="md:col-span-2">
-        <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Follow</h2>
-        <ul class="mt-5 space-y-3">
-          {
-            social.map((s) => (
-              <li>
-                <a href={s.href} class="link-draw inline-flex items-center gap-1.5" rel="noopener noreferrer" target="_blank">
-                  {s.label}
-                  <span aria-hidden="true" class="text-xs text-muted">↗</span>
-                  <span class="sr-only">(opens in a new tab)</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      )}
-
       <div class="md:col-span-3">
-        <h2 class="text-xs tracking-[0.18em] text-muted uppercase">Say hello</h2>
-        <ul class="mt-5 space-y-3">
-          <li><a href={`mailto:${site.email}`} class="link-draw break-all">{site.email}</a></li>
-          <li><a href={`tel:${site.phone.e164}`} class="link-draw">{site.phone.display}</a></li>
+        <h2 class="label text-white/50">Contact</h2>
+        <ul class="mt-6 space-y-3 text-white/85">
+          <li><a href={`mailto:${site.email}`} class="link-draw hover:text-white">{site.email}</a></li>
+          <li><a href={`tel:${site.phone.e164}`} class="link-draw hover:text-white">{site.phone.display}</a></li>
           <li>
-            <a href={whatsappHref()} class="link-draw inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappHref(chatMessage)} class="link-draw inline-flex items-center gap-2 hover:text-white" target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon class="h-4 w-4 text-[#25D366]" />
               WhatsApp
               <span class="sr-only">(opens in a new tab)</span>
             </a>
           </li>
+          <li class="text-white/60">{site.location}</li>
         </ul>
       </div>
+
+      {
+        social.length > 0 && (
+          <div class="md:col-span-2">
+            <h2 class="label text-white/50">Follow</h2>
+            <ul class="mt-6 space-y-3">
+              {social.map((s) => (
+                <li>
+                  <a href={s.href} class="link-draw text-white/85 hover:text-white" rel="noopener noreferrer" target="_blank">
+                    {s.label}
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
     </div>
 
-    <div class="mt-20 flex flex-col gap-4 border-t border-line pt-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between md:pr-20">
-      <p>© {year} {site.name} All rights reserved.</p>
-      <p class="font-bold text-paper">{site.secondary}</p>
-      <a href="#top" class="link-draw self-start sm:self-auto">Back to top ↑</a>
+    <div class="mt-20 border-t border-white/10 pt-8 text-center">
+      <p class="label text-[0.65rem] font-normal text-white/40">© {year} {site.name} All rights reserved.</p>
     </div>
   </div>
 </footer>
