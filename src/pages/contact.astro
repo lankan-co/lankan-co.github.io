@@ -1,0 +1,58 @@
+---
+/** Contact — direct details on the left, the Web3Forms enquiry form on the right. */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ContactForm from '@/components/islands/ContactForm';
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { href } from '@/data/paths';
+import { chatMessage, services, site, whatsappHref } from '@/data/site';
+
+// Where Web3Forms sends visitors after a no-JavaScript submission.
+const thanksUrl = new URL(href('thanks/'), Astro.site).href;
+const chatHref = whatsappHref(chatMessage);
+---
+
+<BaseLayout title="Contact" description="Start a project with Lankan Brands & Co. — WhatsApp, call, email or send us a message.">
+  <section aria-labelledby="page-title" class="container-site pt-16 pb-24 md:pt-28 md:pb-32">
+    <h1 id="page-title" class="page-title">Contact</h1>
+
+    <div class="mt-16 grid gap-16 md:mt-24 lg:grid-cols-12 lg:gap-10">
+      <div class="lg:col-span-4">
+        <p class="text-lg leading-relaxed text-muted">
+          Tell us where you are and where you want to go. We reply within one working day, with honest thoughts — even
+          if we’re not the right fit.
+        </p>
+        <a href={chatHref} class="btn btn-primary mt-8" target="_blank" rel="noopener noreferrer">
+          <WhatsAppIcon class="h-4 w-4" />
+          Chat on WhatsApp
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+        <dl class="mt-12 space-y-6">
+          <div>
+            <dt class="label text-muted">Call or WhatsApp</dt>
+            <dd class="mt-2"><a href={`tel:${site.phone.e164}`} class="link-draw text-lg">{site.phone.display}</a></dd>
+          </div>
+          <div>
+            <dt class="label text-muted">Email</dt>
+            <dd class="mt-2"><a href={`mailto:${site.email}`} class="link-draw text-lg">{site.email}</a></dd>
+          </div>
+          <div>
+            <dt class="label text-muted">Studio</dt>
+            <dd class="mt-2 text-lg">{site.location}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="lg:col-span-7 lg:col-start-6">
+        <ContactForm
+          client:visible
+          accessKey={site.web3formsKey}
+          email={site.email}
+          whatsappUrl={chatHref}
+          siteName={site.name}
+          redirectUrl={thanksUrl}
+          services={services.map((s) => s.title)}
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

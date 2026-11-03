@@ -1,21 +1,26 @@
 ---
 /**
- * Base document: SEO, Open Graph / Twitter cards, structured data,
- * favicons, global styles and the site-wide progressive-enhancement scripts.
+ * Base document: SEO, Open Graph / Twitter cards, structured data, favicons,
+ * global styles, and the shared page chrome (header, footer, WhatsApp button).
  */
 import '@/styles/global.css';
+import Header from '@/components/sections/Header.astro';
+import Footer from '@/components/sections/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
 import { site } from '@/data/site';
 // Preload the primary (Latin) font file to avoid a late font swap.
 import dmSansLatin from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
 
 interface Props {
-  title?: string;
   description?: string;
+  /** Page name, e.g. 'Work'. Becomes "Work — Lankan Brands & Co.". Omit on the homepage. */
+  title?: string;
   /** Keep utility pages (e.g. 404) out of search results. */
   noindex?: boolean;
 }
 
-const { title = `${site.name} — ${site.tagline}`, description = site.description, noindex = false } = Astro.props;
+const { title: pageTitle, description = site.description, noindex = false } = Astro.props;
+const title = pageTitle ? `${pageTitle} — ${site.name}` : `${site.name} — ${site.tagline}`;
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -45,7 +50,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="en" class="bg-ink">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -53,8 +58,8 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
-    <meta name="theme-color" content="#000000" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#f4f4f2" />
+    <meta name="color-scheme" content="light" />
     <meta name="generator" content={Astro.generator} />
     <link rel="preload" href={dmSansLatin} as="font" type="font/woff2" crossorigin />
 
@@ -84,7 +89,7 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!--
-      Mark JS as available so [data-reveal] elements can be pre-hidden.
+      Mark JS as available so [data-reveal] elements can fade in.
       Safety net: if the reveal script hasn't run in 2.5s, show everything.
     -->
     <script is:inline>
@@ -94,38 +99,27 @@ const jsonLd = {
       }, 2500);
     </script>
   </head>
-  <body class="font-sans text-paper antialiased">
+  <body class="font-sans text-ink antialiased">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-paper focus:px-5 focus:py-3 focus:text-ink"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-paper"
     >
       Skip to content
     </a>
-    <slot />
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppButton />
 
     <script>
-      import {
-        initBoard,
-        initFilm,
-        initHorizontalScroll,
-        initReveal,
-        initScrollEffects,
-        initSpotlight,
-        initWordScrub,
-      } from '@/scripts/reveal';
-      import { initSmoothScroll } from '@/scripts/smooth-scroll';
       import { initHeader } from '@/scripts/header';
+      import { initReveal } from '@/scripts/reveal';
 
       (window as unknown as { __lankanReveal: boolean }).__lankanReveal = true;
       initHeader();
       initReveal();
-      initScrollEffects();
-      initWordScrub();
-      initSpotlight();
-      initBoard();
-      initHorizontalScroll();
-      initFilm();
-      initSmoothScroll();
     </script>
   </body>
 </html>

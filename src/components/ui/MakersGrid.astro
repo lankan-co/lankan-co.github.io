@@ -1,0 +1,45 @@
+---
+/**
+ * "Who we're for" — six photos of the kinds of businesses we build for.
+ * These are illustrative stock photos (Pexels, free licence — see
+ * src/assets/makers/CREDITS.md), not client work.
+ */
+import { Picture } from 'astro:assets';
+import bakery from '@/assets/makers/bakery.jpg';
+import studio from '@/assets/makers/studio.jpg';
+import cafe from '@/assets/makers/cafe.jpg';
+import loom from '@/assets/makers/loom.jpg';
+import stall from '@/assets/makers/stall.jpg';
+import sketch from '@/assets/makers/sketch.jpg';
+
+const tiles = [
+  { img: bakery, label: 'The bakery', alt: 'Hands shaping bread dough on a floured counter' },
+  { img: cafe, label: 'The café', alt: 'Café owner standing with arms crossed in a coffee shop' },
+  { img: studio, label: 'The studio', alt: 'Potter’s hands shaping clay on a spinning wheel' },
+  { img: stall, label: 'The stall', alt: 'Shoe stall packed with sandals in Pettah Market, Colombo' },
+  { img: loom, label: 'The loom', alt: 'Hands weaving colourful thread on a wooden loom' },
+  { img: sketch, label: 'The side project', alt: 'A hand sketching logo ideas with a marker' },
+];
+---
+
+<ul class="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6">
+  {
+    tiles.map((t) => (
+      <li data-reveal>
+        <div class="aspect-[4/3] overflow-hidden bg-line">
+          <Picture
+            src={t.img}
+            alt={t.alt}
+            formats={['avif', 'webp']}
+            widths={[400, 700, 1000]}
+            sizes="(min-width: 768px) 30vw, 46vw"
+            class="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <p class="label mt-4 text-center text-ink">{t.label}</p>
+      </li>
+    ))
+  }
+</ul>

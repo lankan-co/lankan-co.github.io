@@ -1,41 +1,87 @@
 ---
 /**
- * Lankan Brands & Co. — single-page site.
- * Sections are self-contained components; copy lives in src/data/site.ts.
- * Work and Testimonials are hidden until real case studies and quotes are added
- * to site.ts — re-import them below <Process /> to bring them back (and
- * renumber the section eyebrows).
+ * Home — short and simple: intro, selected work (once projects exist),
+ * who we're for, a services teaser and a call to action.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import CursorGlow from '@/components/islands/CursorGlow';
-import Header from '@/components/sections/Header.astro';
-import Hero from '@/components/sections/Hero.astro';
-import Marquee from '@/components/sections/Marquee.astro';
-import Showcase from '@/components/sections/Showcase.astro';
-import Faq from '@/components/sections/Faq.astro';
-import Film from '@/components/sections/Film.astro';
-import Philosophy from '@/components/sections/Philosophy.astro';
-import Services from '@/components/sections/Services.astro';
-import Process from '@/components/sections/Process.astro';
-import Contact from '@/components/sections/Contact.astro';
-import Footer from '@/components/sections/Footer.astro';
-import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import MakersGrid from '@/components/ui/MakersGrid.astro';
+import ProjectCard from '@/components/ui/ProjectCard.astro';
+import { href } from '@/data/paths';
+import { featured } from '@/data/projects';
+import { services, site } from '@/data/site';
 ---
 
 <BaseLayout>
-  <CursorGlow client:idle />
-  <Header />
-  <main id="main" class="relative z-10">
-    <Hero />
-    <Marquee />
-    <Philosophy />
-    <Services />
-    <Showcase />
-    <Film />
-    <Process />
-    <Faq />
-    <Contact />
-  </main>
-  <Footer />
-  <WhatsAppButton />
+  <section aria-labelledby="hero-title" class="container-site pt-16 pb-24 md:pt-28 md:pb-32">
+    <p class="label text-muted">Branding & digital marketing studio · {site.location}</p>
+    <h1 id="hero-title" class="page-title mt-8">Your business.<br />Your style.</h1>
+    <p class="mt-10 max-w-xl text-lg leading-relaxed text-muted md:text-xl">
+      A boutique studio for small businesses and founders building something of their own. We make brands that feel
+      like you — and help the right people find them.
+    </p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href={href('contact/')} class="btn btn-primary">Start a project <span class="btn-arrow" aria-hidden="true">→</span></a>
+      <a href={href(featured.length ? 'work/' : 'services/')} class="btn btn-ghost">{featured.length ? 'See our work' : 'Our services'}</a>
+    </div>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section aria-labelledby="work-title" class="border-t border-line">
+        <div class="container-site py-20 md:py-28">
+          <div class="flex items-end justify-between gap-6">
+            <h2 id="work-title" class="label text-muted">Selected work</h2>
+            <a href={href('work/')} class="label link-draw text-ink">
+              View all work →
+            </a>
+          </div>
+          <ul class="mt-12 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((p, i) => <ProjectCard project={p} eager={i === 0} />)}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section aria-labelledby="for-title" class="border-t border-line">
+    <div class="container-site py-20 md:py-28">
+      <div class="grid gap-6 md:grid-cols-12 md:items-end">
+        <div class="md:col-span-7">
+          <p class="label text-muted">Who we’re for</p>
+          <h2 id="for-title" class="mt-6 text-[clamp(1.75rem,3.6vw,3rem)] leading-[1.1] font-light tracking-[-0.02em]">
+            The bakery, the studio, the side project that became the main thing.
+          </h2>
+        </div>
+        <p class="leading-relaxed text-muted md:col-span-4 md:col-start-9">
+          Big agencies build brands for big companies. We build them for businesses that are truly someone’s own.
+        </p>
+      </div>
+      <div class="mt-14">
+        <MakersGrid />
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="services-title" class="border-t border-line">
+    <div class="container-site py-20 md:py-28">
+      <div class="flex items-end justify-between gap-6">
+        <h2 id="services-title" class="label text-muted">Services</h2>
+        <a href={href('services/')} class="label link-draw text-ink">All services →</a>
+      </div>
+      <ul class="mt-10 grid border-t border-line sm:grid-cols-2 lg:grid-cols-3">
+        {
+          services.map((s, i) => (
+            <li class="border-b border-line py-6 sm:pr-6" data-reveal>
+              <p class="meta">{String(i + 1).padStart(2, '0')}</p>
+              <h3 class="mt-3 text-xl font-light tracking-tight uppercase">{s.title}</h3>
+              <p class="mt-2 text-muted">{s.summary}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
 </BaseLayout>

@@ -6,30 +6,24 @@
 <p align="center"><strong>Your business. Your style.</strong></p>
 
 <p align="center">
-  Astro 5 · Tailwind CSS 4 · React islands · Framer Motion · TypeScript · GitHub Pages
+  Astro 5 · Tailwind CSS 4 · TypeScript · GitHub Pages
 </p>
 
 ---
 
-The website for **Lankan Brands & Co.** — a boutique branding and digital marketing studio for small businesses and founders. It's a fully static, single-page site designed to be a demonstration of the craft it sells: minimal, confident, quietly animated and fast.
-
-| Lighthouse (local, uncompressed preview) | Performance | Accessibility | Best Practices | SEO |
-| --- | :-: | :-: | :-: | :-: |
-| Desktop | 100 | 100 | 100 | 100 |
-| Mobile | 98 | 100 | 100 | 100 |
+The website for **Lankan Brands & Co.**, a boutique branding and digital marketing studio for small businesses and founders. It's a fully static, multi-page site with a deliberately simple look: light pages, big thin uppercase titles, generous whitespace, and the work at the centre.
 
 ## ✦ Highlights
 
-- **The real logo, as vectors.** The supplied artwork was traced 1:1 into SVG paths (`src/data/logo-paths.json`) — crisp at any size, and animatable piece by piece.
-- **Animated brand entrance.** The white square settles, the “ලං” mark (Sinhala for “Lan”) unfurls from the centre of its spiral, and the wordmark slides out from behind it.
-- **Restrained motion.** Scroll reveals (fade-up + un-blur), staggered groups, a scroll-linked process line that lights each step, gentle hero parallax, cursor-following spotlights, magnetic CTAs and Lenis smooth scrolling.
-- **Shows, not just tells.** A living brand board beside the hero headline, a services marquee, a philosophy statement that lights up word by word, and a pinned, sideways-scrolling "Your brand, everywhere" showcase of animated illustrations (a swipeable row on phones).
-- **Real makers, on film.** A "who we build for" photo mosaic (black and white, blooming into colour on hover) and a full-bleed black-and-white film of hands at work that opens up as you scroll. Photos and footage are from Pexels (free licence, credits in `src/assets/makers/CREDITS.md`). The film only downloads and plays while on screen, has a pause button, and stays on its poster with reduced motion or Data Saver.
-- **First-visit friendly.** An FAQ (also published as FAQPage structured data), a page-progress line in the header, and a floating "Start a project" button on phones.
-- **Accessible by default.** Skip link, semantic landmarks, visible focus rings, keyboard-reachable hover content, accessible mobile menu, live form errors, and **every animation switches off under `prefers-reduced-motion`**.
-- **Progressive enhancement.** All content is server-rendered HTML. If JavaScript fails, nothing is hidden.
-- **SEO ready.** Meta, canonical, Open Graph + Twitter cards, JSON-LD (`ProfessionalService`), sitemap and robots.txt — all base-path aware.
-- **Optimised images.** Case-study covers are emitted as AVIF + WebP with responsive `srcset`.
+- **Simple pages.** Home, About, Work, Services and Contact, each short and focused, with the same top menu and a "Start a project" pill.
+- **Work archive.** Category filter tabs, a three-column photo grid with title, date and category tag, and a hover "View project" overlay. Each project gets its own page with a full-width cover and a gallery. Adding a project means adding a folder of photos and one entry; see [Adding a project](#-adding-a-project).
+- **The real logo, as vectors.** The supplied artwork was traced 1:1 into SVG paths (`src/data/logo-paths.json`). The `Logo` component draws it dark on light pages and light in the black footer.
+- **Quiet motion.** Gentle fade-ins as sections scroll into view, plus hover states. Everything switches off under `prefers-reduced-motion`.
+- **Contact that works.** A Web3Forms contact form (with a no-JavaScript fallback), WhatsApp click-to-chat, a floating WhatsApp button, and call and email links.
+- **Accessible by default.** Skip link, semantic landmarks, visible focus rings, an accessible mobile menu, and live form errors.
+- **Progressive enhancement.** All content is server-rendered HTML. If JavaScript fails, nothing is hidden, and the Work filters simply show every project.
+- **SEO ready.** Per-page titles and descriptions, canonical URLs, Open Graph and Twitter cards, JSON-LD (`ProfessionalService`, plus `FAQPage` on Services), a sitemap and `robots.txt`, all base-path aware.
+- **Optimised images.** Every photo is emitted as AVIF and WebP with a responsive `srcset`.
 - **Zero-config deploy.** One GitHub Actions workflow works for user sites, project sites and custom domains.
 
 ## ✦ Quick start
@@ -50,33 +44,25 @@ npm run preview    # serve dist/ locally
 ├── .github/workflows/deploy.yml   # GitHub Pages CI/CD
 ├── public/
 │   ├── brand/                     # Logo files to share (SVG + PNG)
-│   │   ├── lankan-logo.svg         #   full logo
-│   │   ├── lankan-logo-tagline.svg #   logo + tagline lockup
-│   │   ├── lankan-mark.svg         #   logo-only mark
-│   │   └── lankan-logo.png
+│   ├── invoice/                   # Invoice Studio (standalone, private)
 │   ├── favicon.svg · apple-touch-icon.png · icon-512.png
-│   ├── media/                     # makers.webm / makers.mp4 film + poster
 │   └── og-image.png               # 1200×630 social card
-├── scripts/brand-assets.mjs       # Regenerates everything in public/brand, icons, OG image, covers
+├── scripts/brand-assets.mjs       # Regenerates public/brand, icons and the OG image
 └── src/
-    ├── assets/work/               # Case-study images (→ AVIF/WebP at build)
-    ├── assets/makers/             # "Who we build for" photos (→ AVIF/WebP) + CREDITS.md
+    ├── assets/makers/             # "Who we're for" stock photos (Pexels) + CREDITS.md
+    ├── assets/projects/<slug>/    # Project photos: cover.jpg + gallery (01.jpg, 02.jpg…)
     ├── components/
-    │   ├── islands/               # React + Framer Motion (hydrated only where needed)
-    │   │   ├── HeroLogo.tsx       #   animated logo entrance        client:load
-    │   │   ├── Magnetic.tsx       #   magnetic CTA wrapper          client:idle
-    │   │   ├── CursorGlow.tsx     #   soft pointer glow             client:idle
-    │   │   └── ContactForm.tsx    #   Web3Forms contact form        client:visible
-    │   ├── sections/              # Header, Hero, Marquee, Philosophy, Services, Showcase, Film,
-    │   │                          # Process, Faq, Work, Testimonials, Contact, Footer (static Astro)
-    │   └── ui/                    # Logo, SectionHeading, HeroBoard, Makers
+    │   ├── islands/ContactForm.tsx  # Web3Forms contact form (React, client:visible)
+    │   ├── sections/              # Header, Footer
+    │   └── ui/                    # Logo, ProjectCard, MakersGrid, CtaBand, WhatsApp button/icon
     ├── data/
-    │   ├── site.ts                # ← ALL COPY: services, touchpoints, process, FAQ, work, testimonials, socials
+    │   ├── site.ts                # ← COPY & CONTACT: services, values, process, FAQ, email, phone, socials
+    │   ├── projects.ts            # ← WORK: one entry per project
+    │   ├── paths.ts               # base-path-aware href()
     │   └── logo-paths.json        # Traced logo vectors (single source of truth)
-    ├── layouts/BaseLayout.astro   # <head>, SEO, global scripts
-    ├── pages/                     # index, 404, robots.txt
-    ├── scripts/                   # Vanilla TS: reveals & scroll effects (Framer Motion DOM API),
-    │                              # Lenis smooth scroll, header/menu
+    ├── layouts/BaseLayout.astro   # <head>, SEO, header, footer, WhatsApp button, scripts
+    ├── pages/                     # index, about, work/, work/[slug], services, contact, thanks, 404, robots.txt
+    ├── scripts/                   # header/menu, fade-in reveal
     └── styles/global.css          # Tailwind 4 theme tokens + components
 ```
 
@@ -86,42 +72,57 @@ Tokens live in `src/styles/global.css` under `@theme` and are available as Tailw
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `ink` | `#000000` | Primary background |
-| `card` / `card-2` | `#0A0A0A` / `#111111` | Cards, raised surfaces, background bands |
-| `paper` | `#FFFFFF` | Primary text, primary buttons |
-| `muted` | `#A3A3A3` | Secondary text |
-| `soft` | `#F5F5F5` | Warm off-white hover |
-| `accent` | `#60A5FA` | Used sparingly — focus rings, one case-study highlight |
-| `line` | `#1F1F1F` | Borders & dividers |
+| `paper` | `#F4F4F2` | Page background |
+| `card` | `#FFFFFF` | Raised surfaces |
+| `ink` | `#111111` | Text, primary buttons, footer |
+| `muted` | `#6B6B6B` | Secondary text |
+| `line` | `#DEDEDE` | Borders & dividers |
+| `accent` | `#2563EB` | Focus rings only |
 
-**Type:** DM Sans Variable (self-hosted) — a geometric sans that matches the letterforms in the supplied artwork. Large headlines use tight negative tracking. Swap `--font-sans` / `--font-display` to use Inter, Geist or Satoshi instead.
+**Type:** DM Sans Variable (self-hosted), a geometric sans that matches the letterforms in the artwork. The building blocks are:
 
-**Texture:** The vertical bands from the artwork are recreated as `.bg-bands`; `.bg-grain` adds a subtle film grain.
+| Class | Look | Used for |
+| --- | --- | --- |
+| `.page-title` | Big, thin (300) uppercase | "WORK", "SERVICES" |
+| `.label` | Small, bold, tracked uppercase | Menu, section labels |
+| `.meta` | Monospace uppercase | Dates and numbers |
+| `.tag` | Outlined | Category tags |
+
+Buttons are `.btn` combined with `.btn-primary` (black pill) or `.btn-ghost` (outlined).
 
 ## ✦ Editing content
 
-Everything you'll want to change is in **`src/data/site.ts`** — tagline, services, process steps, values, case studies, testimonials, email and social links. Social links with an empty `href` are hidden.
+Site copy is in **`src/data/site.ts`**: the tagline, services, values, process steps, FAQ, email, phone, location and social links. Social links with an empty `href` are hidden, and the footer's "Follow" column appears once at least one is filled in.
 
-> ⚠️ **Case studies and testimonials are placeholders, so their sections are currently hidden.** Replace them with real clients in `site.ts`, then re-add `<Work />` and `<Testimonials />` (and the `Work` nav link) in `src/pages/index.astro`. Drop real photos into `src/assets/work/` (JPG/PNG at ~1600px wide) and point each case study's `image` at the new file — Astro generates AVIF/WebP and responsive sizes automatically.
+## ✦ Adding a project
+
+1. Create a folder `src/assets/projects/<slug>/`, using lowercase words joined by hyphens, for example `kiri-bakehouse-rebrand`.
+2. Put the photos in it (JPG, PNG or WebP, about 2000px wide). Name the main photo `cover.jpg`. Every other photo becomes the gallery, in file-name order (`01.jpg`, `02.jpg`, …).
+3. Add an entry to `src/data/projects.ts` with the same `slug`, plus a title, date (`YYYY-MM-DD`), category, a one- or two-sentence summary and a short description of the cover photo. Set `featured: true` to show it on the homepage.
+
+The Work grid, the filter tabs (one per category), the project page and the homepage's "Selected work" all appear automatically. Until the first project is added, the Work page shows a short "coming soon" note.
+
+> The "Who we're for" photos are illustrative Pexels stock photos, not client work. Keep them out of the Work pages.
 
 ## ✦ Contact details
 
 Email and phone live in `site.email` and `site.phone` in `src/data/site.ts`. The phone has three forms: `display` for the visible text, `e164` for `tel:` links, and `whatsapp` for `wa.me` links. One number powers all of these:
-- calls and WhatsApp in the Contact section
+- the Contact page
 - the footer
 - the mobile menu
-- the floating WhatsApp button, which sits bottom-left on mobile so it clears the "Start a project" pill, and bottom-right on desktop
+- the "Let's build something" band at the foot of each page
+- the floating WhatsApp button (bottom-right; the footer leaves room for it)
 - the JSON-LD contact point
 
 ## ✦ Contact form
 
-The Contact section's form emails every enquiry through [Web3Forms](https://web3forms.com) to the inbox linked to the access key. Change the recipient in the Web3Forms dashboard; no code change is needed.
+The Contact page's form emails every enquiry through [Web3Forms](https://web3forms.com) to the inbox linked to the access key. Change the recipient in the Web3Forms dashboard; no code change is needed.
 
-- **Fields:** name and email (required), phone/WhatsApp, business, services, budget, timeline (optional), and project details (required, 10–3000 characters).
-- **With JavaScript:** inline validation, JSON submit, a success panel, and on failure a retry plus a pre-filled email fallback so no enquiry is lost.
+- **Fields:** name and email (required), services (optional), and project details (required, 10–3000 characters).
+- **With JavaScript:** inline validation, JSON submit, a success panel, and on failure a retry plus pre-filled email and WhatsApp fallbacks so no enquiry is lost.
 - **Without JavaScript:** it posts as a normal HTML form, and Web3Forms redirects back to `/thanks/`.
 - **Spam:** filtered by Web3Forms' `botcheck` honeypot.
-- **Email:** the subject is "New enquiry from {name} — {business}", and replies go straight to the visitor's email.
+- **Email:** the subject is "New enquiry from {name}", and replies go straight to the visitor's email.
 
 Locally, copy `.env.example` to `.env`. On GitHub, add them under **Settings → Secrets and variables → Actions → Variables**.
 
@@ -169,13 +170,13 @@ If the logo vectors in `src/data/logo-paths.json` ever change, update the `LOGO`
 
 ## ✦ Brand assets
 
-`npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image and the placeholder case-study covers from `src/data/logo-paths.json`. Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.
+`npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image from `src/data/logo-paths.json`. Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.
 
 ## ✦ Accessibility & motion notes
 
-- All hover-only details (service descriptions) also open on keyboard focus, and are always visible on touch screens.
 - The mobile menu closes on <kbd>Esc</kbd>, returns focus to its button and is `inert` while hidden.
-- `prefers-reduced-motion: reduce` disables reveals, parallax, the logo animation, the cursor glow, magnetic buttons, Lenis, the marquee, the brand-board and illustration loops and the word-by-word scrub. The pinned showcase becomes a normal scrollable row.
+- Project hover overlays also appear on keyboard focus. Work filters are real buttons with `aria-pressed`.
+- `prefers-reduced-motion: reduce` turns off the fade-ins, smooth scrolling and the WhatsApp button's hover scale.
 
 ---
 

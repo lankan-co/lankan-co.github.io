@@ -1,0 +1,26 @@
+---
+/** Closing call to action used at the foot of each page. */
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
+import { href } from '@/data/paths';
+import { chatMessage, whatsappHref } from '@/data/site';
+---
+
+<section aria-labelledby="cta-title" class="border-t border-line">
+  <div class="container-site py-24 md:py-32" data-reveal>
+    <p class="label text-muted">Start a project</p>
+    <h2 id="cta-title" class="mt-6 max-w-[14ch] text-[clamp(2.25rem,6vw,4.5rem)] leading-[1] font-light tracking-[-0.03em] uppercase">
+      Let’s build something that’s yours.
+    </h2>
+    <p class="mt-6 max-w-md text-lg leading-relaxed text-muted">
+      Tell us where you are and where you want to go. We reply within one working day — even if we’re not the right fit.
+    </p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href={href('contact/')} class="btn btn-primary">Start a project <span class="btn-arrow" aria-hidden="true">→</span></a>
+      <a href={whatsappHref(chatMessage)} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+        <WhatsAppIcon class="h-4 w-4" />
+        WhatsApp
+        <span class="sr-only">(opens in a new tab)</span>
+      </a>
+    </div>
+  </div>
+</section>

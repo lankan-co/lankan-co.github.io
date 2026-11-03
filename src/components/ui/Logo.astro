@@ -1,21 +1,24 @@
 ---
 /**
  * Static logo — vectors traced 1:1 from the supplied artwork.
- *   variant="full"  → white square mark + "kan Brands &Co." wordmark
+ *   variant="full"  → square ලං mark + "kan Brands &Co." wordmark
  *   variant="mark"  → logo-only square mark
- * The wordmark is white, so it is designed for dark backgrounds (as in the artwork).
+ *   tone="dark"     → black square, white glyph, black wordmark (for light backgrounds)
+ *   tone="light"    → white square, black glyph, white wordmark (for dark backgrounds, as in the artwork)
  */
 import logo from '@/data/logo-paths.json';
 
 interface Props {
   variant?: 'full' | 'mark';
+  tone?: 'dark' | 'light';
   class?: string;
   /** Pass a label when the logo is the only content of a link. Omit for decorative use. */
   label?: string;
 }
-const { variant = 'full', class: className, label } = Astro.props;
+const { variant = 'full', tone = 'dark', class: className, label } = Astro.props;
 const vbW = variant === 'full' ? logo.viewBox.width : logo.square.width;
 const vbH = logo.viewBox.height;
+const [solid, cutout] = tone === 'dark' ? ['#111', '#fff'] : ['#fff', '#000'];
 ---
 
 <svg
@@ -27,11 +30,11 @@ const vbH = logo.viewBox.height;
   aria-hidden={label ? undefined : 'true'}
   focusable="false"
 >
-  <rect width={logo.square.width} height={logo.square.height} fill="#fff"></rect>
-  <path fill="#000" fill-rule="evenodd" d={logo.mark}></path>
+  <rect width={logo.square.width} height={logo.square.height} fill={solid}></rect>
+  <path fill={cutout} fill-rule="evenodd" d={logo.mark}></path>
   {
     variant === 'full' && (
-      <path fill="#fff" fill-rule="evenodd" transform={`translate(${logo.wordmarkOffsetX} 0)`} d={logo.wordmark} />
+      <path fill={solid} fill-rule="evenodd" transform={`translate(${logo.wordmarkOffsetX} 0)`} d={logo.wordmark} />
     )
   }
 </svg>
