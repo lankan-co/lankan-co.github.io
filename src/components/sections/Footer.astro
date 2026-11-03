@@ -1,12 +1,12 @@
 ---
 /** Black footer: brand line, pages, contact details, social links and copyright. */
 import Logo from '@/components/ui/Logo.astro';
+import SocialIcon from '@/components/ui/SocialIcon.astro';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
 import { href } from '@/data/paths';
-import { chatMessage, nav, site, whatsappHref } from '@/data/site';
+import { chatMessage, nav, site, socialLinks as social, whatsappHref } from '@/data/site';
 
 const year = new Date().getFullYear();
-const social = site.social.filter((s) => s.href);
 ---
 
 <!-- Extra bottom room keeps the floating WhatsApp button clear of the last row -->
@@ -56,8 +56,9 @@ const social = site.social.filter((s) => s.href);
             <ul class="mt-6 space-y-3">
               {social.map((s) => (
                 <li>
-                  <a href={s.href} class="link-draw text-white/85 hover:text-white" rel="noopener noreferrer" target="_blank">
-                    {s.label}
+                  <a href={s.href} class="group inline-flex items-center gap-3 text-white/85 hover:text-white" rel="me noopener noreferrer" target="_blank">
+                    <SocialIcon name={s.icon} class="h-4 w-4 shrink-0 text-white/60 transition-colors group-hover:text-white" />
+                    <span class="link-draw">{s.label}</span>
                     <span class="sr-only">(opens in a new tab)</span>
                   </a>
                 </li>
