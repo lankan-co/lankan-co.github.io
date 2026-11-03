@@ -3,7 +3,6 @@
  * Sticky header: logo left, uppercase page links centred, "Start a project"
  * pill right. On phones the links move into a full-screen menu.
  */
-import Logo from '@/components/ui/Logo.astro';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
 import { href } from '@/data/paths';
 import { chatMessage, nav, site, whatsappHref } from '@/data/site';
@@ -18,7 +17,16 @@ const isCurrent = (path: string) => here.startsWith(href(path));
 >
   <div class="container-site flex h-16 items-center justify-between gap-6 md:h-20">
     <a href={href()} class="relative z-[60] -m-2 rounded p-2" aria-label={`${site.name} — home`}>
-      <Logo class="h-7 w-auto md:h-8" />
+      <!-- A raster copy of the light logo (see scripts/brand-assets.mjs): forced dark modes can't split its colours -->
+      <img
+        src={href('brand/lankan-logo-header.png')}
+        alt=""
+        width="432"
+        height="192"
+        class="h-8 w-auto md:h-9"
+        decoding="async"
+        fetchpriority="high"
+      />
     </a>
 
     <nav aria-label="Primary" class="hidden md:block">

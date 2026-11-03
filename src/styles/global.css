@@ -10,7 +10,7 @@
 
 @theme {
   /* Palette — monochrome */
-  --color-paper: #f4f4f2; /* page background */
+  --color-paper: #f8f7f2; /* page background — the light logo's off-white */
   --color-card: #ffffff; /* raised surfaces */
   --color-ink: #111111; /* primary text, buttons, footer */
   --color-muted: #6b6b6b; /* secondary text (4.9:1 on paper) */
@@ -26,8 +26,10 @@
 
 /* ---------- Base ---------- */
 @layer base {
+  /* Light-only: also opts out of browsers' automatic dark mode (Chrome, Edge),
+     which would recolour the light design and the logo. */
   :root {
-    color-scheme: light;
+    color-scheme: only light;
     interpolate-size: allow-keywords;
   }
 
