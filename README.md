@@ -71,7 +71,7 @@ Tokens live in `src/styles/global.css` under `@theme` and are available as Tailw
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `paper` | `#F4F4F2` | Page background |
+| `paper` | `#F8F7F2` | Page background (the light logo's off-white) |
 | `card` | `#FFFFFF` | Raised surfaces |
 | `ink` | `#111111` | Text, primary buttons, footer |
 | `muted` | `#6B6B6B` | Secondary text |
@@ -167,7 +167,7 @@ If the logo vectors in `src/data/logo-paths.json` ever change, update the `LOGO`
 
 ## ✦ Brand assets
 
-`npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image from `src/data/logo-paths.json`. Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.
+`npm run brand` regenerates the logo SVGs/PNG, favicons, the Open Graph image from `src/data/logo-paths.json`. It also builds the light lockup (`lankan-logo-light.svg`/`.png`: charcoal square and black wordmark on warm off-white) and `lankan-logo-header.png`, the raster copy used in the site header. The header uses an image rather than inline SVG on purpose: browsers that force dark mode onto light sites recolour SVG shapes one by one, which hid the wordmark, but keep an image intact. The site also declares `color-scheme: only light` to opt out of Chrome and Edge's automatic dark mode. Use the files in `public/brand/` anywhere you need the logo — they're also publicly served at `/brand/…`.
 
 ## ✦ Accessibility & motion notes
 

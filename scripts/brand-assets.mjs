@@ -7,6 +7,10 @@
  *   public/brand/lankan-logo.svg           full logo (mark + wordmark)
  *   public/brand/lankan-logo-tagline.svg   full logo + tagline lockup
  *   public/brand/lankan-mark.svg           logo-only square mark
+ *   public/brand/lankan-logo-light.svg/.png  light lockup: charcoal square + black
+ *                                         wordmark on warm off-white (as supplied)
+ *   public/brand/lankan-logo-header.png    the site header logo (light lockup,
+ *                                         background baked in — see below)
  *   public/favicon.svg, apple-touch-icon.png, icon-512.png
  *   public/og-image.png                   1200x630 social card
  *
@@ -51,6 +55,21 @@ writeFileSync(out('public/brand/lankan-logo-tagline.svg'), taglineLockup);
 await sharp(Buffer.from(mark)).resize(180, 180).png().toFile(out('public/apple-touch-icon.png'));
 await sharp(Buffer.from(mark)).resize(512, 512).png().toFile(out('public/icon-512.png'));
 await sharp(Buffer.from(fullLogoOnBlack)).resize(2400).png({ compressionLevel: 9 }).toFile(out('public/brand/lankan-logo.png'));
+
+/* ---------- Light lockup ----------
+ * Charcoal square, white ලං mark and black wordmark on warm off-white —
+ * the colours of the supplied light logo. The header uses a raster copy with
+ * the background baked in: browsers that force a dark mode onto light sites
+ * recolour inline SVG shapes one by one (leaving a black wordmark on a dark
+ * page), but treat an image as a whole, so it stays legible either way.   */
+const LIGHT = { paper: '#F8F7F2', square: '#1C201F', glyph: '#FFFFFF', word: '#000000' };
+const lightGroup = `<rect width="${logo.square.width}" height="${logo.square.height}" fill="${LIGHT.square}"/><path fill="${LIGHT.glyph}" fill-rule="evenodd" d="${logo.mark}"/><path fill="${LIGHT.word}" fill-rule="evenodd" transform="translate(${logo.wordmarkOffsetX} 0)" d="${logo.wordmark}"/>`;
+const lightLockup = (pad) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${W + pad * 2} ${H + pad * 2}" role="img" aria-label="Lankan Brands &amp; Co."><title>Lankan Brands &amp; Co.</title><rect x="${-pad}" y="${-pad}" width="${W + pad * 2}" height="${H + pad * 2}" fill="${LIGHT.paper}"/>${lightGroup}</svg>`;
+writeFileSync(out('public/brand/lankan-logo-light.svg'), lightLockup(120));
+await sharp(Buffer.from(lightLockup(120))).resize(2400).png({ compressionLevel: 9 }).toFile(out('public/brand/lankan-logo-light.png'));
+// Header: 6x the 32px display height for crisp high-DPI screens.
+await sharp(Buffer.from(lightLockup(24))).resize({ height: 192 }).png({ compressionLevel: 9 }).toFile(out('public/brand/lankan-logo-header.png'));
 
 /* ---------- Background: vertical bands echoing the artwork ---------- */
 const bands = (w, h, cols) =>
