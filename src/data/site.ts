@@ -20,21 +20,22 @@ export const site = {
   // Web3Forms access key for the contact form. Public by design: it only routes
   // mail to the inbox the key was created for.
   web3formsKey: import.meta.env.PUBLIC_WEB3FORMS_KEY || '52518f06-f2e7-4455-910d-9ab7dc0e46ce',
-  // Profile URLs. Links with an empty href are not shown; the footer's
-  // "Follow" column disappears entirely while all are empty.
+  // Social profiles, shown with icons in the footer and on the Contact page and
+  // listed as `sameAs` in the structured data. Links with an empty href are hidden.
   social: [
-    { label: 'Instagram', href: '' },
-    { label: 'Facebook', href: '' },
-    { label: 'TikTok', href: '' },
-    { label: 'LinkedIn', href: '' },
-    { label: 'Behance', href: '' },
-    { label: 'Google Review', href: '' },
+    { label: 'Instagram', icon: 'instagram', handle: '@lankanbrands.co', href: 'https://www.instagram.com/lankanbrands.co/' },
+    { label: 'Facebook', icon: 'facebook', handle: 'Lankan Brands & Co.', href: 'https://www.facebook.com/share/19jaLr12zz/' },
+    { label: 'Threads', icon: 'threads', handle: '@lankanbrands.co', href: 'https://www.threads.com/@lankanbrands.co' },
+    { label: 'LinkedIn', icon: 'linkedin', handle: 'Lankan Brands & Co.', href: 'https://www.linkedin.com/in/lankan-brands-and-corporation-45a6b5448/' },
   ],
 } as const;
 
 /** WhatsApp click-to-chat link, optionally with a pre-filled message. */
 export const whatsappHref = (text?: string) =>
   `https://wa.me/${site.phone.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
+
+/** Social profiles that have a URL. */
+export const socialLinks = site.social.filter((s) => s.href);
 
 export const chatMessage = `Hi ${site.name}, I’d like to talk about a project.`;
 

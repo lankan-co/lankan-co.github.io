@@ -92,7 +92,7 @@ Buttons are `.btn` combined with `.btn-primary` (black pill) or `.btn-ghost` (ou
 
 ## ✦ Editing content
 
-Site copy is in **`src/data/site.ts`**: the tagline, services, values, process steps, FAQ, email, phone, location and social links. Social links with an empty `href` are hidden, and the footer's "Follow" column appears once at least one is filled in.
+Site copy is in **`src/data/site.ts`**: the tagline, services, values, process steps, FAQ, email, phone, location and social links. Social profiles (`site.social`: label, icon, handle, URL) appear with icons in the footer and on the Contact page, and are listed as `sameAs` in the structured data. Links with an empty `href` are hidden. Icons are in `src/components/ui/SocialIcon.astro`: Facebook, Instagram and Threads come from Simple Icons (CC0), and LinkedIn comes from Lucide (ISC).
 
 ## ✦ Adding a project
 

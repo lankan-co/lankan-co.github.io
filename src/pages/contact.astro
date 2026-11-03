@@ -2,9 +2,10 @@
 /** Contact — direct details on the left, the Web3Forms enquiry form on the right. */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ContactForm from '@/components/islands/ContactForm';
+import SocialIcon from '@/components/ui/SocialIcon.astro';
 import WhatsAppIcon from '@/components/ui/WhatsAppIcon.astro';
 import { href } from '@/data/paths';
-import { chatMessage, services, site, whatsappHref } from '@/data/site';
+import { chatMessage, services, site, socialLinks, whatsappHref } from '@/data/site';
 
 // Where Web3Forms sends visitors after a no-JavaScript submission.
 const thanksUrl = new URL(href('thanks/'), Astro.site).href;
@@ -39,6 +40,31 @@ const chatHref = whatsappHref(chatMessage);
             <dt class="label text-muted">Studio</dt>
             <dd class="mt-2 text-lg">{site.location}</dd>
           </div>
+          {
+            socialLinks.length > 0 && (
+              <div>
+                <dt class="label text-muted">Follow</dt>
+                <dd class="mt-3">
+                  <ul class="flex flex-wrap gap-2">
+                    {socialLinks.map((s) => (
+                      <li>
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="me noopener noreferrer"
+                          aria-label={`${s.label} — ${s.handle} (opens in a new tab)`}
+                          title={s.label}
+                          class="grid h-11 w-11 place-items-center rounded-full border border-ink/20 transition-colors hover:border-ink hover:bg-ink hover:text-paper"
+                        >
+                          <SocialIcon name={s.icon} class="h-[1.1rem] w-[1.1rem]" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )
+          }
         </dl>
       </div>
 
